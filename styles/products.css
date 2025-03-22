@@ -281,7 +281,7 @@
     font-size: 14px;
     
     height: 2.5rem;
-    margin: .5rem 0 0 0; 
+    margin: 2.5rem 0 0 0; 
   }
 
   .product-item p{
@@ -289,7 +289,7 @@
   }
 
   .product-item.best-seller .best-wrap{
-    bottom:5.25rem;
+    bottom:10rem;
   }
 
   .product-item .initial-price{

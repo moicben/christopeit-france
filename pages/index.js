@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FaShoppingCart } from 'react-icons/fa';
 
 import Header from '../components/Header';
@@ -14,10 +14,17 @@ import categoriesData from '../categories.json'; // Importation des données JSO
 
 const Home = ({ site, products }) => {
   const [cartCount, setCartCount] = useState(0);
+  const videoRef = useRef(null);
 
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
     setCartCount(storedCart.length);
+  }, []);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 0.66; // Réglez la vitesse (0.5 = 50% de la vitesse normale)
+    }
   }, []);
 
   return (
@@ -33,6 +40,9 @@ const Home = ({ site, products }) => {
           <a href="/boutique"><button>Découvrir les équipements</button></a>
           <div className='filter'></div>
           <img src='/hero-bg.jpg' alt={site.sourceCategory} />
+          <video ref={videoRef} autoPlay muted loop playsInline>
+            <source src='/christopeit-sport.mp4' type='video/mp4' />
+          </video>
         </section>
 
         <ScrollingBanner items={['Frais de ports offerts', 'Leader Allemand du fitness à domicile', 'Équipements de dernière génération', '60 jours satisfait ou remboursé', 'Frais de ports offerts', 'Boutique officielle depuis 2019', 'Support client disponible 7j/7', 'Livraison sous 2 à 5 jours ouvrés', "Guide et conseils d'installation", "+1000 avis clients positifs"]} />
