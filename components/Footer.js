@@ -43,11 +43,8 @@ const Footer = ({ shopName, footerText }) => {
             <div className="footer-column">
               <a href="/"><h4>{shopName}</h4></a>
               <p>{footerText}</p>
-              <div className="legal-container">
-                <a href="/conditions-generales">Conditions Générales</a>
-                <a href="/mentions-legales">Mentions Légales</a>
-                <a href="/politique-de-confidentialite">Politique des données</a>
-              </div>
+              <a className='mail' href='mailto:support@christopeit-france.shop'>support@christopeit-france.shop</a>
+              
             </div>
             <div className="footer-column">
               <h4>Navigation</h4>
@@ -89,6 +86,11 @@ const Footer = ({ shopName, footerText }) => {
             </div>
           </article>
           <div className="sub-footer">
+            <div className="legal-container">
+                <a href="/conditions-generales">Conditions Générales</a>
+                <a href="/mentions-legales">Mentions Légales</a>
+                <a href="/politique-de-confidentialite">Politique des données</a>
+              </div>
             <p>© 2025 - Tous droits réservés - {shopName}</p>
             <div className={styles.paymentIcons}>
               <img src="/card-logo.png" alt={"acheter" + shopName} />
