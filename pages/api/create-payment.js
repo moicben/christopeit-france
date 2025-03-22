@@ -26,32 +26,18 @@ export default async (req, res) => {
 
       console.log('Payment created successfully:', payment); // Debugging Mollie response
 
-      // Transform cart to only include product IDs and quantities
-      const simplifiedCart = cart.map(item => ({
-        product: item.productTitle, 
-        quantity: item.quantity,  
-      }));
+      // Mettre à jour le statut de la commande dans Supabase
+      const { error: updateError } = await supabase
+        .from('orders')
+        .update({ status: 'pending', paymentId: payment.id })
+        .eq('id', orderNumber);
 
-      // Insérer une ligne dans la table orders de Supabase
-      const { data, error } = await supabase.from('orders').insert([{
-        id: orderNumber,
-        paymentId: payment.id,
-        status: 'pending', 
-        amount: parseFloat(amount).toFixed(2),
-        email, 
-        name, 
-        phone, 
-        address, 
-        cart: JSON.stringify(simplifiedCart), 
-        created_at: new Date().toISOString(),
-      }]);
-
-      if (error) {
-        console.error('Error inserting into Supabase:', error);
-        throw new Error('Failed to create order in database');
+      if (updateError) {
+        console.error('Error updating order status in Supabase:', updateError);
+        throw new Error('Failed to update order status in database');
       }
 
-      console.log('Order created in Supabase:', data);
+      console.log('Order status updated to pending in Supabase');
 
       // Retourne l'ID du paiement et l'URL de paiement
       res.status(200).json({

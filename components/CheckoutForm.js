@@ -61,7 +61,7 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
     return Object.keys(errors).length === 0;
   };
 
-  const handleNextStep = (step) => {
+  const handleNextStep = async (step) => {
     if (step === 1 && !validateStep(step)) {
       setGlobalError('Transmettez-vos informations de livraison avant de payer.');
       return;
@@ -69,6 +69,36 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
 
     // Enregistrer les données dans les cookies
     Cookies.set('checkoutFormData', JSON.stringify(formData), { expires: 1 }); // Expire dans 1 jour
+
+    if (step === 1) {
+      try {
+        // Créer une commande dans Supabase avec le statut "started"
+        const response = await fetch('/api/create-order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            orderNumber,
+            status: 'started',
+            amount: discountedPrice,
+            email: formData.email,
+            name: formData.fullName,
+            phone: formData.phone,
+            address: formData.address,
+            cart,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Erreur lors de la création de la commande.');
+        }
+      } catch (error) {
+        console.error('Erreur lors de la création de la commande:', error);
+        setGlobalError('Une erreur est survenue. Veuillez réessayer.');
+        return;
+      }
+    }
 
     setGlobalError('');
     showStep(step);

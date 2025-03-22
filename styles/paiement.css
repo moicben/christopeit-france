@@ -307,6 +307,7 @@ margin-bottom: 1rem;
   border: 1px solid #ccc;
   border-radius: 8px;
   width: 100%;
+  font-weight: 300;
 }
 
 .checkout-form input:focus,
