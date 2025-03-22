@@ -155,6 +155,7 @@ const Header = ({ shopName, keywordPlurial }) => {
         -15% sur nos équipements code : <span style={{ fontWeight: 500 }}>mars15</span> &nbsp;|&nbsp; Livraison sous 2 à 5 jours ouvrés &nbsp;|&nbsp; support disponible 7j/7
       </section> */}
       <header className="header">
+        <div className='wrapper'>
           <a className="logo-header" href="/"><img src='/logo.png' alt="Logo"/></a>
           <nav className="nav">
             <ul>
@@ -170,6 +171,7 @@ const Header = ({ shopName, keywordPlurial }) => {
             {cart.length > 0 && <span className="cart-count">{cart.length}</span>}
           </div>
           <span className="burger-icon" onClick={toggleMenu}>{isMenuOpen ? <FaTimes /> : <FaBars />} </span>
+        </div>
       </header>
       {isCartOpen && (
         <div className="cart-drawer" ref={cartDrawerRef}>

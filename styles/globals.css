@@ -34,6 +34,7 @@ main {
   justify-content: center;
   align-items: center;
   width: 100%;
+  margin-top: 98px;
 }
 
 .content {
@@ -322,6 +323,10 @@ td {
 
 
 @media (max-width: 1024px) {
+
+  main{
+    margin-top: 86px;
+  }
 
   .hero {
     padding: 6rem 1rem 6rem 1rem;
