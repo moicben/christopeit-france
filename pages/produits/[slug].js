@@ -4,11 +4,14 @@ import content from '../../content.json';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Products from '../../components/Products';
-import productsData from '../../products.json';
 import Reviews from '../../components/Reviews';
-import Categories from '../../components/Categories'; // Importer le composant Categories
+import Categories from '../../components/Categories'; 
 
 import ProductInfos from '../../components/ProductInfos';
+
+import categoriesData from '../../categories.json'; 
+import productsData from '../../products.json';
+
 
 // Event snippet for Clic "Ajouter au panier" conversion page
 function gtag_report_conversion(url) {
