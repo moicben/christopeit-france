@@ -139,6 +139,7 @@ const MollieForm = ({ amount, orderNumber, onBack, formData, cart }) => {
       try {
         const { token } = await mollie.createToken();
         console.log('Generated cardToken:', token); // Debugging cardToken
+        console.log('Form data being sent:', formData);
         const response = await fetch('/api/create-payment', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
