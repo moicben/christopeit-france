@@ -1,0 +1,291 @@
+
+
+.features{
+    width: 100%;
+}
+
+.features .wrapper{
+  display: flex;
+  justify-content: space-between;
+  padding: 2rem 3rem 4rem 3rem;
+}
+
+.feature-item{
+    display: flex;
+    align-items: center;
+    color: #333;
+    margin:0 1rem;
+}
+
+.feature-item svg{
+    width: 48px;
+    margin-top: -.25rem;
+}
+
+.feature-item img{
+    width: 42px;
+}
+
+.feature-item svg,
+.feature-item img{
+    margin-right: 1.25rem;
+    opacity: .8;
+}
+
+.feature-item p{
+  font-size: 1rem;
+  margin-right: 2rem;
+  text-transform: uppercase;
+  font-weight: 300;
+  color: black;
+}
+
+
+
+
+
+footer {
+    background-color: #111;
+    width: 100%;
+    position: relative;
+    z-index: 101;
+ }
+
+ footer .wrapper{
+    padding: 3rem 3rem 2rem 3rem;
+ }
+
+footer article{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+  
+  .footer-column {
+    flex: 1;
+    margin: 0 1rem;
+  }
+
+
+  footer > div > article > div:nth-child(1){
+    flex: 1.25 1;
+    margin-right: 2.5rem;
+    position: relative;
+  }
+
+  footer > div > article > div:nth-child(2){
+    flex: .5 1;
+  }
+
+  footer > div > article > div:nth-child(3){
+    flex: .75 1;
+  }
+
+  footer > div > article > div:nth-child(4){
+    flex: 1 1;
+  }
+  
+  .footer-column h4 {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    color: #fff;
+  }
+  
+  .footer-column p {
+    font-size: 1rem;
+    color: #aaa;
+  }
+  
+  .footer-column ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    flex-direction: column;
+  }
+  
+  .footer-column ul li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .footer-column ul li a {
+    text-decoration: none;
+    color: #AAA;
+    font-size: .9rem;
+  }
+
+    .footer-column ul li a:hover {
+        color: #fff;
+    }
+  
+  .footer-column form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .footer-column form label {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #aaa;
+  }
+  
+  .footer-column form input {
+    margin-bottom: .5rem;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .footer-column form button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+
+
+
+.legal-container{
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    left: 0;
+    width: 400px;
+    bottom: -.25rem;
+  }
+
+.legal-container *{
+  font-size: .75rem;
+    color: #685555;
+}
+
+.legal-container *:hover{
+  color: #897878;
+}
+
+
+
+
+
+
+
+  .sub-footer{
+    border-top:solid 1px #46495b;
+    padding: 2rem 0 .5rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2.5rem 1rem 0rem 1rem;
+  }
+
+  .sub-footer *{
+    font-size: .9rem;
+    color: #685555;
+    margin: 0;
+  }
+  
+  .sub-footer img{
+    width: 300px;
+  }
+
+
+
+  @media (max-width: 1024px) {
+    .features .wrapper{
+        flex-direction: column;
+        padding: 2rem 1.5rem 2rem 1.5rem;
+    }
+
+    .feature-item p{
+        margin-right: 0;
+    }
+
+    footer .wrapper{
+      padding: 0;
+    }
+
+
+    footer article{
+        flex-direction: column;
+    }
+
+    footer > div > article > div:nth-child(1){
+        margin-right: 0;
+    }
+
+    footer > div > article > div:nth-child(2){
+        margin-top: 4rem;
+    }
+
+    footer > div > article > div:nth-child(3){
+        margin-top: 2rem;
+    }
+
+    footer > div > article > div:nth-child(4){
+        margin-top: 2rem;
+    }
+
+    .footer-column h4 {
+        font-size: .9rem;
+        margin-bottom: 1rem;
+    }
+    
+    .footer-column p {
+        font-size: .9rem;
+    }
+    
+    .footer-column ul li {
+        margin-bottom: 0.25rem;
+    }
+    
+    .footer-column ul li a {
+        font-size: .9rem;
+    }
+    
+    .footer-column form label {
+        font-size: .9rem;
+    }
+    
+    .footer-column form input {
+        padding: 0.5rem;
+        font-size: .9rem;
+    }
+    
+    .footer-column form button {
+        padding: 0.5rem 1rem;
+        font-size: .9rem;
+    }
+
+    .sub-footer{
+        flex-direction: column;
+        align-items: center;
+        margin: 2.5rem 0 0 0;
+    }
+
+    .sub-footer p{
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .sub-footer img{
+        width: 200px;
+    }
+
+    .legal-container{
+        width: 100%;
+        flex-wrap: wrap;
+        bottom: -2.5rem;
+        justify-content: start;
+    }
+
+    .legal-container a{
+        margin-right: 1rem;
+    }
+
+
+
+  }

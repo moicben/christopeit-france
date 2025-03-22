@@ -1,0 +1,44 @@
+[
+{
+    "domain": "mylocation.org",
+    "expirationDate": 1774455523,
+    "hostOnly": true,
+    "httpOnly": false,
+    "name": "_pk_id.9.d285",
+    "path": "/",
+    "sameSite": "lax",
+    "secure": false,
+    "session": false,
+    "storeId": "0",
+    "value": "b4694e7a92928deb.1740500323.",
+    "id": 1
+},
+{
+    "domain": "mylocation.org",
+    "expirationDate": 1756417304,
+    "hostOnly": true,
+    "httpOnly": false,
+    "name": "_pk_ref.9.d285",
+    "path": "/",
+    "sameSite": "lax",
+    "secure": false,
+    "session": false,
+    "storeId": "0",
+    "value": "%5B%22%22%2C%22%22%2C1740649305%2C%22https%3A%2F%2Fwww.google.com%2F%22%5D",
+    "id": 2
+},
+{
+    "domain": "mylocation.org",
+    "expirationDate": 1740651104,
+    "hostOnly": true,
+    "httpOnly": false,
+    "name": "_pk_ses.9.d285",
+    "path": "/",
+    "sameSite": "lax",
+    "secure": false,
+    "session": false,
+    "storeId": "0",
+    "value": "1",
+    "id": 3
+}
+]

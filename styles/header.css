@@ -1,0 +1,409 @@
+.sub {
+    padding: .75rem;
+    width: 100%;
+    text-align: center;
+    background-color: #666;
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: white;
+    z-index: 11;
+    text-transform: uppercase;
+    letter-spacing: .2px;
+  }
+
+  .sub a{
+    color: white;
+    text-decoration: underline;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: calc(1280px + 8rem);
+    padding: 2rem 4rem;
+    background-color: #fff;
+    border-bottom: 1px solid #dee2e6;
+    position: relative;
+    z-index: 11;
+  }
+
+  .logo-header{
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-header img{
+    margin-right: 1.5rem;
+    width: 15rem;
+  }
+
+  .logo-header h2{
+    font-weight: 7  00;
+  }
+  
+  .nav{
+    margin-left: -8rem;
+  }
+  
+  .burger-icon {
+    display: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  
+  .header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  
+  .header nav {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .header nav a {
+    text-decoration: none;
+    font-size: 1rem;
+    color: #1c1c1c;
+    margin: 0px 1rem;
+    padding: 0px .5rem;
+    font-weight: 400;
+    display: inline-block;
+    position: relative;
+  }
+
+  .nav ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    display: block;
+    margin-top: 5px;
+    right: 0;
+    background: currentColor;
+    transition: width 0.4s ease, right 0.4s ease;
+  }
+
+  .nav ul li a:hover::after {
+    width: 100%;
+    right: 0;
+    color: #000;
+  }
+  
+  .header .cart-icon {
+    font-size: 1.25rem;
+    color: #333;
+  }
+  
+  .burger-icon {
+    display: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  
+  .cart-drawer {
+    position: fixed;
+    right: -100%;
+    top: 0;
+    width: 360px;
+    height: 100%;
+    background: white;
+    box-shadow: -0px 0 25px rgba(0,0,0,0.15);
+    border-left: 1px solid #dee2e6;
+    padding: 20px;
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 1.5rem 2rem;
+    transition: right 0.5s ease;
+  }
+  
+  .cart-drawer.open {
+    right: 0;
+  }
+  
+  .cart-drawer h2 {
+    margin-top: 0;
+  }
+  
+  
+  .cart-drawer ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0rem;
+    max-height: 520px;
+    overflow-y: auto;
+  }
+  
+  .cart-drawer li {
+    display: flex;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+  
+  .cart-drawer img {
+    width: 50px;
+    height: 50px;
+    margin-right: 1.5rem;
+    margin-top: 1.75rem;
+  }
+  
+  .cart-drawer .close {
+    display: block;
+    margin: 0;
+    padding: 0px;
+    background: white;
+    color: black;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 1rem;
+    right: 2.5rem;
+    font-size: 2rem;
+    transform: rotate(45deg);
+  }
+
+  .cart-drawer .quantity-selector {
+    position: absolute;
+    bottom: -1px;
+    font-size: .75rem;
+    right: 24px;
+    width: 80px;
+    border-radius: 6px;
+    border-color: #666;
+  }
+
+  .cart-drawer .quantity-selector *{
+    font-size: .85rem;
+  }
+
+  .cart-drawer .quantity-selector button{
+    width: 37px;
+    height: 37px;
+  }
+  
+  .cart-drawer .delete{
+    color: #333;
+    background-color: white;
+    cursor: pointer;
+    border-radius: 6px;
+    border: solid #666 1px;
+    font-size: 1rem;
+    padding: .5rem .5rem .25rem .5rem;
+    position: absolute;
+    right: 0rem;
+    bottom: 0rem;
+  }
+  
+  .cart-drawer h3{
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    font-weight: 400;
+    max-height: 70px;
+    overflow: hidden;
+  }
+  
+  .cart-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .cart-drawer li p {
+    font-weight: 600;
+    margin-top: 0rem;
+    position: relative;
+    top: 9px;
+  }
+  
+  
+
+  .cart-icon {
+    font-size: 1.25rem;
+    color: #333;
+  }
+  
+  .cart-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: rgb(221, 221, 221);
+    color: black;
+    border-radius: 50%;
+    padding: 0px 6px;
+    font-size: 0.75rem;
+    font-weight: 400;
+    width: 18px;
+    height: 18px;
+  }
+
+
+  .total{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: solid 1px #cacfd4;
+    position: absolute;
+    bottom: 6rem;
+    right: 2.25rem;
+    left: 2.25rem;
+  }
+
+
+  .total h4{
+    font-weight: 600;
+  }
+
+  .total p{
+    margin: 0;
+    font-weight: 600;
+  }
+
+  .checkout{
+    margin-top: 2rem;
+    text-align: center;
+    font-weight: 500;
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    right: 2rem;
+    font-size: 1rem;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+  }
+
+
+
+
+/*What's App Widget Styles*/
+
+.hihbJA *{
+  font-weight: 300 !important;
+}
+.bNgRAv {
+  font-weight: 500 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 1024px) {
+
+    .sub{
+        font-size: .75rem;
+        padding: .75rem;
+    }
+    
+    .header{
+        padding: 1.5rem;
+    }
+
+    .logo-header img{
+      width: 12rem;
+    }
+
+    .header .nav ul{
+        width: 100%;
+        position: absolute;
+        right: -100%;
+        top: 86px;
+        background-color: white;
+        z-index: 10;
+        flex-direction: column;
+        transition: 0.5s ease-in-out;
+        height: calc(100vh - 3rem);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-top: solid 1px #dee2e6;
+    }
+
+    .header .nav ul.open {
+      right: 0px;
+    }
+
+    .header ul li:nth-child(1){
+      margin-top: -5vh;
+    }
+
+    .nav ul li {
+        margin: 2rem 0;
+        text-align: center;
+    }
+
+    .burger-icon {
+        display: block;
+        margin-top: 8px;
+    }
+
+    .cart-icon{
+        margin-top: 8px;
+        font-size: 1.15rem;
+    }
+
+    .burger-icon {
+        display: block;
+        font-size: 1.25rem;
+    }
+
+    .cart-container{
+        position: absolute;
+        right: 80px;
+    }
+
+    .cart-drawer{
+      width: 85%;
+      padding: 1.5rem 1.5rem;
+    }
+
+    .total,
+    .checkout{
+      right: 1.5rem;
+      left: 1.5rem;
+    }
+
+    .cart-drawer .close{
+      right: 1.825rem;
+      top: .5rem;
+      font-size: 2.5rem;
+    }
+
+    .cart-drawer h3{
+      margin-bottom: 1rem;
+      font-size: .9rem;
+    }
+
+    .cart-drawer img{
+      margin-top: 1.25rem;
+      margin-right: 1rem;
+    }
+
+    .cart-icon{
+        right: 0;
+        bottom: -16px;
+        color: black;
+    }
+
+    .cart-count{
+        top: 0;
+    }
+
+    .cart-drawer li p{
+      font-size: .85rem;
+      top: 5px;
+    }
+    
+}
+  
