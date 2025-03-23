@@ -159,11 +159,34 @@ const Header = ({ shopName, keywordPlurial }) => {
           <a className="logo-header" href="/"><img src='/logo.png' alt="Logo"/></a>
           <nav className="nav">
             <ul>
-              <li><a href="/tous-les-equipements">TOUS LES équipements</a></li>
+              <li><a href="/tous-les-equipements">équipements</a></li>
               <li><a href="/bestsellers">Bestsellers</a></li>
               <li><a href="/velos-appartement">Vélos</a></li>
               <li><a href="/tapis-roulants">tapis</a></li>
               <li><a href="/rameurs-interieur">Rameurs</a></li>
+              <li className="dropdown">
+                <a href="#"><i className='fas fa-info'></i>Christopeit Sport</a>
+                <ul className="dropdown-menu">
+                  <li><a href="/a-propos">Notre histoire</a></li>
+                  
+                  <li><a href="/blog">Blog & Guides</a></li>
+                  <li>
+                    <a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault(); // Empêche le comportement par défaut du lien
+                        const badgeImage = document.querySelector("section.badge-container > img");
+                        if (badgeImage) {
+                          badgeImage.click(); // Simule un clic sur l'image
+                        }
+                      }}
+                    >
+                      Avis clients
+                    </a>
+                  </li>
+                  <li><a href="/contact">contact</a></li>
+                </ul>
+              </li>
             </ul>
           </nav>
           <div className="cart-container" onClick={toggleCart}>

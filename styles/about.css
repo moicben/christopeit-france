@@ -1,0 +1,170 @@
+/* Blog Styles */
+#about{
+  width: 100%;
+}
+
+#about h1 {
+  font-size: 3rem;
+  margin: 0 0 2rem 0;
+  text-align: center;
+  font-weight: 400;
+  color: white;
+}
+
+#about .wrapper {
+  padding: 4rem;
+  margin: 0 auto 0 0;
+}
+
+#about .about-banner{
+  background: url(/guide-velos-appartement.jpg) no-repeat center center/cover;
+  background-position: center 5%;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.a-propos{
+  background: url(/christopeit-sport-histoire-desktop.png) no-repeat 0 0/contain !important;
+  height: 600vh;
+  width: 100%;
+}
+
+#about .about-banner .filter{
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#about .articles-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 4rem;
+}
+
+#about .articles-list h3 {
+  height: 56px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 1rem 0 1.5rem 0;
+}
+
+#about .article-item p {
+  margin-top: .5rem;
+  height: 93px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#about .article-item span {
+  font-size: .85rem;
+  font-weight: 400;
+  color: white;
+  background-color: #CE122D;
+  padding: .5rem 1rem;
+  border-radius: .5rem;
+}
+
+#about img {
+  width: 100%;
+  height: 233px;
+  object-fit: cover;
+  border-radius: .5rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Article Styles */
+/* Article Styles */
+/* Article Styles */
+#article .wrapper {
+  padding: 4rem;
+  max-width: 1024px;
+  margin: 0 auto 0 0;
+}
+
+#article img {
+  width: 100%;
+  height: 50vh;
+  object-fit: cover;
+}
+
+#article h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+#article .desc {
+  margin: 0rem 0 2rem 0;
+  padding: 0rem 10% 2rem 0;
+  border-bottom: solid 1px #ccc;
+  font-weight: 500;
+  color: #111;
+}
+
+#article .content h2 {
+  font-size: 1.5rem;
+  margin: 1rem 0 1rem 0;
+  color: #666;
+  font-weight: 600;
+}
+
+#article .content h3 {
+  margin: 0;
+}
+
+#article .content {
+  display: flex;
+  flex-direction: column;
+}
+
+#article .content ul {
+  color: #111;
+  display: flex;
+  flex-direction: column;
+  list-style: disc;
+  margin: 1rem 0 1rem 1rem;
+}
+
+#article .content li {
+  margin-bottom: .5rem;
+  font-weight: 500;
+  font-style: italic;
+}
+
+#article .content p {
+  margin-top: 0.5rem;
+  font-weight: 400;
+}
+
+
+@media (max-width: 767px){
+  .a-propos {
+      background: url(/christopeit-histoire-mobile.png) no-repeat 0 0/contain !important;
+      height: 700vh;
+      width: 100%;
+    }
+}

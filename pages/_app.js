@@ -1,18 +1,19 @@
 import '@styles/globals.css';
-import '../styles/products.css'; // Importer le fichier CSS
+import '../styles/products.css';
 import '../styles/product-page.css';
-import '../styles/responsive.css'; // Importer le fichier CSS
-import '../styles/header.css'; // Importer le fichier CSS
+import '../styles/responsive.css';
+import '../styles/header.css';
 import '../styles/footer.css';
-import '../styles/faq.css'; // Importer le fichier CSS
-import '../styles/suivre-mon-colis.css'; // Importer le fichier CSS
-import '../styles/reviews.css'; // Importer le fichier CSS	
-import '../styles/partners.css'; // Importer le fichier CSS
+import '../styles/faq.css';
+import '../styles/suivre-mon-colis.css';
+import '../styles/reviews.css';	
+import '../styles/partners.css';
 import '../styles/paiement.css';
 import '../styles/ReviewsBadge.css';
 import '../styles/contact.css';
 import '../styles/ScrollingBanner.css'; 
 import '../styles/Categories.css';
+import '../styles/about.css';
 
 import content from '../content.json';
 import Head from '../components/Head';
