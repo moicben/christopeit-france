@@ -52,7 +52,7 @@ const Footer = ({ shopName, footerText }) => {
                 <li><a href="/boutique">Boutique</a></li>
                 <li><a href="/#a-propos">A propos</a></li>
                 <li><a href="/contact">Contact</a></li>
-                <li><a href="/faq">FAQs</a></li>
+                <li><a href="/faq">faq</a></li>
               </ul>
             </div>
             <div className="footer-column">

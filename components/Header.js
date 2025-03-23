@@ -185,6 +185,7 @@ const Header = ({ shopName, keywordPlurial }) => {
                     </a>
                   </li>
                   <li><a href="/contact">contact</a></li>
+                  <li><a href="/faq">FAQ</a></li>
                 </ul>
               </li>
             </ul>

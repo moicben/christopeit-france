@@ -4,6 +4,10 @@ import content from '../content.json';
 
 
 const About = ({ site }) => {
+  const handleNavigation = (path) => {
+    window.location.href = path;
+  };
+
   return (
     <>
       <section className="about" id='a-propos'>
@@ -11,6 +15,9 @@ const About = ({ site }) => {
             <div className="about-content">
               <h2>{site.aboutTitle}</h2>
               <p>{site.aboutDescription}</p>
+              <div className='row'></div>
+              <button onClick={() => handleNavigation('/a-propos')}>En savoir plus</button>
+              <button className='phantom' onClick={() => handleNavigation('/contact')}>Nous contacter</button>
             </div>
             <div className="about-image">
               <img src="/christopeit-sport.jpg" alt="Chirstopeit Sport fitness" />

@@ -58,7 +58,7 @@ const Home = ({ site, products }) => {
         <Categories categories={categoriesData.categories} />
 
         <Products 
-          title={`Les bestellers ${site.keyword}`} 
+          title={`Les bestellers Christopeit France`} 
           products={products} 
           initialCategoryFilter="bestsellers" 
         />

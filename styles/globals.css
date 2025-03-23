@@ -238,6 +238,23 @@ td {
   font-size: 1.25rem;
 }
 
+.about-content .row{
+  display: flex;
+  align-items: center;
+}
+
+.about-content button{
+  border: solid 1px #CE122D;
+  width: 182px;
+}
+
+.about-content .phantom{
+  background-color: white;
+  color: #111;
+  border-color: #111;
+  margin-left: 1rem;
+}
+
 .about-image {
   flex: 1;
 }
