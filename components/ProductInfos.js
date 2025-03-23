@@ -25,7 +25,7 @@ export default function ProductInfos({ product, discountedPrice, handleAddToCart
       />
 
       <article className="purchase-row">
-        <p className="comptor">PROMO FIN-HIVER 15%</p>
+        <p className="comptor">PROMO FIN-MARS 15%</p>
         <button className="buy-now" onClick={handleBuyNow}>
           Acheter pour {discountedPrice.toFixed(2)}€
         </button>
