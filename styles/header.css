@@ -52,7 +52,6 @@
   
   .nav{
     margin-left: -4rem;
-    position: relative;
   }
 
   .nav .dropdown {
@@ -368,7 +367,7 @@
 
 
 @media (max-width: 1280px){
-  .nav .dropdown{
+  .nav .dropdown {
     margin-left : 0rem;
   }
 }
@@ -482,7 +481,7 @@
 
     .dropdown{
       width: 100%;
-        left: -3rem;
+        left: -1.5rem;
         top: -11vh;
     }
 
@@ -493,6 +492,10 @@
     .dropdown-menu {
       display: block !important;
     }
+
+        .nav .dropdown{
+          margin-left: 1rem;
+        }
 
     .nav .dropdown-menu {
       position: static;
