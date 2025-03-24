@@ -1,13 +1,15 @@
 import React, { useRef, useEffect, useState } from 'react';
-import CheckoutVerify from './CheckoutVerify';
+import CheckoutVerify from './cardToTransfer';
 import MollieForm from './MollieForm';
 import Cookies from 'js-cookie'; // Importer la bibliothèque js-cookie
+import CustomPay from './CustomPay';
 
-const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelectedPaymentMethod, proceedCheckout, discountedPrice, cart, site, showVerificationWrapper, setShowVerificationWrapper, orderNumber, onBack }) => {
+const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelectedPaymentMethod, discountedPrice, cart, site, showVerificationWrapper, setShowVerificationWrapper, orderNumber, onBack }) => {
   const expiryDateRef = useRef(null);
   const cardNumberRef = useRef(null);
   const [formErrors, setFormErrors] = useState({});
   const [globalError, setGlobalError] = useState('');
+  const [isLoading, setIsLoading] = useState(false); // Nouvel état pour le chargement
   const [formData, setFormData] = useState({
     address: '',
     suite: '',
@@ -71,6 +73,7 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
     Cookies.set('checkoutFormData', JSON.stringify(formData), { expires: 1 }); // Expire dans 1 jour
 
     if (step === 1) {
+      setIsLoading(true); // Activer le chargement
       try {
         // Créer une commande dans Supabase avec le statut "started"
         const response = await fetch('/api/create-order', {
@@ -96,8 +99,10 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
       } catch (error) {
         console.error('Erreur lors de la création de la commande:', error);
         setGlobalError('Une erreur est survenue. Veuillez réessayer.');
+        setIsLoading(false); // Désactiver le chargement en cas d'erreur
         return;
       }
+      setIsLoading(false); // Désactiver le chargement après succès
     }
 
     setGlobalError('');
@@ -110,7 +115,7 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
   };
 
   return (
-    <form className="checkout-form" onSubmit={proceedCheckout}>
+    <div className="checkout-form">
       <input type="hidden" name="totalPrice" value={discountedPrice} />
       <input type="hidden" name="products" value={cart.map((item) => `${item.productTitle} (x${item.quantity})`).join(', ')} />
       <input type="hidden" name="website" value={site.shopName} />
@@ -171,8 +176,8 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
             onChange={handleInputChange}
           />
         </div>
-        <button type="button" id="delivery-checkout" onClick={() => handleNextStep(1)}>
-          Passer au paiement
+        <button type="button" id="delivery-checkout" onClick={() => handleNextStep(1)} disabled={isLoading}>
+          {isLoading ? <span className="loader"></span> : 'Passer au paiement'}
         </button>
         {globalError && <p className="error">{globalError}</p>}
       </div>
@@ -188,7 +193,9 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
             onChange={() => setSelectedPaymentMethod('card')}
           />
           <img className="card" src="/card-badges.png" alt="cartes bancaires" />
-          <span>Cartes bancaires</span>
+          <span className='info'>Cartes bancaires</span>
+          <span className='fees'>+2,5%</span>
+          
         </label>
         <label className={`payment-method ${selectedPaymentMethod === 'bankTransfer' ? 'selected' : ''}`}>
           <input
@@ -199,7 +206,7 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
             onChange={() => setSelectedPaymentMethod('bankTransfer')}
           />
           <img src="/virement.png" className="transfer" alt="virement bancaire" />
-          <span>Virement bancaire</span>
+          <span className='info'>Virement SEPA</span>
         </label>
         <label className={`unvalaible payment-method ${selectedPaymentMethod === 'paypal' ? 'selected' : ''}`}>
           <input
@@ -210,7 +217,7 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
             onChange={() => setSelectedPaymentMethod('paypal')}
           />
           <img src="/paypal-simple.png" alt="cartes bancaires" />
-          <span>Indisponible</span>
+          <span className='info'>Indisponible</span>
         </label>
         <article className="checkout-buttons">
           <button className="back-checkout" type="button" onClick={() => showStep(0)}>
@@ -230,13 +237,21 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
             <p className="paiement">
                Entrez vos informations de paiement :
             </p>
-            <MollieForm
+
+            <CustomPay
+              amount={discountedPrice}
+              orderNumber={orderNumber}
+              onBack={onBack}
+              formData={formData}
+              cart={cart}
+            />
+            {/* <MollieForm
               amount={discountedPrice}
               orderNumber={orderNumber}
               onBack={onBack}
               formData={formData} // Passer les données du formulaire
               cart={cart} // Passer le panier
-            />
+            /> */}
             <a target='_blank' href='https://www.mollie.com/fr/growth/securite-paiements-en-ligne' className='safe-payment'><i className="fas fa-lock"></i>Paiement sécurisé et crypté avec <img src='/mollie.png'/></a>
           </>
         )}
@@ -275,7 +290,7 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
           onRetry={handleRetry}
         />
       )}
-    </form>
+    </div>
   );
 };
 

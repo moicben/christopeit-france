@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CheckoutSummary = ({ cart, totalPrice, discount, discountedPrice, site }) => {
+const CheckoutSummary = ({ cart, totalPrice, discount, discountedPrice, site, paymentFees }) => {
   return (
     <>
       <div className="shop-info">
@@ -28,6 +28,13 @@ const CheckoutSummary = ({ cart, totalPrice, discount, discountedPrice, site }) 
           <h4>Avant-réduction</h4>
           <p>{`${parseFloat(totalPrice).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`}</p>
         </div>
+        {paymentFees > 0 && (
+          <div className="cart-item payment-fees">
+            <h4>Frais de paiement</h4>
+            <p className='quantity'>2,5%</p>
+            <p>{`${parseFloat(paymentFees).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`}</p>
+          </div>
+        )}
         <div className="total-price">
           <h4>Total dû :</h4>
           <p>{`${parseFloat(discountedPrice).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`}</p>
