@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 import Head from '../../components/Head';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
+import Categories from '../../components/Categories';
+import categoriesData from '../../categories.json';
 
 const Article = ({ site, article }) => {
   const router = useRouter();
@@ -29,6 +31,7 @@ const Article = ({ site, article }) => {
           </div>
         </section>
       </main>
+      <Categories categories={categoriesData.categories} title='Découvrez nos équipements'/>
       <Footer shopName={site.shopName} footerText={site.footerText} />
     </div>
   );

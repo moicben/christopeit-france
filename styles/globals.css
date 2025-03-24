@@ -406,6 +406,13 @@ td {
     font-size: 1rem;
   }
 
+  .about-content button {
+    border: solid 1px #CE122D;
+    padding: .75rem 1rem;
+    font-size: .9rem;
+    width: auto;
+  }
+
   .testimonials .wrapper {
     padding: 2rem 1.5rem 1.5rem 1.5rem;
   }
@@ -427,25 +434,6 @@ td {
   .testimonial {
     margin: 0;
     margin-bottom: .25rem;
-  }
-
-  .contact .wrapper {
-    flex-direction: column;
-    padding: 2rem 1.5rem 2.5rem 1.5rem;
-  }
-
-  .contact-content {
-    padding: 0%;
-  }
-
-  .contact h2 {
-    margin-top: 0;
-    font-size: 1.5rem;
-  }
-
-  .contact p {
-    font-size: 1rem;
-    margin-bottom: 2rem;
   }
 
 
