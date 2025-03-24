@@ -1,16 +1,33 @@
 import React from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 const MyHead = ({ title, description, favicon }) => {
+  const router = useRouter();
+  const pageSlug = router.asPath === '/' ? '' : router.asPath.replace(/\/$/, ''); // Supprime le slash final si présent
+
   return (
     <Head>
       <title>{title}</title>
       <meta name="description" content={description} />
       <link rel="icon" href={favicon} />
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
-  
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+      
+      <link rel="canonical" href={`https://www.christopeit-france.shop${pageSlug}`} />
+      <meta property="og:locale" content="fr_FR" />
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:url" content={`https://www.christopeit-france.shop${pageSlug}`} />
+      <meta property="og:site_name" content="Christopeit France" />
+      <meta property="og:image" content="https://www.christopeit-france.shop/christopeit-graph.png" />
+      <meta property="og:image:secure_url" content="https://www.christopeit-france.shop/christopeit-graph.png" />
+      <meta property="og:image:width" content="900" />
+      <meta property="og:image:height" content="900" />
+      
 
-      {/* Google tag 1 (Initial)*/}
+
+      {/* Google tag 1 (Initial) */}
       <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16883090550"></script>
       <script>
         {`
