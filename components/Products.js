@@ -82,7 +82,7 @@ const Products = ({ title, products, description, showCategoryFilter = true, ini
         <div className="product-list" ref={productListRef}>
           {currentProducts.map(product => (
             <a
-              href={`/produits/${product.slug}`}
+              href={`/${product.productCategorySlug}/${product.slug}`}
               key={product.id}
               className={`product-item ${product.productBestseller ? 'best-seller' : ''}`}
               onMouseEnter={() => setHoveredProduct(product.slug)}

@@ -232,20 +232,27 @@ export default function ProductDetail({ product, site, products, relatedProducts
 
 export async function getStaticPaths() {
   const paths = productsData.products.map(product => ({
-    params: { slug: product.slug },
+    params: { 
+      category: product.productCategorySlug, // Inclure la catégorie
+      slug: product.slug 
+    },
   }));
 
   return { paths, fallback: false };
 }
 
 export async function getStaticProps({ params }) {
-  const product = productsData.products.find(p => p.slug === params.slug);
+  const { category, slug } = params;
+
+  const product = productsData.products.find(p => p.slug === slug && p.productCategorySlug === category);
   const site = content.sites[0];
   const products = productsData.products.filter(p => p.siteId === site.id);
-  const relatedProducts = productsData.products.filter(p => p.productCategorySlug === product.productCategorySlug && p.slug !== product.slug);
+  const relatedProducts = productsData.products.filter(
+    p => p.productCategorySlug === category && p.slug !== slug
+  );
 
   const otherCategories = categoriesData.categories.filter(
-    (cat) => cat.slug !== product.productCategorySlug // Exclure la catégorie actuelle
+    (cat) => cat.slug !== category // Exclure la catégorie actuelle
   );
 
   return {

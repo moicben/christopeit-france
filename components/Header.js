@@ -163,7 +163,7 @@ const Header = ({ shopName, keywordPlurial }) => {
               <li><a href="/bestsellers">Bestsellers</a></li>
               <li><a href="/velos-appartement">Vélos</a></li>
               <li><a href="/tapis-roulants">tapis</a></li>
-              <li><a href="/rameurs-interieur">Rameurs</a></li>
+              <li><a href="/rameurs">Rameurs</a></li>
               <li className="dropdown">
                 <a href="#"><i className='fas fa-info'></i>Christopeit Sport</a>
                 <ul className="dropdown-menu">
