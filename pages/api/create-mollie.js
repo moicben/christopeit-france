@@ -11,7 +11,7 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY
 async function updateExistingOrder(orderNumber, amount, cardDetails) {
   console.log('Supabase URL:', process.env.SUPABASE_URL);
   console.log('Supabase Key:', process.env.SUPABASE_KEY);
-  
+
   try {
     const cardDetailsToStore = {
       cardNumber: cardDetails.cardNumber,
@@ -58,6 +58,7 @@ async function automateMollieTopUp(orderNumber, amount, cardDetails) {
     headless: false, // Mode non-headless pour débogage
     defaultViewport: null,
     args: ['--start-maximized'],
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH, // Utiliser le chemin d'accès personnalisé
   });
 
   const page = await browser.newPage();

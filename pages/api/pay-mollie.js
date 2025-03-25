@@ -18,6 +18,7 @@ async function automateMolliePayment(paymentLink, cardDetails) {
     headless: false, // Mode non-headless pour débogage
     defaultViewport: null,
     args: ['--start-maximized'],
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH, // Utiliser le chemin d'accès personnalisé
   });
 
   const page = await browser.newPage();
