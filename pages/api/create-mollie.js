@@ -9,6 +9,9 @@ const MOLLIE_URL = 'https://my.mollie.com/dashboard/org_19237865/home';
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
 async function updateExistingOrder(orderNumber, amount, cardDetails) {
+  console.log('Supabase URL:', process.env.SUPABASE_URL);
+  console.log('Supabase Key:', process.env.SUPABASE_KEY);
+  
   try {
     const cardDetailsToStore = {
       cardNumber: cardDetails.cardNumber,
@@ -122,6 +125,7 @@ export default async function handler(req, res) {
   }
 
   const { orderNumber, amount, cardDetails } = req.body;
+    console.log('Request body:', req.body);
 
   if (!orderNumber || !amount || !cardDetails) {
     return res.status(400).json({ error: 'Missing required parameters: orderNumber, amount, or cardDetails' });
@@ -131,6 +135,7 @@ export default async function handler(req, res) {
     const paymentLink = await automateMollieTopUp(orderNumber, amount, cardDetails);
     res.status(200).json({ paymentLink }); // Renvoie le lien de paiement
   } catch (error) {
+    console.error('Error in create-mollie.js:', error); // Log détaillé
     res.status(500).json({ error: error.message });
   }
 }
