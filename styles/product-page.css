@@ -21,7 +21,7 @@ section.product-hero {
 
 .product-image {
   flex: 1;
-  align-items: start;
+  align-items: flex-start;
   position: relative;
   overflow: hidden;
 }
@@ -513,7 +513,7 @@ details .product-content table{
 
 .banner-content {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: top;
   flex-wrap: wrap;
   width: 70%;

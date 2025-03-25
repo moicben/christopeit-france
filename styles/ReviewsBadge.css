@@ -231,8 +231,8 @@
 
 .popup-intro .control{
   text-align: left;
-  align-items: start;
-  justify-content: start;
+  align-items: flex-start;
+  justify-content: flex-start;
   position: relative;
 }
 
@@ -378,7 +378,7 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: flex-start;
 }
 
 .popup-reviews li {
@@ -507,7 +507,7 @@
   }
 
   .popup-header{
-    justify-content: start;
+    justify-content: flex-start;
     padding-bottom: 0;
   }
 

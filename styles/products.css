@@ -232,13 +232,13 @@
 
   .product-filters{
     margin-left: 0;
-    justify-content: start;
+    justify-content: flex-start;
   }
 
   .product-filters .sort-dropdown{
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: flex-start;
     text-align: left;
     width: 50%;
     margin: 0;

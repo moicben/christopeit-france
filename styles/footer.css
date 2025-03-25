@@ -291,7 +291,7 @@ footer article{
         width: 100%;
         flex-wrap: wrap;
         bottom: -2.5rem;
-        justify-content: start;
+        justify-content: flex-start;
     }
 
     .legal-container a{
