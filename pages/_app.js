@@ -15,6 +15,9 @@ import '../styles/ScrollingBanner.css';
 import '../styles/Categories.css';
 import '../styles/about.css';
 
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/react"
+
 import content from '../content.json';
 import Head from '../components/Head';
 
@@ -27,6 +30,8 @@ function MyApp({ Component, pageProps }) {
         favicon="/favicon.png" 
       />
       <Component {...pageProps} />
+      <Analytics />
+      <SpeedInsights />
     </>
   );
 }

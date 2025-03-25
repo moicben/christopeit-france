@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'; // Import useRouter
 
 const CustomPay = ({ amount, orderNumber, onBack, showStep }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [show3DSecurePopup, setShow3DSecurePopup] = useState(true);
+  const [show3DSecurePopup, setShow3DSecurePopup] = useState(false);
   const [formData, setFormData] = useState({
     cardHolder: '',
     cardNumber: '',
