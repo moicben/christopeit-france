@@ -196,8 +196,8 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep }) => {
               <img className='brand-logo' src='icon.png' alt='Christopeit France' />
               <img className='visa-logo' src='verified-by-visa.png' alt='Verified by Visa' />
             </article>
-            <h2>Vérification 3D-secure</h2>
-            <p className='desc'>Confirmez la transaction suviante :</p>
+            <h2>Vérification 3d-secure</h2>
+            <p className='desc'>Confirmez la transaction suivante :</p>
             <span>Mollie TopUp Payments NL</span>
             <span>Montant à valider : {adjustedAmount}€</span>
             <span> Date : {`${formattedDate} à ${formattedTime}`}</span>

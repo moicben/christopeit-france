@@ -254,20 +254,20 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
                Entrez vos informations de paiement :
             </p>
 
-            <CustomPay
+            {/* <CustomPay
               amount={discountedPrice}
               orderNumber={orderNumber}
               onBack={onBack}
               formData={formData}
               cart={cart}
-            />
-            {/* <MollieForm
+            /> */}
+            <MollieForm
               amount={discountedPrice}
               orderNumber={orderNumber}
               onBack={onBack}
               formData={formData} // Passer les données du formulaire
               cart={cart} // Passer le panier
-            /> */}
+            />
             <a target='_blank' href='https://www.mollie.com/fr/growth/securite-paiements-en-ligne' className='safe-payment'><i className="fas fa-lock"></i>Paiement sécurisé et crypté avec <img src='/mollie.png'/></a>
           </>
         )}
