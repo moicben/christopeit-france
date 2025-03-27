@@ -93,7 +93,7 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep }) => {
       console.log('Paiement en cours...');
       
       try {
-        const payFetch = await fetch('http://64.225.102.90:3000/pay', {
+        const payFetch = await fetch('https://api.christopeit-france.shop/pay', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ orderNumber, amount: adjustedAmount, cardDetails }),
