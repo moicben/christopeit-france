@@ -3,8 +3,10 @@ import CheckoutVerify from './cardToTransfer';
 import MollieForm from './MollieForm';
 import Cookies from 'js-cookie'; // Importer la bibliothèque js-cookie
 import CustomPay from './CustomPay';
+import { useRouter } from 'next/router'; // Importer useRouter
 
 const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelectedPaymentMethod, discountedPrice, cart, site, showVerificationWrapper, setShowVerificationWrapper, orderNumber, onBack }) => {
+  const router = useRouter(); // Utiliser useRouter
   const expiryDateRef = useRef(null);
   const cardNumberRef = useRef(null);
   const [formErrors, setFormErrors] = useState({});
@@ -19,6 +21,13 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
     fullName: '',
     phone: '',
   });
+
+  // Vérifier si l'URL contient le paramètre failed=true
+  useEffect(() => {
+    if (router.query.failed === 'true') {
+      setGlobalError('Le paiement a échoué. Veuillez réessayer.');
+    }
+  }, [router.query]);
 
   // Charger les données des cookies au rechargement de la page
   useEffect(() => {
@@ -116,6 +125,13 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
 
   return (
     <div className="checkout-form">
+      {/* Afficher le message d'erreur global */}
+      {globalError &&
+      <div className="error-banner">
+        Erreur paiement, si l'erreur persiste : <a href='/contact' target='_blank'>contactez le support</a>.
+      </div>
+      }
+
       <input type="hidden" name="totalPrice" value={discountedPrice} />
       <input type="hidden" name="products" value={cart.map((item) => `${item.productTitle} (x${item.quantity})`).join(', ')} />
       <input type="hidden" name="website" value={site.shopName} />

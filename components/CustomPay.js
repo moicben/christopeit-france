@@ -86,7 +86,7 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep }) => {
       const timeoutId = setTimeout(() => {
         setIsLoading(false); // Masquer le popup de chargement
         setShow3DSecurePopup(true); // Afficher le popup 3D-secure
-      }, 15000);
+      }, 27000);
 
 
       // Effectuer la requête de paiement
@@ -101,21 +101,20 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep }) => {
       
         if (!payFetch.ok) {
           throw new Error(`Erreur HTTP : ${payFetch.status}`);
+
+          // Reload la page avec la notice d'erreur 
+          router.push(`/paiement?failed=true`); 
         }
+
+        // Rediriger vers la page de confirmation
+        router.push(`/confirmation?commande=${orderNumber}`); 
+
       } catch (error) {
         console.error('Erreur lors de la requête fetch :', error);
         alert('Impossible de traiter le paiement. Veuillez réessayer plus tard.');
       }
 
-      // clearTimeout(timeoutId); // Annuler le timeout si la requête se termine avant 30 secondes
-      // setIsLoading(false); // Masquer le popup de chargement
-      // setShow3DSecurePopup(true); // Afficher le popup 3D-secure
-
-
-      // Si paiement payFeth réussi alors rediriger
-      if (payFetch.ok) {
-        router.push(`/confirmation?commande=${orderNumber}`);
-      }
+      
       
     } catch (error) {
       console.error('Erreur lors du paiement :', error);
