@@ -12,6 +12,11 @@ const nextConfig = {
         source: '/tapis-de-course',
         destination: '/tapis-roulants',
         permanent: true,
+      },
+      {
+        source: '/produits/rameur-*',
+        destination: '/rameurs/rameur-*',
+        permanent: true,
       }
     ];
   },
