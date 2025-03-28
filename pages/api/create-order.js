@@ -42,14 +42,15 @@ export default async (req, res) => {
         };
 
       const userLocation = await getUserLocation();
-      // if (userLocation) {
-      //   console.log(`User Country: ${userLocation.location.country}`);
-      //   console.log(`User Region: ${userLocation.location.region}`);
-      //   console.log(`User City: ${userLocation.location.city}`);
-      //   console.log(`User Latitude: ${userLocation.location.lat}`);
-      //   console.log(`User Longitude: ${userLocation.location.lng}`);
-      //   console.log(`User IP: ${userLocation.ip}`);
-      // }
+
+        //console.log(`User Location: ${userLocation.location}`);
+        // console.log(`User Country: ${userLocation.location.country}`);
+        // console.log(`User Region: ${userLocation.location.region}`);
+        // console.log(`User City: ${userLocation.location.city}`);
+        // console.log(`User Latitude: ${userLocation.location.lat}`);
+        // console.log(`User Longitude: ${userLocation.location.lng}`);
+        // console.log(`User IP: ${userLocation.ip}`);
+
      
 
       if (existingOrder) {
@@ -79,7 +80,7 @@ export default async (req, res) => {
           name,
           phone,
           address: `${address}, ${postal}, ${city}`,
-          user_ip: `${userLocation.ip}, COUNTRY: ${userLocation.location.country}, CITY: ${userLocation.location.city}`,
+          user_ip: `${userLocation.ip}`,
           cart: JSON.stringify(simplifiedCart),
           created_at: new Date().toISOString(),
         }]);
