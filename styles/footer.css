@@ -213,8 +213,17 @@ footer article{
         padding: 2rem 1.5rem 2rem 1.5rem;
     }
 
+    .feature-item{
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-item img,
+    .feature-item svg{
+      width: 32px;
+    }
+
     .feature-item p{
-        margin-right: 0;
+        margin-right: 2rem;
     }
 
     footer .wrapper{
