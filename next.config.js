@@ -14,8 +14,8 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: '/produits/rameur-*',
-        destination: '/rameurs/rameur-*',
+        source: '/produits/rameur-(.*)', // Utilisation d'une regex pour capturer la partie dynamique
+        destination: '/rameurs/rameur-:path*', // Réutilisation de la partie capturée
         permanent: true,
       }
     ];
