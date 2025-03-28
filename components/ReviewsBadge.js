@@ -94,7 +94,7 @@ const ReviewsBadge = () => {
   return (
     <>
       <img
-        src="/avis-verifies.png"
+        src="https://christopeit-france.shop/avis-verifies.png"
         alt="Avis vérifiés"
         onClick={togglePopup}
         style={{ cursor: 'pointer' }}

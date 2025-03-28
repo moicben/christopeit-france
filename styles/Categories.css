@@ -130,6 +130,8 @@
 
 .why{
   margin: 2rem 0;
+  width: 100%;
+  background-color: #F8F9FA;
 }
 
 .guide h2,

@@ -423,7 +423,7 @@
     }
 
     .cart-icon{
-        margin-top: 8px;
+        margin-top: 0px;
         font-size: 1.15rem;
     }
 
@@ -471,7 +471,7 @@
     }
 
     .cart-count{
-        top: 0;
+        top: -8;
     }
 
     .cart-drawer li p{

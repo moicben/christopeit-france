@@ -102,6 +102,8 @@ const Header = ({ shopName, keywordPlurial }) => {
     router.push('/paiement');
   };
 
+  console.log('carttt', cart);
+
   return (
     <>
     

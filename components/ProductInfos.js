@@ -4,9 +4,12 @@ import { fr } from 'date-fns/locale';
 
 export default function ProductInfos({ product, discountedPrice, handleAddToCart, buttonText, site }) {
   const handleBuyNow = () => {
+    //vider le panier actuel :
+    localStorage.setItem('cart', JSON.stringify([]));
     handleAddToCart();
     window.location.href = '/paiement';
   };
+  
 
   const getDeliveryDate = (deliveryType) => {
     const today = new Date();
@@ -25,7 +28,8 @@ export default function ProductInfos({ product, discountedPrice, handleAddToCart
   };
 
   return (
-    <div className="product-info">
+    <div className={`product-info ${product.productBestseller ? 'best-seller' : ''}`}>
+      <span className='best-wrap'>🏆 TOP VENTE</span>
       <h1>{product.productTitle}</h1>
       {product.productDiscounted ? (
         <>
@@ -38,31 +42,13 @@ export default function ProductInfos({ product, discountedPrice, handleAddToCart
         <p className="product-price">{product.productPrice}</p>
       )}
       <p className={`stock ${product.productStock.startsWith('Plus que') ? 'low' : ''}`}>
-        <span>⋅</span>{product.productStock}
+        <span>⋅</span>{product.productStock} {product.productStock.startsWith('Plus que') ? 'en stock' : ''}
       </p>
       <p className='delivery'>Livraison estimée : {getDeliveryDate(product.productDelivery)}</p>
       <div
         className="product-description"
         dangerouslySetInnerHTML={{ __html: product.productDescription }}
       />
-      <ul className="product-features">
-        <li>
-          <span>
-            <i className="fas fa-lock"></i>Paiement Sécurisé
-          </span>
-          <img src="/card-badges.png" alt={"paiement " + site.keyword} />
-        </li>
-        <li>
-          <span>
-            <i className="fas fa-check"></i>En stock, expédié sous 24/48h
-          </span>
-        </li>
-        <li>
-          <span>
-            <i className="fas fa-truck"></i>Livraison Suivie OFFERTE
-          </span>
-        </li>
-      </ul>
 
       <article className="purchase-row">
         <p className="comptor">PROMO FIN-MARS 15%</p>
@@ -71,6 +57,33 @@ export default function ProductInfos({ product, discountedPrice, handleAddToCart
         </button>
         <button onClick={handleAddToCart}>{buttonText}</button>
       </article>
+
+      <ul className="product-badges">
+        <li>
+          <i className="fas fa-shield-alt"></i>
+          <span>
+            Retour offert<br></br> 60 jours
+          </span>
+        </li>
+        <li>
+          <i className="fas fa-award"></i>
+          <span>
+            Garantie <br></br> 2 ans
+          </span>
+        </li>
+        <li>
+          <i className="fas fa-shipping-fast"></i>
+          <span>
+            Livraison<br></br> gratuite
+          </span>
+        </li>
+        <li>
+          <i className="fas fa-box-open"></i>
+          <span>
+            Expédié <br></br>sous 48h
+          </span>
+        </li>
+      </ul>
       
       <div className="gift-container">
         <div className="cover"></div>
@@ -82,41 +95,46 @@ export default function ProductInfos({ product, discountedPrice, handleAddToCart
         <p>- Livraison gratuite sans minimum d'achat</p>
         <p>- Retours étendus jusqu'au 14/03/2025 </p>
       </div>
-      <details>
-        <summary>Détails techniques du produit</summary>
-        <div
-          className="product-content"
-          dangerouslySetInnerHTML={{ __html: product.productDetails }}
-        />
-      </details>
-      <details>
-        <summary>Paiement, livraison et retours</summary>
-        <div className="product-content">
-          <span>Moyen de paiement :</span> cartes bancaires (Visa, MasterCard,
-          AMEX), PayPal et virement bancaire.
-          <br />
-          <br />
-          <span>Expédition :</span> les commandes sont expédiées sous 24 à 48h
-          ouvrées avec un suivi en temps réel.
-          <br />
-          <br />
-          <span>Suivi :</span> les délais de livraison varient entre 2 et 5
-          jours ouvrés selon votre localisation. Vous recevrez par mail un
-          numéro de suivi dès l’expédition.
-          <br />
-          <br />
-          <span>Retours :</span>Si un équipement ne vous convient pas, vous
-          disposez de 60 jours après réception pour le retourner gratuitement.
-          Une fois le colis reçu en parfait état, nous procédons au remboursement
-          sous 2 à 5 jours ouvrés.
-          <br />
-          <br />
-          <span>Support :</span> Disponible 7j/7 via formulaire en ligne ou par
-          mail à support@christopeit-france.shop
-          <br />
-          <br />
-        </div>
-      </details>
+      <div className='carousels-container'>
+        <details >
+          <summary>Détails techniques du produit</summary>
+          <div
+            className="product-content"
+            dangerouslySetInnerHTML={{ __html: product.productDetails }}
+          />
+        </details>
+        <details >
+          <summary>Livraison, garantie et retours</summary>
+          <div className="product-content guarantee">
+            <span>Moyens de paiement :</span> cartes bancaires (Visa, MasterCard,
+            AMEX), PayPal ou virement bancaire, sécurisé par protocol SSL.
+            <br />
+            <br />
+            <span>Expédition :</span> les commandes sont expédiées sous 24 à 48h
+            ouvrées avec un suivi en temps réel.
+            <br />
+            <br />
+            <span>Suivi :</span> les délais de livraison varient entre 2 et 5
+            jours ouvrés selon votre localisation. Vous recevrez par mail un
+            numéro de suivi dès l’expédition.
+            <br />
+            <br />
+            <span>Retours :</span> <b>Si un équipement ne vous convient pas, vous
+            disposez de 60 jours après réception pour le retourner gratuitement</b>.
+            Une fois le colis retourné, nous procédons au remboursement sous 2 jours ouvrés.
+            <br />
+            <br />
+            <span>Garantie :</span> <b>Tous nos équipements sont couverts par la garantie constructeur
+            pendant 2 ans, suite à la date d'achat.</b> Prenant en charge tout défaut de fabrication et disfonctionnement.
+            <br />
+            <br />
+            <span>Support :</span> Disponible 7j/7 via formulaire en ligne ou par
+            mail à support@christopeit-france.shop
+            <br />
+            <br />
+          </div>
+        </details>
+      </div>
     </div>
   );
 }

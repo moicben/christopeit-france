@@ -14,6 +14,7 @@ import '../styles/contact.css';
 import '../styles/ScrollingBanner.css'; 
 import '../styles/Categories.css';
 import '../styles/about.css';
+import '../styles/Testimonials.css';
 
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/react"

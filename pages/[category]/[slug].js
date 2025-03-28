@@ -95,11 +95,17 @@ export default function ProductDetail({ product, site, products, relatedProducts
     const productIndex = cart.findIndex(item => item.id === product.id);
 
     if (productIndex !== -1) {
-      // Si le produit est déjà dans le panier, augmenter la quantité
-      cart[productIndex].quantity += quantity;
+      // Si le produit est déjà dans le panier et identique, augmenter la quantité
+      if (JSON.stringify(cart[productIndex]) === JSON.stringify({ ...product, quantity: cart[productIndex].quantity })) {
+        cart[productIndex].quantity += 1;
+      } else {
+        // Si le produit est différent, ajouter comme un nouveau produit
+        const productWithQuantity = { ...product, quantity: 1 };
+        cart.push(productWithQuantity);
+      }
     } else {
       // Sinon, ajouter le produit avec la quantité spécifiée
-      const productWithQuantity = { ...product, quantity };
+      const productWithQuantity = { ...product, quantity: 1 };
       cart.push(productWithQuantity);
     }
 
@@ -154,14 +160,59 @@ export default function ProductDetail({ product, site, products, relatedProducts
 
   const discountedPrice = parseFloat(product.productPrice.replace('€', '').replace(',', '.')) * 0.85;
 
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+  // Fonction pour ouvrir la popup
+  const openPopup = () => {
+    setIsPopupVisible(true);
+  };
+
+  // Fonction pour fermer la popup
+  const closePopup = () => {
+    setIsPopupVisible(false);
+  };
+
+
+
   return (
     <div className="container">
       <Head>
         <title>{`${product.productTitle} - ${site.shopName}`}</title>
       </Head>
       
-      <main>
+      <main className='product-page'>
         <Header shopName={site.shopName} keywordPlurial={site.keywordPlurial} />
+
+        {isPopupVisible && (
+          <div className="popup-overlay" onClick={closePopup}>
+            <button class="close-popup"><i class="fas fa-times"></i></button>
+            <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+              <img
+                src={images[selectedImageIndex]}
+                alt={product.productTitle}
+                className="popup-image"
+              />
+              <div className="popup-thumbnail-container">
+                {visibleImages.map((image, index) => (
+                  image && (
+                    <img
+                      key={index + visibleImageIndex}
+                      src={image}
+                      alt={`${product.productTitle} ${index + 1}`}
+                      onClick={() => handleImageClick(index + visibleImageIndex)}
+                      className={`thumbnail ${selectedImageIndex === index + visibleImageIndex ? 'selected' : ''}`}
+                    />
+                  )
+                ))}
+                {images.length > 4 && (
+                  <button className="next-button" onClick={handleNextImages}>
+                    <i className="fas fa-chevron-right"></i>
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
         
         <section className="product-hero">
         <div className="product-columns">
@@ -172,6 +223,7 @@ export default function ProductDetail({ product, site, products, relatedProducts
                 alt={product.productTitle}
                 className="large-image"
                 onMouseMove={handleMouseMove}
+                onClick={openPopup}
               />
             )}
             <div className="thumbnail-container">
