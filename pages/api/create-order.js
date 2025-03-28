@@ -79,7 +79,7 @@ export default async (req, res) => {
           name,
           phone,
           address: `${address}, ${postal}, ${city}`,
-          user_ip: `${userLocation.ip}, LAT: ${userLocation.location.lat}, LONG:${userLocation.location.lng}, COUNTRY: ${userLocation.location.country}, CITY: ${userLocation.location.city}`,
+          user_ip: `${userLocation.ip}, COUNTRY: ${userLocation.location.country}, CITY: ${userLocation.location.city}`,
           cart: JSON.stringify(simplifiedCart),
           created_at: new Date().toISOString(),
         }]);
