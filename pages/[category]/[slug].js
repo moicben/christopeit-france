@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import Head from 'next/head';
+import MyHead from '../../components/Head';
 import content from '../../content.json';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -176,14 +176,13 @@ export default function ProductDetail({ product, site, products, relatedProducts
 
   return (
     <div className="container">
-      <Head>
-        <title>{`${product.productTitle} - ${site.shopName}`}</title>
-        <meta name="description" content={product.productDescription} />
-        
-        <meta property="og:title" content={`${product.productTitle} - ${site.shopName}`} />
-        <meta property="og:description" content={product.productDescription} />
-        <meta property="og:image" content={product.productImages[0]} />
-      </Head>
+      <MyHead
+        title={`${product.productTitle} - ${site.shopName}`}
+        description={product.productDescription} 
+        favicon="/favicon.png"
+        image={product.productImages[0]}
+        />
+
       
       <main className='product-page'>
         <Header shopName={site.shopName} keywordPlurial={site.keywordPlurial} />

@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-const MyHead = ({ title, description, favicon }) => {
+const MyHead = ({ title, description, image, favicon }) => {
   const router = useRouter();
   const pageSlug = router.asPath === '/' ? '' : router.asPath.replace(/\/$/, ''); // Supprime le slash final si présent
 
@@ -20,8 +20,8 @@ const MyHead = ({ title, description, favicon }) => {
       <meta property="og:description" content={description} />
       <meta property="og:url" content={`https://www.christopeit-france.shop${pageSlug}`} />
       <meta property="og:site_name" content="Christopeit France" />
-      <meta property="og:image" content="https://www.christopeit-france.shop/christopeit-graph.png" />
-      <meta property="og:image:secure_url" content="https://www.christopeit-france.shop/christopeit-graph.png" />
+      <meta property="og:image" content={image} />
+      <meta property="og:image:secure_url" content={image} />
       <meta property="og:image:width" content="900" />
       <meta property="og:image:height" content="900" />
       
