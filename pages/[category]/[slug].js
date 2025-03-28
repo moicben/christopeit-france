@@ -178,6 +178,8 @@ export default function ProductDetail({ product, site, products, relatedProducts
     <div className="container">
       <Head>
         <title>{`${product.productTitle} - ${site.shopName}`}</title>
+        <meta name="description" content={product.productDescription} />
+        <meta property="og:image" content={product.productImages[0]} />
       </Head>
       
       <main className='product-page'>
