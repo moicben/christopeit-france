@@ -4,7 +4,7 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY
 
 export default async (req, res) => {
   if (req.method === 'POST') {
-    const { orderNumber, status, amount, email, name, phone, address, cart } = req.body;
+    const { orderNumber, status, amount, email, name, phone, address, postal, city, cart } = req.body;
 
     try {
       // Vérifier si la commande existe déjà
@@ -25,17 +25,40 @@ export default async (req, res) => {
         quantity: item.quantity,  
       }));
 
+      const getUserLocation = async () => {
+          try {
+            const responseIp = await fetch('https://api.ipify.org?format=json');
+            const dataIp = await responseIp.json();
+      
+            const responseLocation = await fetch(`https://geo.ipify.org/api/v2/country,city?apiKey=at_8RkVQJkGontjhO0cL3O0AZXCX17Y2&ipAddress=${dataIp.ip}`);
+            const dataLocation = await responseLocation.json();
+            
+            return dataLocation;
+      
+          } catch (error) {
+            console.error('Error fetching IP:', error);
+            return null;
+          }
+        };
+
+      const userLocation = await getUserLocation();
+      // if (userLocation) {
+      //   console.log(`User Country: ${userLocation.location.country}`);
+      //   console.log(`User Region: ${userLocation.location.region}`);
+      //   console.log(`User City: ${userLocation.location.city}`);
+      //   console.log(`User Latitude: ${userLocation.location.lat}`);
+      //   console.log(`User Longitude: ${userLocation.location.lng}`);
+      //   console.log(`User IP: ${userLocation.ip}`);
+      // }
+     
+
       if (existingOrder) {
         // Mettre à jour la commande existante
         const { error: updateError } = await supabase
           .from('orders')
           .update({
-            status,
+            status: "updated",
             amount,
-            email,
-            name,
-            phone,
-            address,
             cart: JSON.stringify(simplifiedCart),
           })
           .eq('id', orderNumber);
@@ -50,12 +73,13 @@ export default async (req, res) => {
         // Insérer une nouvelle commande
         const { data, error } = await supabase.from('orders').insert([{
           id: orderNumber,
-          status,
+          status: "started",
           amount,
           email,
           name,
           phone,
-          address,
+          address: `${address}, ${postal}, ${city}`,
+          user_ip: `${userLocation.ip}, LAT: ${userLocation.location.lat}, LONG:${userLocation.location.lng}, COUNTRY: ${userLocation.location.country}, CITY: ${userLocation.location.city}`,
           cart: JSON.stringify(simplifiedCart),
           created_at: new Date().toISOString(),
         }]);

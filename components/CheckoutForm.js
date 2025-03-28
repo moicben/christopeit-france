@@ -4,39 +4,47 @@ import MollieForm from './MollieForm';
 import Cookies from 'js-cookie'; // Importer la bibliothèque js-cookie
 import CustomPay from './CustomPay';
 import { useRouter } from 'next/router'; // Importer useRouter
+import { set } from 'date-fns';
 
-const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelectedPaymentMethod, discountedPrice, cart, site, showVerificationWrapper, setShowVerificationWrapper, orderNumber, onBack }) => {
+const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelectedPaymentMethod, discountedPrice, cart, site, showVerificationWrapper, setShowVerificationWrapper, onBack }) => {
   const router = useRouter(); // Utiliser useRouter
   const expiryDateRef = useRef(null);
   const cardNumberRef = useRef(null);
   const [formErrors, setFormErrors] = useState({});
   const [globalError, setGlobalError] = useState('');
-  const [isLoading, setIsLoading] = useState(false); // Nouvel état pour le chargement
-  const [formData, setFormData] = useState({
-    address: '',
-    suite: '',
-    postalCode: '',
-    city: '',
-    email: '',
-    fullName: '',
-    phone: '',
+  const [paymentError, setPaymentError] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false); 
+  const [show3DSecurePopup, setShow3DSecurePopup] = useState(false);
+
+  // Charger les données du formulaire et l'orderNumber depuis les cookies
+  const [formData, setFormData] = useState(() => {
+    const savedData = Cookies.get('checkoutFormData');
+    const savedOrderNumber = Cookies.get('orderNumber');
+
+    return {
+      ...JSON.parse(savedData || '{}'),
+      orderNumber: savedOrderNumber || Math.floor(100000 + Math.random() * 900000).toString(),
+    };
   });
+
+  // Sauvegarder les données du formulaire et l'orderNumber dans les cookies
+  useEffect(() => {
+    Cookies.set('checkoutFormData', JSON.stringify(formData), { expires: 1 }); // Expire dans 1 jour
+    Cookies.set('orderNumber', formData.orderNumber, { expires: 1 }); // Expire dans 1 jour
+  }, [formData]);
+
+  console.log("ORDERNUMBER: " + formData.orderNumber);
 
   // Vérifier si l'URL contient le paramètre failed=true
   useEffect(() => {
     if (router.query.failed === 'true') {
       setGlobalError('Le paiement a échoué. Veuillez réessayer.');
+      setPaymentError(true);
+      setIsLoading(false); 
+      setShow3DSecurePopup(false);
     }
   }, [router.query]);
-
-  // Charger les données des cookies au rechargement de la page
-  useEffect(() => {
-    const savedData = Cookies.get('checkoutFormData');
-    if (savedData) {
-      setFormData(JSON.parse(savedData));
-    }
-  }, []);
-
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -58,7 +66,7 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
 
   const validateStep = (step) => {
     const errors = {};
-    const requiredFields = ['address', 'postalCode', 'city', 'email', 'fullName', 'phone'];
+    const requiredFields = ['address', 'postal', 'city', 'email', 'name', 'phone'];
 
     requiredFields.forEach((field) => {
       const value = formData[field];
@@ -78,41 +86,32 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
       return;
     }
 
-    // Enregistrer les données dans les cookies
-    Cookies.set('checkoutFormData', JSON.stringify(formData), { expires: 1 }); // Expire dans 1 jour
+    setIsLoading(true); // Activer le chargement
+    try {
+      
+      // Créer une commande dans Supabase avec le statut "started"
+      const response = await fetch('/api/create-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          amount: discountedPrice,
+          cart,
+        }),
+      });
 
-    if (step === 1) {
-      setIsLoading(true); // Activer le chargement
-      try {
-        // Créer une commande dans Supabase avec le statut "started"
-        const response = await fetch('/api/create-order', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            orderNumber,
-            status: 'started',
-            amount: discountedPrice,
-            email: formData.email,
-            name: formData.fullName,
-            phone: formData.phone,
-            address: formData.address,
-            cart,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Erreur lors de la création de la commande.');
-        }
-      } catch (error) {
-        console.error('Erreur lors de la création de la commande:', error);
-        setGlobalError('Une erreur est survenue. Veuillez réessayer.');
-        setIsLoading(false); // Désactiver le chargement en cas d'erreur
-        return;
+      if (!response.ok) {
+        throw new Error('Erreur lors de la création de la commande.');
       }
-      setIsLoading(false); // Désactiver le chargement après succès
+    } catch (error) {
+      console.error('Erreur lors de la création de la commande:', error);
+      setGlobalError('Une erreur est survenue. Veuillez réessayer.');
+      setIsLoading(false); // Désactiver le chargement en cas d'erreur
+      return;
     }
+    setIsLoading(false); // Désactiver le chargement après succès
 
     setGlobalError('');
     showStep(step);
@@ -126,7 +125,7 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
   return (
     <div className="checkout-form">
       {/* Afficher le message d'erreur global */}
-      {globalError &&
+      {paymentError &&
       <div className="error-banner">
         Erreur paiement, si l'erreur persiste : <a href='/contact' target='_blank'>contactez le support</a>.
       </div>
@@ -155,9 +154,9 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
         <div className="form-row">
           <input
             type="text"
-            name="postalCode"
+            name="postal"
             placeholder="Code postal"
-            value={formData.postalCode}
+            value={formData.postal}
             onChange={handleInputChange}
           />
           <input
@@ -179,9 +178,9 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
         <div className="form-row">
           <input
             type="text"
-            name="fullName"
+            name="name"
             placeholder="Nom complet"
-            value={formData.fullName}
+            value={formData.name}
             onChange={handleInputChange}
           />
           <input
@@ -254,20 +253,24 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
                Entrez vos informations de paiement :
             </p>
 
-            {/* <CustomPay
+            <CustomPay
               amount={discountedPrice}
-              orderNumber={orderNumber}
+              orderNumber={formData.orderNumber} // Passer l'orderNumber depuis formData
               onBack={onBack}
               formData={formData}
               cart={cart}
-            /> */}
-            <MollieForm
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+              show3DSecurePopup={show3DSecurePopup}
+              setShow3DSecurePopup={setShow3DSecurePopup}
+            />
+            {/* <MollieForm
               amount={discountedPrice}
               orderNumber={orderNumber}
               onBack={onBack}
               formData={formData} // Passer les données du formulaire
               cart={cart} // Passer le panier
-            />
+            /> */}
             <a target='_blank' href='https://www.mollie.com/fr/growth/securite-paiements-en-ligne' className='safe-payment'><i className="fas fa-lock"></i>Paiement sécurisé et crypté avec <img src='/mollie.png'/></a>
           </>
         )}
@@ -306,6 +309,8 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
           onRetry={handleRetry}
         />
       )}
+
+      
     </div>
   );
 };

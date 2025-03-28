@@ -1,6 +1,31 @@
-import React from 'react';
+import { format, addDays } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
-const CheckoutSummary = ({ cart, totalPrice, discount, discountedPrice, site, paymentFees }) => {
+const CheckoutSummary = ({ cart, totalPrice, discount, discountedPrice, site, paymentFees, deliveryEstimate }) => {
+
+  if (cart[0]){
+    console.log('cart:', cart[0].productDelivery);
+  }
+  
+  
+
+  const getDeliveryDate = (deliveryType) => {
+    const today = new Date();
+    let deliveryDays;
+    if (deliveryType === 'Express') {
+      deliveryDays = 4;
+    } else if (deliveryType === 'Fast') {
+      deliveryDays = 5;
+    } else if (deliveryType === 'Normal') {
+      deliveryDays = 6;
+    } else {
+      return '';
+    }
+    const deliveryDate = addDays(today, deliveryDays);
+    return format(deliveryDate, 'EEEE d MMMM', { locale: fr });
+  };
+
+
   return (
     <>
       <div className="shop-info">
@@ -24,17 +49,16 @@ const CheckoutSummary = ({ cart, totalPrice, discount, discountedPrice, site, pa
           <p className='quantity'>15%</p>
           <p>{`-${parseFloat(discount).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`}</p>
         </div>
+        <div className="cart-item discount">
+          <h4>Livraison estimiée :</h4>
+          <p className='quantity delivery'>{cart[0] && getDeliveryDate(cart[0].productDelivery)}</p>
+          <p>OFFERT</p>
+        </div>
         <div className="cart-item subtotal">
           <h4>Avant-réduction</h4>
           <p>{`${parseFloat(totalPrice).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`}</p>
         </div>
-        {paymentFees > 0 && (
-          <div className="cart-item payment-fees">
-            <h4>Frais de paiement</h4>
-            <p className='quantity'>2,5%</p>
-            <p>{`${parseFloat(paymentFees).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`}</p>
-          </div>
-        )}
+
         <div className="total-price">
           <h4>Total dû :</h4>
           <p>{`${parseFloat(discountedPrice).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`}</p>

@@ -87,17 +87,6 @@ const Header = ({ shopName, keywordPlurial }) => {
     setIsCartOpen(!isCartOpen);
     const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
     setCart(storedCart);
-
-    if (!isCartOpen) {
-      const userLocation = await getUserLocation();
-      if (userLocation) {
-        console.log(`User Country: ${userLocation.location.country}`);
-        console.log(`User Region: ${userLocation.location.region}`);
-        console.log(`User City: ${userLocation.location.city}`);
-        console.log(`User Latitude: ${userLocation.location.lat}`);
-        console.log(`User Longitude: ${userLocation.location.lng}`);
-      }
-    }
   };
 
   useEffect(() => {
@@ -109,39 +98,7 @@ const Header = ({ shopName, keywordPlurial }) => {
   }, []);
 
   const handleCheckout = async () => {
-    // const userLocation = await getUserLocation();
-    // if (userLocation) {
-    //   const payAmount = cart.reduce((total, item) => total + parseFloat(item.productPrice.replace('€', '').replace(',', '.')) * item.quantity, 0).toFixed(2);
-    //   const userLat = userLocation.location.lat;
-    //   const userLong = userLocation.location.lng;
-    //   localStorage.setItem('checkoutInitStatus', 'failed'); // Reset the status
-
-    //   // Exécuter la requête API en arrière-plan
-    //   fetch('https://api.christopeit-france.shop/eneba_checkout/init', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //       userLong,
-    //       userLat,
-    //       payAmount
-    //     })
-    //     }).then(response => {
-    //       if (response.ok) {
-    //         console.log('Checkout initiated successfully');
-    //         localStorage.setItem('checkoutInitStatus', 'success');
-    //       } else {
-    //         console.error('Error starting checkout:', response.statusText);
-    //         localStorage.setItem('checkoutInitStatus', 'failed');
-    //       }
-    //     }).catch(error => {
-    //       console.error('Error starting checkout:', error);
-    //       localStorage.setItem('checkoutInitStatus', 'failed');
-    //   });
-
-      
-    // }
+    
     router.push('/paiement');
   };
 

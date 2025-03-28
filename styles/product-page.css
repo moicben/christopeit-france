@@ -111,9 +111,19 @@ section.product-hero {
   margin-top: 0rem;
   font-size: 1.5rem;
   font-weight: 600;
-  margin-bottom: 2rem;
-  border-bottom: #ccc solid 1px;
-  padding-bottom: 2rem;
+  margin-bottom: 1rem;
+
+}
+
+.product-info .stock{
+  font-size: .9rem;
+}
+
+.product-info .delivery{
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1rem;
+  margin: .5rem 0 1rem 0;
+  font-size: .9rem;
 }
 
 .product-info .product-price.new{
@@ -131,9 +141,46 @@ section.product-hero {
 }
 
 .product-description{
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 }
 
+.product-features {
+  width: 100%;
+  display: flex;
+  justify-self: start;
+  flex-direction: column;
+  margin-left: .25rem;
+  margin-bottom: 3.5rem;
+}
+
+.product-features li {
+  margin-bottom: .25rem;
+}
+
+.product-features span {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #666;
+  margin-right: .5rem;
+  font-weight: 300;
+}
+
+.product-features i {
+  width: .75rem;
+  margin-right: .75rem;
+  position: relative;
+  top: -1px;
+  color: #666;
+  font-size: .75rem;
+}
+
+.product-features img {
+  height: 1rem;
+  filter: grayscale(100%);
+}
+
+
+/* Purchase Row */
 .purchase-row {
   width: 100%;
   display: flex;
@@ -141,6 +188,7 @@ section.product-hero {
   position: relative;
 }
 
+/* Quantity Selector */
 .quantity-selector {
   display: flex;
   align-items: center;
@@ -229,37 +277,6 @@ section.product-hero {
   font-weight: 300;
 }
 
-
-
-.product-features{
-  width: 100%;
-  display: flex;
-  justify-self: start;
-  flex-direction: column;
-  margin-left: 1rem;
-}
-
-.product-features li{
-  margin-bottom: .5rem;
-}
-
-.product-features span{
-  font-size: 1.1rem;
-  font-weight: 400;
-  color: #666;
-  margin-right: .5rem;
-}
-
-.product-features i{
-  width: 20px;
-  margin-right: .75rem;
-  color: #333;
-}
-
-.product-features img{
-  height: 1rem;
-  filter: grayscale(100%);
-}
 
 .gift-container{
   background-color: #a6bad1;
@@ -470,18 +487,15 @@ details .product-content table{
   color: #666;
 }
 
-.product-content,
-.product-features {
+.product-content{
   margin-top: 2rem;
 }
 
-.product-content h2,
-.product-features h2 {
+.product-content h2{
   margin-bottom: 1rem;
 }
 
-.product-content p,
-.product-features p {
+.product-content p{
   margin-bottom: 1rem;
 }
 
