@@ -34,7 +34,7 @@ export default function Checkout() {
       if (existingItem) {
         existingItem.quantity += 1;
       } else {
-        acc.push({ ...item, quantity: 1 });
+        acc.push({ ...item, quantity: item.quantity });
       }
       return acc;
     }, []);
