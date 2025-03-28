@@ -179,6 +179,9 @@ export default function ProductDetail({ product, site, products, relatedProducts
       <Head>
         <title>{`${product.productTitle} - ${site.shopName}`}</title>
         <meta name="description" content={product.productDescription} />
+        
+        <meta property="og:title" content={`${product.productTitle} - ${site.shopName}`} />
+        <meta property="og:description" content={product.productDescription} />
         <meta property="og:image" content={product.productImages[0]} />
       </Head>
       
