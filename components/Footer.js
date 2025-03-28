@@ -49,7 +49,7 @@ const Footer = ({ shopName, footerText }) => {
             <div className="footer-column">
               <h4>Navigation</h4>
               <ul>
-                <li><a href="/boutique">Boutique</a></li>
+                <li><a href="/tous-les-equipements">Équipements</a></li>
                 <li><a href="/#a-propos">A propos</a></li>
                 <li><a href="/contact">Contact</a></li>
                 <li><a href="/faq">faq</a></li>

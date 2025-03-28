@@ -120,8 +120,8 @@ const Header = ({ shopName, keywordPlurial }) => {
             <ul>
               <li><a href="/tous-les-equipements">équipements</a></li>
               <li><a href="/bestsellers">Bestsellers</a></li>
-              <li><a href="/velos-appartement">Vélos</a></li>
               <li><a href="/tapis-roulants">tapis</a></li>
+              <li><a href="/velos-appartement">Vélos</a></li>
               <li><a href="/rameurs">Rameurs</a></li>
               <li className="dropdown">
                 <a href="#"><i className='fas fa-info'></i>Christopeit Sport</a>
