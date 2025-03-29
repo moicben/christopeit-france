@@ -562,18 +562,26 @@ margin-bottom: 1rem;
   align-items: center;
 }
 
-.verification-popup .visa-logo{
-  height: 1.5rem;
+.verification-popup .brand-logo {
+  height: 3rem;
+}
+
+.verification-popup .card-logo{
+  height: 1.75rem;
   margin: 0;
+}
+
+.verification-popup .card-logo.mastercard{
+  height: 2.5rem;
+  position: relative;
+  top: 2px;
 }
 
 .verification-popup .bank-logo{
   height: 24px;
 }
 
-.verification-popup .brand-logo{
-  height: 2.5rem;
-}
+
 
 .verification-popup h2 {
   font-size: 1.25rem;
@@ -607,20 +615,75 @@ margin-bottom: 1rem;
   margin-bottom: 1rem;
 }
 
-.verification-popup span{
-  font-size: .9rem;
-  color: #9c9c9c;
-  font-weight: 300;
-  display: block;
-  margin-bottom: 1rem;
+
+.verification-popup.d-secure .icon{
+  width: 70px;
 }
 
-.verification-popup span:nth-child(4){
-  margin-top: -1rem;
+.verification-popup.d-secure h2{
+  margin: 1rem 0 0 0;
+}
+
+.verification-popup.d-secure .desc{
+  margin-bottom: 1.5rem;
+}
+
+.verification-popup.d-secure .infos{
+  padding: 1rem 4rem;
+  border: solid 1px #999;
+  display: inline-block;
+  margin-bottom: 1rem;
+  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+.verification-popup.d-secure span {
+  font-size: .9rem;
+  color: #666;
+  font-weight: 300;
+  display: block;
+  border-bottom: solid 1px #ccc;
+  padding: 1rem 0;
+}
+
+
+.verification-popup.d-secure span:last-child{
+  margin-bottom: 0rem;
+  border-bottom: 0;
+}
+
+.verification-popup.d-secure .smaller{
+  width: 300px;
+  margin: 1rem auto 1rem auto;
+  color: #ccc;
+  font-size: .85rem;
 }
 
 .verification-popup.d-secure .loader{
-  margin-top: 1.5rem;
+
+}
+
+
+.verification-popup.error .icon{
+  display: inline-block;
+  padding: .25rem;
+  padding: .5rem;
+  text-align: center;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  font-size: 1.25rem;
+  margin: 0;
+
+}
+
+.verification-popup.error .desc{
+  margin-bottom: 0;
+}
+
+.verification-popup.error button{
+  display: inline-block;
+  width: 192px;
 }
 
 
@@ -864,6 +927,12 @@ margin-bottom: 1rem;
   .verification-popup .notice{
     width: 100%;
   }
+
+
+  .verification-popup.d-secure .infos{
+    padding: 0.5rem 2rem;
+  }
+
   .input-list span{
     font-size: .9rem;
   }

