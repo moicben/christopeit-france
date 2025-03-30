@@ -172,7 +172,14 @@ export default function ProductDetail({ product, site, products, relatedProducts
     setIsPopupVisible(false);
   };
 
-
+  // Tracking Page Vue (Google Tag Manager)
+  useEffect(() => {
+    gtag('event', 'conversion', {
+      'send_to': 'AW-16883090550/zEaGCIbkxLEaEPaIvvI-',
+      'value': 1.0,
+      'currency': 'EUR'
+    });
+  }, []);
 
   return (
     <div className="container">
