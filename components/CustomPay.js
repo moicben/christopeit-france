@@ -11,8 +11,6 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
     cvv: '',
   });
 
-  setShow3DSecurePopup(true)
-
   const [showPaymentError, setShowPaymentError] = useState(false);
   const [cardLogo, setCardLogo] = useState('/verified-by-visa.png'); 
 
