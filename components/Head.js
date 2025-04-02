@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-const MyHead = ({ title, description, name, domain, favicon, graph, font, colorMain, colorSecondary, colorBlack, colorGrey, bgMain, bgLight, bgDark, radiusBig, radiusMedium }) => {
+const MyHead = ({ title, description, name, domain, favicon, graph, font, colorPrimary, colorSecondary, colorBlack, colorGrey, bgMain, bgLight, bgDark, radiusBig, radiusMedium }) => {
   const router = useRouter();
   const pageSlug = router.asPath === '/' ? '' : router.asPath.replace(/\/$/, ''); // Supprime le slash final si présent
 
@@ -28,6 +28,7 @@ const MyHead = ({ title, description, name, domain, favicon, graph, font, colorM
       {/* Inline styles to prevent FOUT */}
       <style>
         {`
+          @import url('https://fonts.googleapis.com/css2?family=${font}:wght@200;300;400;500;600;700&display=swap');
           * {
             font-family: ${font}, -apple-system, sans-serif;
           }
@@ -42,9 +43,11 @@ const MyHead = ({ title, description, name, domain, favicon, graph, font, colorM
             border-radius: ${radiusBig};
           }
 
-          .color-main {
-            color: ${colorMain};
+          .color-primary {
+            color: ${colorPrimary} !important;
           }
+
+          
 
           .color-black{
             color: ${colorBlack};
@@ -58,6 +61,11 @@ const MyHead = ({ title, description, name, domain, favicon, graph, font, colorM
             color: ${colorSecondary};
           }
 
+          .bg-primary,
+          button {
+            background-color: ${colorPrimary} ;
+          }
+
           .bg-main {
             background-color: ${bgMain};
           }
@@ -66,8 +74,16 @@ const MyHead = ({ title, description, name, domain, favicon, graph, font, colorM
             background-color: ${bgLight};
           }
 
+          .bg-white{
+            background-color: #fff;
+          }s
+
           .bg-dark {
             background-color: ${bgDark};
+          }
+
+          .border-primary{
+            border-color: ${colorPrimary} !important;
           }
         `}
       </style>

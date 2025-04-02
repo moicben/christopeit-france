@@ -13,7 +13,7 @@ export default function ConditionsGenerales({shop, brand}) {
     <div className="container">
       <Head name={shop.name} domain={shop.domain}
             favicon={brand.favicon} graph={brand.graph}
-            colorMain={brand.colorMain} colorSecondary={brand.colorSecondary} colorBlack={brand.colorBlack} colorGrey={brand.colorGrey} bgMain={brand.bgMain} bgLight={brand.bgLight} bgDark={brand.bgDark} radiusBig={brand.radiusBig} radiusMedium={brand.radiusMedium} font={brand.font} 
+            colorPrimary={brand.colorPrimary} colorSecondary={brand.colorSecondary} colorBlack={brand.colorBlack} colorGrey={brand.colorGrey} bgMain={brand.bgMain} bgLight={brand.bgLight} bgDark={brand.bgDark} radiusBig={brand.radiusBig} radiusMedium={brand.radiusMedium} font={brand.font} 
             title={`Conditions Générales - ${shop.name}`}
       />
 

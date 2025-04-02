@@ -43,7 +43,7 @@ const CategoryPage = ({data, shop, brand, categories, category, filteredProducts
 
       <Head name={shop.name} domain={shop.domain}
             favicon={brand.favicon} graph={brand.graph}
-            colorMain={brand.colorMain} colorSecondary={brand.colorSecondary} colorBlack={brand.colorBlack} colorGrey={brand.colorGrey} bgMain={brand.bgMain} bgLight={brand.bgLight} bgDark={brand.bgDark} radiusBig={brand.radiusBig} radiusMedium={brand.radiusMedium} font={brand.font} 
+            colorPrimary={brand.colorPrimary} colorSecondary={brand.colorSecondary} colorBlack={brand.colorBlack} colorGrey={brand.colorGrey} bgMain={brand.bgMain} bgLight={brand.bgLight} bgDark={brand.bgDark} radiusBig={brand.radiusBig} radiusMedium={brand.radiusMedium} font={brand.font} 
             title={`${category.title} - ${category.desc}`}
       />
 
@@ -73,7 +73,7 @@ const CategoryPage = ({data, shop, brand, categories, category, filteredProducts
             <div className="content">
               <ul>
                 {category.guideContent.map((point, index) => (
-                  <li key={index}>{point}</li>
+                  <li className='' key={index}>{point}</li>
                 ))}
               </ul>
               <img src={`/guide-${category.slug}.jpg`} alt={category.guideTitle} />
@@ -87,7 +87,7 @@ const CategoryPage = ({data, shop, brand, categories, category, filteredProducts
             <div className="content">
               <ul>
                 {category.whyContent.map((point, index) => (
-                  <li key={index}><i className={getRandomIcon()}></i>{point}</li>
+                  <li key={index}><i className={`${getRandomIcon()} color-primary`}></i>{point}</li>
                 ))}
               </ul>
             </div>
@@ -98,7 +98,7 @@ const CategoryPage = ({data, shop, brand, categories, category, filteredProducts
           <div className="wrapper">
             <h2>{category.maintenanceTitle}</h2>
             <div className="content">
-              <ul>
+              <ul className="custom-marker">
                 {category.maintenanceContent.map((point, index) => (
                   <li key={index}>{point}</li>
                 ))}

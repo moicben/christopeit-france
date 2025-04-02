@@ -124,7 +124,7 @@ const Header = ({ name, domain, logo }) => {
               <li><a href="/velos-appartement">Vélos</a></li>
               <li><a href="/rameurs">Rameurs</a></li>
               <li className="dropdown">
-                <a href="#"><i className='fas fa-info'></i>{name}</a>
+                <a className='color-primary' href="#"><i className='fas fa-info border-primary'></i>{name}</a>
                 <ul className="dropdown-menu">
                   <li><a href="/a-propos">Notre histoire</a></li>
                   

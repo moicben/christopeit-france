@@ -170,7 +170,6 @@ section.product-hero {
 .product-info.best-seller .best-wrap{
   display: inline-block;
   padding: .25rem .5rem 0.25rem .35rem;
-  color: #CE122D;
   font-size: .75rem;
   opacity: .75;
   border-radius: 4px;
@@ -205,7 +204,6 @@ section.product-hero {
 }
 
 .product-info .product-price.new{
-  color: #CE122D;
   position: relative;
 }
 
@@ -311,7 +309,6 @@ section.product-hero {
   font-size: 1rem;
   padding: 0;
   border-radius: 8px;
-  background-color: transparent;
   transition: .5s;
   color: #111;
   border: 1px solid #333;
@@ -324,11 +321,8 @@ section.product-hero {
 }
 
 .product-info .buy-now {
-  background: linear-gradient(270deg, #CE122D, #ff3333e5, #ff0000c0, #ff3333e0, #CE122D);background-size: 1000% 1000%;
   color: white;
   transition:  0.5s ease;
-  /* animation: gradientShift 6s ease infinite; */
-  border-color: #CE122D;
 }
 
 @keyframes gradientShift {
@@ -609,7 +603,6 @@ details .product-content table{
 
 .product-content.guarantee span{
   font-weight: 500;
-  color: #CE122D;
 }
 
 .product-content b{

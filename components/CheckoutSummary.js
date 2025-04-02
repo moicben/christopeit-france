@@ -30,7 +30,7 @@ const CheckoutSummary = ({ cart, totalPrice, discount, discountedPrice, name, pa
     <>
       <div className="shop-info">
         <h2>{`Montant à régler`}</h2>
-        <h1>{`${parseFloat(discountedPrice).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`}</h1>
+        <h1 className='color-primary'>{`${parseFloat(discountedPrice).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`}</h1>
       </div>
       <div className="cart-summary">
         <ul>

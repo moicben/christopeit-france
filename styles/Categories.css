@@ -77,10 +77,6 @@
   margin: 0;
 }
 
-.category-button:hover {
-  background-color: #CE122D;
-}
-
 
 
 
@@ -215,14 +211,14 @@
 .why li i{
   font-size: 2rem;
   margin-bottom: 1rem;
-  color: #CE122D;
 }
+
 
 .guide li::marker,
 .maintenance li::marker{
-  color: #CE122D;
   font-weight: 600;
   font-size: 2rem;
+  color: #999;
 }
 
 .guide img,

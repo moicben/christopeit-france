@@ -29,11 +29,11 @@ export default function ProductInfos({ product, handleAddToCart, buttonText, sho
 
   return (
     <div className={`product-info ${product.bestseller ? 'best-seller' : ''}`}>
-      <span className='best-wrap bg-main'>🏆 TOP VENTE</span>
+      <span className='best-wrap bg-main color-primary'>🏆 TOP VENTE</span>
       <h1>{product.title}</h1>
       {product.discounted ? (
         <>
-          <p className="product-price new">
+          <p className="product-price new color-primary">
             {product.price},00 €
             <span className="initial-price">{product.discounted},00 €</span>
           </p>
@@ -52,10 +52,10 @@ export default function ProductInfos({ product, handleAddToCart, buttonText, sho
 
       <article className="purchase-row">
         <p className="comptor">PROMO FIN-MARS 15%</p>
-        <button className="buy-now" onClick={handleBuyNow}>
+        <button className="buy-now bg-primary border-primary" onClick={handleBuyNow}>
           Acheter pour {product.discounted},00€
         </button>
-        <button onClick={handleAddToCart}>{buttonText}</button>
+        <button className='bg-white' onClick={handleAddToCart}>{buttonText}</button>
       </article>
 
       <ul className="product-badges">
@@ -106,29 +106,29 @@ export default function ProductInfos({ product, handleAddToCart, buttonText, sho
         <details >
           <summary>Livraison, garantie et retours</summary>
           <div className="product-content guarantee">
-            <span>Moyens de paiement :</span> cartes bancaires (Visa, MasterCard,
+            <span className='color-primary'>Moyens de paiement :</span> cartes bancaires (Visa, MasterCard,
             AMEX), PayPal ou virement bancaire, sécurisé par protocol SSL.
             <br />
             <br />
-            <span>Expédition :</span> les commandes sont expédiées sous 24 à 48h
+            <span className='color-primary'>Expédition :</span> les commandes sont expédiées sous 24 à 48h
             ouvrées avec un suivi en temps réel.
             <br />
             <br />
-            <span>Suivi :</span> les délais de livraison varient entre 2 et 5
+            <span className='color-primary'>Suivi :</span> les délais de livraison varient entre 2 et 5
             jours ouvrés selon votre localisation. Vous recevrez par mail un
             numéro de suivi dès l’expédition.
             <br />
             <br />
-            <span>Retours :</span> <b>Si un équipement ne vous convient pas, vous
+            <span className='color-primary'>Retours :</span> <b>Si un équipement ne vous convient pas, vous
             disposez de 60 jours après réception pour le retourner gratuitement</b>.
             Une fois le colis retourné, nous procédons au remboursement sous 2 jours ouvrés.
             <br />
             <br />
-            <span>Garantie :</span> <b>Tous nos équipements sont couverts par la garantie constructeur
+            <span className='color-primary'>Garantie :</span> <b>Tous nos équipements sont couverts par la garantie constructeur
             pendant 2 ans, suite à la date d'achat.</b> Prenant en charge tout défaut de fabrication et disfonctionnement.
             <br />
             <br />
-            <span>Support :</span> Disponible 7j/7 via formulaire en ligne ou par
+            <span className='color-primary'>Support :</span> Disponible 7j/7 via formulaire en ligne ou par
             mail à support@{shop.domain}
             <br />
             <br />

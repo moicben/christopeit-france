@@ -30,7 +30,7 @@ const Blog = ({ shop, data, brand }) => {
 
         <Head name={shop.name} domain={shop.domain}
             favicon={brand.favicon} graph={brand.graph}
-            colorMain={brand.colorMain} colorSecondary={brand.colorSecondary} colorBlack={brand.colorBlack} colorGrey={brand.colorGrey} bgMain={brand.bgMain} bgLight={brand.bgLight} bgDark={brand.bgDark} radiusBig={brand.radiusBig} radiusMedium={brand.radiusMedium} font={brand.font} 
+            colorPrimary={brand.colorPrimary} colorSecondary={brand.colorSecondary} colorBlack={brand.colorBlack} colorGrey={brand.colorGrey} bgMain={brand.bgMain} bgLight={brand.bgLight} bgDark={brand.bgDark} radiusBig={brand.radiusBig} radiusMedium={brand.radiusMedium} font={brand.font} 
             title={`Blog & Guides - ${shop.name}`}
       />
 
@@ -50,7 +50,7 @@ const Blog = ({ shop, data, brand }) => {
                 <a href={`/blog/${article.slug}`} key={article.slug} className="article-item">
                   <img src={article.thumbnail} alt={article.title} />
                   <h3>{article.title}</h3>
-                  <span>Lire l'article</span>
+                  <span className=' bg-primary'>Lire l'article</span>
                 </a>
               ))}
             </div>

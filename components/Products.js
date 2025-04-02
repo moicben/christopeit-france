@@ -100,7 +100,7 @@ const Products = ({ title, products, description, showCategoryFilter = true, ini
                 onMouseEnter={() => setHoveredProduct(product.slug)}
                 onMouseLeave={() => setHoveredProduct(null)}
               >
-                <span className='best-wrap bg-main'>🏆 TOP VENTE</span>
+                <span className='best-wrap bg-main color-primary'>🏆 TOP VENTE</span>
                 <img
                   src={
                     hoveredProduct === product.slug && product.images?.[1]
@@ -119,7 +119,7 @@ const Products = ({ title, products, description, showCategoryFilter = true, ini
                   {product.discounted ? (
                     <>
                       <span className='initial-price'>{product.discounted},00 €</span>
-                      <span className='new-price'>{product.price},00 €</span>
+                      <span className='new-price color-primary'>{product.price},00 €</span>
                     </>
                   ) : (
                     product.price + ",00 €"
