@@ -25,13 +25,15 @@ const MyHead = ({ title, description, name, domain, favicon, graph, font, colorP
 
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
-      {/* Inline styles to prevent FOUT */}
+      {/* Custom CSS Style From Supabase Shop */}
       <style>
         {`
           @import url('https://fonts.googleapis.com/css2?family=${font}:wght@200;300;400;500;600;700&display=swap');
+          
           * {
             font-family: ${font}, -apple-system, sans-serif;
           }
+
 
           .radius-medium,
           button {
@@ -43,11 +45,10 @@ const MyHead = ({ title, description, name, domain, favicon, graph, font, colorP
             border-radius: ${radiusBig};
           }
 
+
           .color-primary {
             color: ${colorPrimary} !important;
           }
-
-          
 
           .color-black{
             color: ${colorBlack};
@@ -60,6 +61,7 @@ const MyHead = ({ title, description, name, domain, favicon, graph, font, colorP
           .color-secondary{
             color: ${colorSecondary};
           }
+
 
           .bg-primary,
           button {
@@ -82,8 +84,13 @@ const MyHead = ({ title, description, name, domain, favicon, graph, font, colorP
             background-color: ${bgDark};
           }
 
+
           .border-primary{
             border-color: ${colorPrimary} !important;
+          }
+
+          .border-top-primary{
+            border-top-color: ${colorPrimary} !important;
           }
         `}
       </style>

@@ -195,7 +195,7 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
             
             <h2>Préparation du paiement</h2>
             <p className='desc'>Merci de patienter quelques instants, nous préparons votre paiement.</p>
-            <div className='loader'></div>
+            <div className='loader border-top-primary'></div>
           </div>
         </div>
       )}
@@ -216,7 +216,7 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
               <span> Date : {`${formattedDate} à ${formattedTime}`}</span>
               <span>Carte : **** **** **** {lastFourDigits}</span>
             </article>
-            <div className='loader'></div>
+            <div className='loader border-top-primary'></div>
            
             <p className='smaller'>Une fois la transaction confirmée, vous serez redirigé vers la page de confirmation.</p>
             
