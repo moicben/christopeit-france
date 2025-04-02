@@ -313,7 +313,7 @@ export async function getStaticPaths() {
       console.warn(`Aucun slug trouvé pour la catégorie avec ID ${product.category_id}`);
       return null; // Ignorer les produits sans catégorie correspondante
     }
-    return {
+    return { 
       params: {
         category: categorySlug,
         slug: product.slug,
