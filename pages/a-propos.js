@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
+
 import Head from '../components/Head';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
@@ -20,7 +20,7 @@ const APropos = ({ data, shop, brand }) => {
     // Ajoutez un écouteur d'événements pour les redimensionnements
     window.addEventListener('resize', handleResize);
 
-    // Nettoyez l'écouteur d'événements
+    // Nettoyez l'écouteur d'événements 
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
