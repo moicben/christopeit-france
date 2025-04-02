@@ -111,7 +111,7 @@ const Header = ({ name, domain, logo }) => {
       <div class="elfsight-app-ff817ebe-8d94-42a7-a8d9-ace1c29d4f7a" data-elfsight-app-lazy></div>
       
       {/* <section className="sub">
-        -15% sur nos équipements code : <span style={{ fontWeight: 500 }}>mars15</span> &nbsp;|&nbsp; Livraison sous 2 à 5 jours ouvrés &nbsp;|&nbsp; support disponible 7j/7
+        -15% sur nos équipements code : <span style={{ fontWeight: 500 }}>AVRIL15</span> &nbsp;|&nbsp; Livraison sous 2 à 5 jours ouvrés &nbsp;|&nbsp; support disponible 7j/7
       </section> */}
       <header className="header">
         <div className='wrapper'>

@@ -51,7 +51,7 @@ export default function ProductInfos({ product, handleAddToCart, buttonText, sho
       />
 
       <article className="purchase-row">
-        <p className="comptor">PROMO FIN-MARS 15%</p>
+        <p className="comptor">PROMO début-avril 15%</p>
         <button className="buy-now bg-primary border-primary" onClick={handleBuyNow}>
           Acheter pour {product.discounted},00€
         </button>

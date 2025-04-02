@@ -45,7 +45,7 @@ const CheckoutSummary = ({ cart, totalPrice, discount, discountedPrice, name, pa
           ))}
         </ul>
         <div className="cart-item discount">
-          <h4>CODE PROMO : <input value=' MARS15'/></h4>
+          <h4>CODE PROMO : <input value=' AVRIL15'/></h4>
           <p className='quantity'>15%</p>
           <p>{`-${parseFloat(discount).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`}</p>
         </div>
