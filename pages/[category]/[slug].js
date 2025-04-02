@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import MyHead from '../../components/Head';
-import content from '../../content.json';
+
+import Head from '../../components/Head';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Products from '../../components/Products';
@@ -9,8 +9,7 @@ import Categories from '../../components/Categories';
 
 import ProductInfos from '../../components/ProductInfos';
 
-import categoriesData from '../../categories.json'; 
-import productsData from '../../products.json';
+import {fetchData} from '../../lib/supabase'; // Assurez-vous que le chemin est correct
 
 
 // Event snippet for Clic "Ajouter au panier" conversion page
@@ -36,7 +35,7 @@ function gtag_report_conversion(url) {
   return false;
 }
 
-export default function ProductDetail({ product, site, products, relatedProducts, otherCategories }) {
+export default function ProductDetail({ product, category, shop, brand, data, products, categories, relatedProducts, otherCategories }) {
   const [cartCount, setCartCount] = useState(0);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -86,7 +85,7 @@ export default function ProductDetail({ product, site, products, relatedProducts
     return `${h}h ${m}m ${s}s`;
   };
 
-  if (!product || !site) {
+  if (!product) {
     return <div>Produit ou site non trouvé</div>;
   }
 
@@ -152,13 +151,11 @@ export default function ProductDetail({ product, site, products, relatedProducts
     }
   }, [mousePosition]);
 
-  const images = product.productImages || [];
+  const images = product.images || [];
   const visibleImages = images.slice(visibleImageIndex, visibleImageIndex + 4);
   if (visibleImages.length < 4) {
     visibleImages.push(...images.slice(0, 4 - visibleImages.length));
   }
-
-  const discountedPrice = parseFloat(product.productPrice.replace('€', '').replace(',', '.')) * 0.85;
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
@@ -183,16 +180,16 @@ export default function ProductDetail({ product, site, products, relatedProducts
 
   return (
     <div className="container">
-      <MyHead
-        title={`${product.productTitle} - ${site.shopName}`}
-        description={product.productDescription} 
-        favicon="/favicon.png"
-        image={product.productImages[0]}
-        />
+
+      <Head name={shop.name} domain={shop.domain} favicon={brand.favicon}
+        graph={product.images[0]}
+        title={`${product.title} - ${shop.name}`}
+        description={product.description} />
+
 
       
       <main className='product-page'>
-        <Header shopName={site.shopName} keywordPlurial={site.keywordPlurial} />
+        <Header title={shop.name} name={shop.name} domain={shop.domain} logo={brand.logo} />
 
         {isPopupVisible && (
           <div className="popup-overlay" onClick={closePopup}>
@@ -200,7 +197,7 @@ export default function ProductDetail({ product, site, products, relatedProducts
             <div className="popup-content" onClick={(e) => e.stopPropagation()}>
               <img
                 src={images[selectedImageIndex]}
-                alt={product.productTitle}
+                alt={product.title}
                 className="popup-image"
               />
               <div className="popup-thumbnail-container">
@@ -209,7 +206,7 @@ export default function ProductDetail({ product, site, products, relatedProducts
                     <img
                       key={index + visibleImageIndex}
                       src={image}
-                      alt={`${product.productTitle} ${index + 1}`}
+                      alt={`${product.title} ${index + 1}`}
                       onClick={() => handleImageClick(index + visibleImageIndex)}
                       className={`thumbnail ${selectedImageIndex === index + visibleImageIndex ? 'selected' : ''}`}
                     />
@@ -231,7 +228,7 @@ export default function ProductDetail({ product, site, products, relatedProducts
             {images[selectedImageIndex] && (
               <img
                 src={images[selectedImageIndex]}
-                alt={product.productTitle}
+                alt={product.title}
                 className="large-image"
                 onMouseMove={handleMouseMove}
                 onClick={openPopup}
@@ -243,7 +240,7 @@ export default function ProductDetail({ product, site, products, relatedProducts
                   <img
                     key={index + visibleImageIndex}
                     src={image}
-                    alt={`${product.productTitle} ${index + 1}`}
+                    alt={`${product.title} ${index + 1}`}
                     onClick={() => handleImageClick(index + visibleImageIndex)}
                     className={`thumbnail ${selectedImageIndex === index + visibleImageIndex ? 'selected' : ''}`}
                   />
@@ -256,34 +253,33 @@ export default function ProductDetail({ product, site, products, relatedProducts
               )}
             </div>
           </div>
-          <ProductInfos product={product} discountedPrice={discountedPrice} handleAddToCart={handleAddToCart} buttonText={buttonText} site={site} />
+          <ProductInfos product={product} handleAddToCart={handleAddToCart} buttonText={buttonText} shop={shop}/>
         </div>
       </section>
 
-        <Reviews product={product} />
+        <Reviews data={data} />
   
         <section className="product-details">
-          <div className="wrapper advantages" dangerouslySetInnerHTML={{ __html: product.productAdvantages }}/>
-          <div className="wrapper" dangerouslySetInnerHTML={{ __html: product.productHighlight1 }}/>
-          <div className="wrapper" dangerouslySetInnerHTML={{ __html: product.productHighlight2 }}/>
-          <div className="wrapper" dangerouslySetInnerHTML={{ __html: product.productHighlight3 }}/>
-          <div className="wrapper" dangerouslySetInnerHTML={{ __html: product.productHighlight4 }}/>   
+          <div className="wrapper advantages" dangerouslySetInnerHTML={{ __html: product.advantages }}/>
+          <div className="wrapper" dangerouslySetInnerHTML={{ __html: product.more1 }}/>
+          <div className="wrapper" dangerouslySetInnerHTML={{ __html: product.more2 }}/>
+          <div className="wrapper" dangerouslySetInnerHTML={{ __html: product.more3 }}/>
         </section>
   
-        <Products title={`Nos autres ${product.productCategoryName}`} products={relatedProducts} showCategoryFilter={false} />
+        <Products categories={categories} products={relatedProducts} title={`Nos autres ${category.title}`} showCategoryFilter={false} />
         <Categories categories={otherCategories} />
       </main>
       {showBanner && (
         <div className="cta-banner">
           <div className="banner-content">
-              <h3>{product.productTitle}</h3>
-              <p className='price'>{product.productPrice}</p>
+              <h3>{product.title}</h3>
+              <p className='price'>{product.price},00€</p>
 
           </div>
-          <button onClick={handleBuyNow}>Acheter pour {discountedPrice.toFixed(2)}€ </button>
+          <button onClick={handleBuyNow}>Acheter pour {product.discounted},00€ </button>
        </div>
       )}
-      <Footer shopName={site.shopName} footerText={site.footerText} />
+      <Footer shop={shop}/>
     </div>
   );
 
@@ -294,37 +290,90 @@ export default function ProductDetail({ product, site, products, relatedProducts
 }
 
 export async function getStaticPaths() {
-  const paths = productsData.products.map(product => ({
-    params: { 
-      category: product.productCategorySlug, // Inclure la catégorie
-      slug: product.slug 
-    },
-  }));
+  // Récupération des catégories et produits depuis Supabase
+  const categories = await fetchData('categories', { match: { shop_id: process.env.SHOP_ID } });
+  const products = await fetchData('products', { match: { shop_id: process.env.SHOP_ID } });
+
+  // Vérification que les données sont valides
+  if (!categories || !products || categories.length === 0 || products.length === 0) {
+    console.error("Erreur : catégories ou produits manquants dans les données récupérées.");
+    return { paths: [], fallback: false };
+  }
+
+  // Création d'un dictionnaire pour accéder rapidement aux slugs des catégories par leur ID
+  const categorySlugMap = categories.reduce((map, category) => {
+    map[category.id] = category.slug;
+    return map;
+  }, {});
+
+  // Génération des chemins à partir des slugs des catégories et produits
+  const paths = products.map(product => {
+    const categorySlug = categorySlugMap[product.category_id]; // Récupération du slug de la catégorie via category_id
+    if (!categorySlug) {
+      console.warn(`Aucun slug trouvé pour la catégorie avec ID ${product.category_id}`);
+      return null; // Ignorer les produits sans catégorie correspondante
+    }
+    return {
+      params: {
+        category: categorySlug,
+        slug: product.slug,
+      },
+    };
+  }).filter(Boolean); // Supprimer les chemins null ou indéfinis
 
   return { paths, fallback: false };
 }
 
 export async function getStaticProps({ params }) {
-  const { category, slug } = params;
+  const { category: categorySlug, slug } = params;
 
-  const product = productsData.products.find(p => p.slug === slug && p.productCategorySlug === category);
-  const site = content.sites[0];
-  const products = productsData.products.filter(p => p.siteId === site.id);
-  const relatedProducts = productsData.products.filter(
-    p => p.productCategorySlug === category && p.slug !== slug
+  // Récupération des catégories et produits depuis Supabase
+  const categories = await fetchData('categories', { match: { shop_id: process.env.SHOP_ID } });
+  const products = await fetchData('products', { match: { shop_id: process.env.SHOP_ID } });
+
+  const shop = await fetchData('shops', { match: { id: process.env.SHOP_ID } });
+  const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
+  const data = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
+
+  // Trouver la catégorie correspondant au slug
+  const category = categories.find(cat => cat.slug === categorySlug);
+
+  if (!category) {
+    return {
+      notFound: true,
+    };
+  }
+
+  // Trouver le produit correspondant au slug et à la catégorie
+  const product = products.find(p => p.slug === slug && p.category_id === category.id);
+
+  if (!product) {
+    return {
+      notFound: true,
+    };
+  }
+
+  // Produits associés (même catégorie, exclure le produit actuel)
+  const relatedProducts = products.filter(
+    p => p.category_id === product.category_id && p.slug !== slug
   );
 
-  const otherCategories = categoriesData.categories.filter(
-    (cat) => cat.slug !== category // Exclure la catégorie actuelle
+  // Autres catégories (exclure la catégorie actuelle)
+  const otherCategories = categories.filter(
+    cat => cat.id !== category.id
   );
 
   return {
-    props: {  
-      product: product || null,
-      site: site || null,
+    props: {
+      product,
+      category, // Passez l'objet complet de la catégorie
       products,
       relatedProducts,
       otherCategories,
+      categories,
+      shop: shop[0],
+      brand: brand[0],
+      data: data[0],
     },
   };
 }

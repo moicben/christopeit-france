@@ -1,23 +1,22 @@
 import React from 'react';
-import Head from 'next/head';
+import Head from '../components/Head';
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-import content from '../content.json';
+import { fetchData } from 'lib/supabase';
 
-// Limite l'affichage au premier site
-const site = content.sites[0];  
-
-const PolitiqueDeConfidentialite = () => {
+const PolitiqueDeConfidentialite = ({shop, brand}) => {
   return (
-    <div key={site.id} className="container">
-      <Head>
-        <title>{`Politique de Confidentialité - ${site.shopName}`}</title>
-      </Head>
+    <div className="container">
+      <Head name={shop.name} domain={shop.domain}
+            favicon={brand.favicon} graph={brand.graph}
+            colorMain={brand.colorMain} colorSecondary={brand.colorSecondary} colorBlack={brand.colorBlack} colorGrey={brand.colorGrey} bgMain={brand.bgMain} bgLight={brand.bgLight} bgDark={brand.bgDark} radiusBig={brand.radiusBig} radiusMedium={brand.radiusMedium} font={brand.font} 
+            title={`Politique de confidentialité - ${shop.name}`}
+      />
       
       <main>
-        <Header shopName={site.shopName} keywordPlurial={site.keywordPlurial} />
+        <Header title={shop.name} name={shop.name} domain={shop.domain} logo={brand.logo} />
     
         <section className='legal'> 
           <h1>Politique de Confidentialité</h1>
@@ -83,14 +82,26 @@ const PolitiqueDeConfidentialite = () => {
           <section>
             <h2>7. Contact</h2>
             <p>
-              Pour toute question concernant cette politique de confidentialité, vous pouvez nous contacter à l'adresse suivante : support@christopeit-france.shop.
+              Pour toute question concernant cette politique de confidentialité, vous pouvez nous contacter à l'adresse suivante : support@{shop.domain}.
             </p>
           </section>
         </section>
       </main>
-      <Footer shopName={site.shopName} footerText={site.footerText} />
+      <Footer shop={shop} />
     </div>
   );
 };
 
 export default PolitiqueDeConfidentialite;
+
+export async function getStaticProps() {
+  const shop = await fetchData('shops', { match: { id: process.env.SHOP_ID } });
+  const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
+
+  return {
+    props: {
+      shop: shop[0],
+      brand: brand[0],
+    },
+  };
+}

@@ -3,7 +3,7 @@ import { format, addDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import Pagination from './Pagination'; // Import du composant Pagination
 
-const Products = ({ title, products, description, showCategoryFilter = true, initialCategoryFilter = 'all', disablePagination = false }) => {
+const Products = ({ title, products, description, showCategoryFilter = true, initialCategoryFilter = 'all', disablePagination = false, categories }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState('az');
   const [priceRange, setPriceRange] = useState('all');
@@ -12,24 +12,30 @@ const Products = ({ title, products, description, showCategoryFilter = true, ini
   const productsPerPage = 15;
   const productListRef = useRef(null);
 
+  // Création d'un dictionnaire pour accéder rapidement aux slugs des catégories par leur ID
+  const categorySlugMap = (categories || []).reduce((map, category) => {
+    map[category.id] = category.slug;
+    return map;
+  }, {});
+
   const filteredProducts = products.filter(product => {
-    const price = parseFloat(product.productPrice.replace('€', '').replace(',', '.'));
+    const price = product.price;
     const priceMatch = (priceRange === '100-200' && price >= 100 && price < 200) ||
                        (priceRange === '200-300' && price >= 200 && price < 300) ||
                        (priceRange === '300-400' && price >= 300 && price < 400) ||
                        (priceRange === '400+' && price >= 400) ||
                        (priceRange === 'all');
     const categoryMatch = categoryFilter === 'all' ||
-                          (categoryFilter === 'bestsellers' && product.productBestseller === true) ||
+                          (categoryFilter === 'bestsellers' && product.bestseller === true) ||
                           product.productCategorySlug === categoryFilter;
     return priceMatch && categoryMatch;
   });
 
   const sortedProducts = filteredProducts.sort((a, b) => {
-    const priceA = parseFloat(a.productPrice.replace('€', '').replace(',', '.'));
-    const priceB = parseFloat(b.productPrice.replace('€', '').replace(',', '.'));
-    const titleA = a.productTitle.toLowerCase();
-    const titleB = b.productTitle.toLowerCase();
+    const priceA = a.price;
+    const priceB = b.price;
+    const titleA = a.title.toLowerCase();
+    const titleB = b.title.toLowerCase();
 
     if (sortOrder === 'asc') {
       return priceA - priceB;
@@ -80,41 +86,48 @@ const Products = ({ title, products, description, showCategoryFilter = true, ini
           {/* ...existing filters... */}
         </div>
         <div className="product-list" ref={productListRef}>
-          {currentProducts.map(product => (
-            <a
-              href={`/${product.productCategorySlug}/${product.slug}`}
-              key={product.id}
-              className={`product-item ${product.productBestseller ? 'best-seller' : ''}`}
-              onMouseEnter={() => setHoveredProduct(product.slug)}
-              onMouseLeave={() => setHoveredProduct(null)}
-            >
-              <span className='best-wrap'>🏆 TOP VENTE</span>
-              <img
-                src={
-                  hoveredProduct === product.slug && product.productImages?.[1]
-                    ? product.productImages[1]
-                    : product.productImages?.[0]
-                }
-                alt={product.productTitle}
-              />
-              <h3>{product.productTitle}</h3>
-              <p className={`stock ${product.productStock.startsWith('Plus que') ? 'low' : ''}`}>
-                <span>⋅</span>{product.productStock}
-              </p>
-              <p className='delivery'>Livraison estimée : {getDeliveryDate(product.productDelivery)}</p>
-              <p className='price'></p>
-              <p>
-                {product.productDiscounted ? (
-                  <>
-                    <span className='initial-price'>{product.productDiscounted}</span>
-                    <span className='new-price'>{product.productPrice}</span>
-                  </>
-                ) : (
-                  product.productPrice
-                )}
-              </p>
-            </a>
-          ))}
+          {currentProducts.map(product => {
+            const categorySlug = categorySlugMap[product.category_id]; // Récupération du slug de la catégorie via category_id
+            if (!categorySlug) {
+              console.warn(`Aucun slug trouvé pour la catégorie avec ID ${product.category_id}`);
+              return null; // Ignorer les produits sans catégorie correspondante
+            }
+            return (
+              <a
+                href={`/${categorySlug}/${product.slug}`}
+                key={product.id}
+                className={`product-item ${product.bestseller ? 'best-seller' : ''}`}
+                onMouseEnter={() => setHoveredProduct(product.slug)}
+                onMouseLeave={() => setHoveredProduct(null)}
+              >
+                <span className='best-wrap'>🏆 TOP VENTE</span>
+                <img
+                  src={
+                    hoveredProduct === product.slug && product.images?.[1]
+                      ? product.images[1]
+                      : product.images?.[0]
+                  }
+                  alt={product.title}
+                />
+                <h3>{product.title}</h3>
+                <p className={`stock ${product.stock.startsWith('Plus que') ? 'low' : ''}`}>
+                  <span>⋅</span>{product.stock}
+                </p>
+                <p className='delivery'>Livraison estimée : {getDeliveryDate(product.delivery)}</p>
+                <p className='price'></p>
+                <p>
+                  {product.discounted ? (
+                    <>
+                      <span className='initial-price'>{product.discounted},00 €</span>
+                      <span className='new-price'>{product.price},00 €</span>
+                    </>
+                  ) : (
+                    product.price + ",00 €"
+                  )}
+                </p>
+              </a>
+            );
+          })}
         </div>
         {!disablePagination && filteredProducts.length > productsPerPage && (
           <Pagination

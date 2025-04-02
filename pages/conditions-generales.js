@@ -1,38 +1,41 @@
-import Head from 'next/head'
+
 import React from 'react';
+import Head from '../components/Head';
 import { FaShoppingCart } from 'react-icons/fa';
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-import content from '../content.json';
+import { fetchData } from 'lib/supabase';
 
-// Limite l'affichage au premier site
-const site = content.sites[0]; 
-
-export default function ConditionsGenerales() {
+export default function ConditionsGenerales({shop, brand}) {
   return (
-    <div key={site.id} className="container">
+    <div className="container">
+      <Head name={shop.name} domain={shop.domain}
+            favicon={brand.favicon} graph={brand.graph}
+            colorMain={brand.colorMain} colorSecondary={brand.colorSecondary} colorBlack={brand.colorBlack} colorGrey={brand.colorGrey} bgMain={brand.bgMain} bgLight={brand.bgLight} bgDark={brand.bgDark} radiusBig={brand.radiusBig} radiusMedium={brand.radiusMedium} font={brand.font} 
+            title={`Conditions Générales - ${shop.name}`}
+      />
 
       <main>
-        <Header shopName={site.shopName} keywordPlurial={site.keywordPlurial} />
+        <Header title={shop.name} name={shop.name} domain={shop.domain} logo={brand.logo} />
         
         <section className='legal'>
           <h1>Conditions Générales de Vente</h1>
           <h2>1. Présentation de l’entreprise</h2>
           <p>
-            Le site <a href="/"> www.{site.slug}.shop </a> est édité par, 
-            <strong>{site.shopName} SAS </strong>, immatriculée sous le numéro <strong>851 990 135</strong>, 
+            Le site <a href="/"> www.{shop.domain} </a> est édité par, 
+            <strong>{shop.name} SAS </strong>, immatriculée sous le numéro <strong>851 990 135</strong>, 
             située au <strong>125 RUE DE L'ARTISANAT 42110 CIVENS</strong>.
           </p>
           <ul>
             <li><strong>Numéro de SIRET</strong> : 85199013500028</li>
             <li><strong>Responsable légal</strong> : Veronique BERENGÈRE</li>
-            <li><strong>Email</strong> : support@christopeit-france.shop</li>
+            <li><strong>Email</strong> : support@{shop.domain}</li>
           </ul>
           <h2>2. Champ d’application</h2>
           <p>
-            Les présentes CGV régissent les relations entre <strong>{site.shopName}</strong> et tout client effectuant un achat sur 
+            Les présentes CGV régissent les relations entre <strong>{shop.name}</strong> et tout client effectuant un achat sur 
             <a href="/">notre site</a>. Toute commande implique l’acceptation des CGV.
           </p>
           <h2>3. Produits et services</h2>
@@ -53,7 +56,7 @@ export default function ConditionsGenerales() {
             <li>Renseignez vos informations et acceptez les CGV.</li>
           </ul>
           <p>
-            Une confirmation est envoyée par email. <strong>{site.shopName}</strong> se réserve le droit d'annuler toute commande suspecte.
+            Une confirmation est envoyée par email. <strong>{shop.name}</strong> se réserve le droit d'annuler toute commande suspecte.
           </p>
           <h2>6. Paiement</h2>
           <p>
@@ -82,7 +85,7 @@ export default function ConditionsGenerales() {
             Pour initier un retour, veuillez suivre les étapes suivantes :
           </p>
           <ul>
-            <li>Contactez notre service client à l'adresse suivante : support@christopeit-france.shop.</li>
+            <li>Contactez notre service client à l'adresse suivante : support@{shop.domain}.</li>
             <li>Indiquez votre numéro de commande et la raison du retour.</li>
             <li>Suivez les instructions fournies par notre service client pour retourner l'article.</li>
           </ul>
@@ -105,11 +108,24 @@ export default function ConditionsGenerales() {
           </ul>
           <h2>9. Contact</h2>
           <p>
-            Pour toute question concernant ces conditions générales de vente, vous pouvez nous contacter à l'adresse suivante : support@christopeit-france.shop.
+            Pour toute question concernant ces conditions générales de vente, vous pouvez nous contacter à l'adresse suivante : support@{shop.domain}.
           </p>
         </section>
       </main>
-      <Footer shopName={site.shopName} footerText={site.footerText} />
+      <Footer shop={shop} />
     </div>
   )
+}
+
+
+export async function getStaticProps() {
+  const shop = await fetchData('shops', { match: { id: process.env.SHOP_ID } });
+  const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
+
+  return {
+    props: {
+      shop: shop[0],
+      brand: brand[0],
+    },
+  };
 }

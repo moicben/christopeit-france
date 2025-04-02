@@ -14,7 +14,7 @@ const transformedProducts = products.map((product, index) => ({
   Description: product.productDescription ? product.productDescription.replace(/<\/?[^>]+(>|$)/g, '') : '', // Supprimer les balises HTML
   Price: product.productPrice ? product.productPrice.replace(',', '.').replace(/\s+/g, '').trim() : '', // Supprimer les espaces et remplacer la virgule par un point
   Condition: 'new', // Ajouter la colonne Condition avec "new"
-  Link: `https://christopeit-france.shop/produits/${product.slug || ''}`,
+  Link: `https://{shop.domain}/produits/${product.slug || ''}`,
   Availability: 'in_stock', 
   "Image link": product.productImages?.[0] || ''
 }));

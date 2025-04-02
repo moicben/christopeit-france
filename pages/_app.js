@@ -19,17 +19,13 @@ import '../styles/Testimonials.css';
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/react"
 
-import content from '../content.json';
 import Head from '../components/Head';
+
 
 function MyApp({ Component, pageProps }) {
   return (
     <>
-      <Head 
-        title={content.sites[0].keyword}
-        description="Boutique officielle de Christopeit France, distributeur exclusif de la marque Christopeit en France." 
-        favicon="/favicon.png" 
-      />
+      <Head />
       <Component {...pageProps} />
       <Analytics />
       <SpeedInsights />

@@ -3,7 +3,7 @@ import { FaShoppingCart, FaBars, FaTimes, FaRegTrashAlt } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import ReviewsBadge from './ReviewsBadge';
 
-const Header = ({ shopName, keywordPlurial }) => {
+const Header = ({ name, domain, logo }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cart, setCart] = useState([]);
@@ -102,7 +102,7 @@ const Header = ({ shopName, keywordPlurial }) => {
     router.push('/paiement');
   };
 
-  console.log('carttt', cart);
+  
 
   return (
     <>
@@ -115,7 +115,7 @@ const Header = ({ shopName, keywordPlurial }) => {
       </section> */}
       <header className="header">
         <div className='wrapper'>
-          <a className="logo-header" href="/"><img src='/logo.png' alt="Logo"/></a>
+          <a className="logo-header" href="/"><img src={logo} alt="Logo"/></a>
           <nav className="nav">
             <ul>
               <li><a href="/tous-les-equipements">équipements</a></li>
@@ -124,7 +124,7 @@ const Header = ({ shopName, keywordPlurial }) => {
               <li><a href="/velos-appartement">Vélos</a></li>
               <li><a href="/rameurs">Rameurs</a></li>
               <li className="dropdown">
-                <a href="#"><i className='fas fa-info'></i>Christopeit Sport</a>
+                <a href="#"><i className='fas fa-info'></i>{name}</a>
                 <ul className="dropdown-menu">
                   <li><a href="/a-propos">Notre histoire</a></li>
                   
@@ -192,7 +192,7 @@ const Header = ({ shopName, keywordPlurial }) => {
         )}
 
       <section className="badge-container">
-          <ReviewsBadge />
+          <ReviewsBadge domain={domain} logo={logo}/>
       </section>
     </>
   );

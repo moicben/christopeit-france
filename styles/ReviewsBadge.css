@@ -95,7 +95,6 @@
 .popup-content {
   background: #f5f4f4;
   padding: 2rem;
-  margin-top: 12.5vh;
   width: 760px;
   height: 75vh;
   position: relative;
@@ -103,6 +102,10 @@
   flex-direction: column;
   z-index: 1;
   overflow: auto;
+}
+
+.popup-content.reviews{
+  overflow-y: scroll;
 }
 
 .close-popup {

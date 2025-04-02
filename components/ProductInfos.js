@@ -2,7 +2,7 @@ import React from 'react';
 import { format, addDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
-export default function ProductInfos({ product, discountedPrice, handleAddToCart, buttonText, site }) {
+export default function ProductInfos({ product, handleAddToCart, buttonText, shop }) {
   const handleBuyNow = () => {
     //vider le panier actuel :
     localStorage.setItem('cart', JSON.stringify([]));
@@ -28,32 +28,32 @@ export default function ProductInfos({ product, discountedPrice, handleAddToCart
   };
 
   return (
-    <div className={`product-info ${product.productBestseller ? 'best-seller' : ''}`}>
+    <div className={`product-info ${product.bestseller ? 'best-seller' : ''}`}>
       <span className='best-wrap'>🏆 TOP VENTE</span>
-      <h1>{product.productTitle}</h1>
-      {product.productDiscounted ? (
+      <h1>{product.title}</h1>
+      {product.discounted ? (
         <>
           <p className="product-price new">
-            {product.productPrice}
-            <span className="initial-price">{product.productDiscounted}</span>
+            {product.price},00 €
+            <span className="initial-price">{product.discounted},00 €</span>
           </p>
         </>
       ) : (
-        <p className="product-price">{product.productPrice}</p>
+        <p className="product-price">{product.price}</p>
       )}
-      <p className={`stock ${product.productStock.startsWith('Plus que') ? 'low' : ''}`}>
-        <span>⋅</span>{product.productStock} {product.productStock.startsWith('Plus que') ? 'en stock' : ''}
+      <p className={`stock ${product.stock.startsWith('Plus que') ? 'low' : ''}`}>
+        <span>⋅</span>{product.stock} {product.stock.startsWith('Plus que') ? 'en stock' : ''}
       </p>
-      <p className='delivery'>Livraison estimée : {getDeliveryDate(product.productDelivery)}</p>
+      <p className='delivery'>Livraison estimée : {getDeliveryDate(product.delivery)}</p>
       <div
         className="product-description"
-        dangerouslySetInnerHTML={{ __html: product.productDescription }}
+        dangerouslySetInnerHTML={{ __html: product.desc }}
       />
 
       <article className="purchase-row">
         <p className="comptor">PROMO FIN-MARS 15%</p>
         <button className="buy-now" onClick={handleBuyNow}>
-          Acheter pour {discountedPrice.toFixed(2)}€
+          Acheter pour {product.discounted},00€
         </button>
         <button onClick={handleAddToCart}>{buttonText}</button>
       </article>
@@ -85,22 +85,22 @@ export default function ProductInfos({ product, discountedPrice, handleAddToCart
         </li>
       </ul>
       
-      <div className="gift-container">
+      {/* <div className="gift-container">
         <div className="cover"></div>
         <h4>JOYEUSE ANNÉE 2025 !</h4>
-        <h5>AVEC {site.shopName.toUpperCase()}</h5>
+        <h5>AVEC {shop.name.toUpperCase()}</h5>
         <p>
           - 15% de réduction avec le code "<strong>YEAR15</strong>"
         </p>
         <p>- Livraison gratuite sans minimum d'achat</p>
         <p>- Retours étendus jusqu'au 14/03/2025 </p>
-      </div>
+      </div> */}
       <div className='carousels-container'>
         <details >
           <summary>Détails techniques du produit</summary>
           <div
             className="product-content"
-            dangerouslySetInnerHTML={{ __html: product.productDetails }}
+            dangerouslySetInnerHTML={{ __html: product.details }}
           />
         </details>
         <details >
@@ -129,7 +129,7 @@ export default function ProductInfos({ product, discountedPrice, handleAddToCart
             <br />
             <br />
             <span>Support :</span> Disponible 7j/7 via formulaire en ligne ou par
-            mail à support@christopeit-france.shop
+            mail à support@{shop.domain}
             <br />
             <br />
           </div>

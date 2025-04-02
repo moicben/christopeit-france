@@ -5,25 +5,37 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Pagination from '../components/Pagination'; // Import du composant Pagination
 
-const Blog = ({ site, articles }) => {
+import { fetchData } from 'lib/supabase';
+
+const Blog = ({ shop, data, brand }) => {
+
   const [currentPage, setCurrentPage] = useState(1);
   const articlesPerPage = 9;
 
+  // Assurez-vous que data.blogContent est un tableau
+  const blogContentArray = Array.isArray(data.blogContent) ? data.blogContent : Object.values(data.blogContent);
+
   const indexOfLastArticle = currentPage * articlesPerPage;
   const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
-  const currentArticles = articles.slice(indexOfFirstArticle, indexOfLastArticle);
 
-  const totalPages = Math.ceil(articles.length / articlesPerPage);
+  const currentArticles = blogContentArray[0].slice(indexOfFirstArticle, indexOfLastArticle);
+  const totalPages = Math.ceil(blogContentArray[0].length / articlesPerPage);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
   return (
-    <div key={site.id} className="container">
-      <Head title={`Blog & Guides - ${site.shopName}`} />
+    <div className="container">
+
+        <Head name={shop.name} domain={shop.domain}
+            favicon={brand.favicon} graph={brand.graph}
+            colorMain={brand.colorMain} colorSecondary={brand.colorSecondary} colorBlack={brand.colorBlack} colorGrey={brand.colorGrey} bgMain={brand.bgMain} bgLight={brand.bgLight} bgDark={brand.bgDark} radiusBig={brand.radiusBig} radiusMedium={brand.radiusMedium} font={brand.font} 
+            title={`Blog & Guides - ${shop.name}`}
+      />
+
       <main>
-        <Header shopName={site.shopName} cartCount={0} keywordPlurial={site.keywordPlurial} />
+        <Header title={shop.name} name={shop.name} domain={shop.domain} logo={brand.logo} />
         
         <section className="blog" id='about'>
           
@@ -50,19 +62,22 @@ const Blog = ({ site, articles }) => {
           </div>
         </section>
       </main>
-      <Footer shopName={site.shopName} footerText={site.footerText} />
+      <Footer shop={shop}/>
     </div>
   );
 };
 
 export async function getStaticProps() {
-  const content = await import('../content.json');
-  const articlesData = await import('../articles.json');
+  const data = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
+  const shop = await fetchData('shops', { match: { id: process.env.SHOP_ID } });
+  const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
+  
 
   return {
     props: {
-      site: content.sites[0],
-      articles: articlesData.articles,
+      data:data[0],
+      shop: shop[0],
+      brand: brand[0],
     },
   };
 }

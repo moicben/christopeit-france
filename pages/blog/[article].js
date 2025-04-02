@@ -1,12 +1,15 @@
 import React from 'react';
+
 import { useRouter } from 'next/router';
 import Head from '../../components/Head';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import Categories from '../../components/Categories';
-import categoriesData from '../../categories.json';
 
-const Article = ({ site, article }) => {
+import { fetchData } from 'lib/supabase';
+
+
+const Article = ({ shop, data, brand, article, categories }) => {
   const router = useRouter();
   const { article: articleId } = router.query;
 
@@ -15,10 +18,12 @@ const Article = ({ site, article }) => {
   }
 
   return (
-    <div key={site.id} className="container">
-      <Head title={`${site.shopName} - ${article.title}`} />
+    <div className="container">
+      <Head name={shop.name} domain={shop.domain} favicon={brand.favicon} graph={brand.graph}
+        title={`Blog & Guides - ${shop.name}`}/>
+
       <main>
-        <Header shopName={site.shopName} cartCount={0} keywordPlurial={site.keywordPlurial} />
+        <Header title={shop.name} name={shop.name} domain={shop.domain} logo={brand.logo} />
         
         <section className="article" id='article'>
           <div className='wrapper'>
@@ -31,15 +36,24 @@ const Article = ({ site, article }) => {
           </div>
         </section>
       </main>
-      <Categories categories={categoriesData.categories} title='Découvrez nos équipements'/>
-      <Footer shopName={site.shopName} footerText={site.footerText} />
+      <Categories categories={categories} title='Découvrez nos équipements'/>
+      <Footer shop={shop} />
     </div>
   );
 };
 
 export async function getStaticPaths() {
-  const articlesData = await import('../../articles.json');
-  const paths = articlesData.articles.map(article => ({
+  // Récupération des données depuis Supabase
+  const data = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
+
+  // Vérification que le champ blogContent existe et contient des articles
+  if (!data || !data[0]?.blogContent?.articles) {
+    console.error("Erreur : blogContent ou articles manquants dans les données récupérées.");
+    return { paths: [], fallback: false };
+  }
+
+  // Génération des chemins à partir des slugs des articles
+  const paths = data[0].blogContent.articles.map(article => ({
     params: { article: article.slug },
   }));
 
@@ -47,14 +61,20 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const content = await import('../../content.json');
-  const articlesData = await import('../../articles.json');
-  const article = articlesData.articles.find(article => article.slug === params.article);
+  const data = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
+  const shop = await fetchData('shops', { match: { id: process.env.SHOP_ID } });
+  const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
+  const categories = await fetchData('categories', { match: { shop_id: process.env.SHOP_ID } });
+
+  const article = data[0].blogContent.articles.find(article => article.slug === params.article);
 
   return {
     props: {
-      site: content.sites[0],
+      data: data[0],
+      shop: shop[0],
+      brand: brand[0],
       article,
+      categories,
     },
   };
 }

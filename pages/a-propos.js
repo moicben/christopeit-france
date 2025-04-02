@@ -1,39 +1,71 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Head from '../components/Head';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 
-const APropos = ({ site }) => {
+import { fetchData } from '../lib/supabase'; // Assurez-vous que le chemin est correct
+
+const APropos = ({ data, shop, brand }) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+
+    // Vérifiez la taille initiale de l'écran
+    handleResize();
+
+    // Ajoutez un écouteur d'événements pour les redimensionnements
+    window.addEventListener('resize', handleResize);
+
+    // Nettoyez l'écouteur d'événements
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
-    <div key={site.id} className="container">
-      <Head title={`Notre histoire - ${site.shopName}`} />
+    <div className="container">
+
+      <Head name={shop.name} domain={shop.domain}
+            favicon={brand.favicon} graph={brand.graph}
+            colorMain={brand.colorMain} colorSecondary={brand.colorSecondary} colorBlack={brand.colorBlack} colorGrey={brand.colorGrey} bgMain={brand.bgMain} bgLight={brand.bgLight} bgDark={brand.bgDark} radiusBig={brand.radiusBig} radiusMedium={brand.radiusMedium} font={brand.font} 
+            title={`Notre histoire - ${shop.name}`}
+      />
       <main>
-        <Header shopName={site.shopName} cartCount={0} keywordPlurial={site.keywordPlurial} />
-        
-        <section className="a-propos" id='about'>
+        <Header title={shop.name} name={shop.name} domain={shop.domain} logo={brand.logo} />
+
+        <section
+          className="a-propos"
+          id="about"
+          style={{
+            backgroundImage: `url(${isMobile ? data.aboutPageImgMobile : data.aboutPageImg})`,
+          }}
+        >
           {/* <div className='about-banner'>
             <div className='filter'>
-              <h1>Il était une fois... Christopeit Sport</h1>
+              <h1>Il était une fois...</h1>
             </div>
           </div>
           <div className="wrapper">
           </div> */}
         </section>
       </main>
-      <Footer shopName={site.shopName} footerText={site.footerText} />
+      <Footer shop={shop} />
     </div>
   );
 };
 
 export async function getStaticProps() {
-  const content = await import('../content.json');
-  const articlesData = await import('../articles.json');
+  const data = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
+  const shop = await fetchData('shops', { match: { id: process.env.SHOP_ID } });
+  const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
 
   return {
     props: {
-      site: content.sites[0],
-      articles: articlesData.articles,
+      data: data[0],
+      shop: shop[0],
+      brand: brand[0],
     },
   };
 }

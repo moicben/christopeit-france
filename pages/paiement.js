@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import emailjs from 'emailjs-com';
-import content from '../content.json';
 import axios from 'axios';
+
+import Head from '/components/Head';
 import CheckoutSummary from '/components/CheckoutSummary';
 import CheckoutForm from '/components/CheckoutForm';
 // import CheckoutVerify from '/components/CheckoutVerify';
 
-const site = content.sites[0];
+import { fetchData } from '../lib/supabase';
 
-export default function Checkout() {
+
+const Checkout = ({data, shop, brand}) => {
   const [cart, setCart] = useState([]);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('card');
   const [showVerificationWrapper, setShowVerificationWrapper] = useState(false);
@@ -22,7 +24,6 @@ export default function Checkout() {
   const [showPopup, setShowPopup] = useState(false);
   const [iframeUrl, setIframeUrl] = useState('');
   const [isPaymentConfirmed, setIsPaymentConfirmed] = useState(false);
-  
 
   // Générer un numéro de commande aléatoire
   const [orderNumber] = useState(() => Math.floor(100000 + Math.random() * 900000).toString());
@@ -81,9 +82,15 @@ export default function Checkout() {
 
   return (
     <div className="paiement-container">
+      <Head name={shop.name} domain={shop.domain}
+            favicon={brand.favicon} graph={brand.graph}
+            colorMain={brand.colorMain} colorSecondary={brand.colorSecondary} colorBlack={brand.colorBlack} colorGrey={brand.colorGrey} bgMain={brand.bgMain} bgLight={brand.bgLight} bgDark={brand.bgDark} radiusBig={brand.radiusBig} radiusMedium={brand.radiusMedium} font={brand.font} 
+            title={`Paiement - ${shop.name}`}
+      />
+
       <div className="left-column">
-        <a className="back" href="/"><img src='/logo.png'/></a>
-        <CheckoutSummary cart={cart} totalPrice={totalPrice} discount={discount} discountedPrice={discountedPrice} site={site} paymentFees={paymentFees} />
+        <a className="back" href="/"><img src={brand.logo}/></a>
+        <CheckoutSummary cart={cart} totalPrice={totalPrice} discount={discount} discountedPrice={discountedPrice} name={shop.name} paymentFees={paymentFees} />
       </div>
       <div className="right-column">
         <CheckoutForm
@@ -94,7 +101,7 @@ export default function Checkout() {
           // proceedCheckout={proceedCheckout}
           discountedPrice={discountedPrice}
           cart={cart}
-          site={site}
+          shop={shop}
           orderNumber={orderNumber}
           onBack={handleBack} // Transmettre la fonction handleBack
         />
@@ -132,3 +139,20 @@ export default function Checkout() {
     </div>
   );
 }
+
+export async function getStaticProps() {
+
+  const data = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
+  const shop = await fetchData('shops', { match: { id: process.env.SHOP_ID } });
+  const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
+
+  return {
+    props: {
+      data: data[0],
+      shop: shop[0],
+      brand: brand[0],
+    },
+  };
+}
+
+export default Checkout;

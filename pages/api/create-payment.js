@@ -19,8 +19,8 @@ export default async (req, res) => {
           value: parseFloat(amount).toFixed(2)
         },
         description: `Commande #${orderNumber}`,
-        redirectUrl: `https://www.christopeit-france.shop/verification?orderNumber=${orderNumber}`, // Static redirect URL
-        webhookUrl: `https://www.christopeit-france.shop/api/webhook?orderNumber=${orderNumber}`, // Webhook pour les notifications Mollie
+        redirectUrl: `https://www.{shop.domain}/verification?orderNumber=${orderNumber}`, // Static redirect URL
+        webhookUrl: `https://www.{shop.domain}/api/webhook?orderNumber=${orderNumber}`, // Webhook pour les notifications Mollie
         cardToken: cardToken,
       });
 

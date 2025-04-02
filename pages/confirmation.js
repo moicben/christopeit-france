@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-export default function Confirmation() {
+import Head from '../components/Head';
+import { fetchData } from '../lib/supabase';
+
+const Confirmation = ({brand, shop}) =>{
   const router = useRouter();
   const { commande: orderId } = router.query;
 
@@ -12,7 +15,13 @@ export default function Confirmation() {
 
   return (
     <div className="confirmation-container">
-      <img src="/logo.png" alt="Logo" className="logo" />
+      <Head name={shop.name} domain={shop.domain}
+            favicon={brand.favicon} graph={brand.graph}
+            colorMain={brand.colorMain} colorSecondary={brand.colorSecondary} colorBlack={brand.colorBlack} colorGrey={brand.colorGrey} bgMain={brand.bgMain} bgLight={brand.bgLight} bgDark={brand.bgDark} radiusBig={brand.radiusBig} radiusMedium={brand.radiusMedium} font={brand.font} 
+            title={`Confirmation - ${shop.name}`}
+      />
+
+      <img src={brand.logo} alt="Logo" className="logo" />
       <h2>Commande #{orderId} confirmée</h2>
       <p>
         Merci pour votre commande <strong>#{orderId}</strong> sur notre boutique,
@@ -25,3 +34,18 @@ export default function Confirmation() {
     </div>
   );
 }
+
+
+export async function getStaticProps() {
+  const shop = await fetchData('shops', { match: { id: process.env.SHOP_ID } });
+    const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
+
+  return {
+    props: {
+      brand: brand[0],
+      shop: shop[0],
+    },
+  };
+}
+
+export default Confirmation;

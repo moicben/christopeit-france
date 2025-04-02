@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import Head from 'next/head';
+import Head from '../components/Head';
 
 const MolliePage = () => {
   useEffect(() => {

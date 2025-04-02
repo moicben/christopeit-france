@@ -26,9 +26,10 @@
 }
 
 .a-propos{
-  background: url(/christopeit-sport-histoire-desktop.png) no-repeat 0 0/contain !important;
   height: 600vh;
   width: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 #about .about-banner .filter{
@@ -190,7 +191,6 @@
   }
 
   .a-propos {
-    background: url(/christopeit-histoire-mobile.png) no-repeat 0 0/contain !important;
     height: 700vh;
     width: 100%;
   }

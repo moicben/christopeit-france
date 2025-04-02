@@ -1,16 +1,17 @@
 import { useRouter } from "next/router";
-import productsData from "../products.json";
-import categoriesData from "../categories.json";
+
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Products from '../components/Products';
 import About from '../components/About';
 import Testimonials from '../components/Testimonials';
-import Head from 'next/head';
+import Head from '../components/Head';
 import Categories from '../components/Categories';
 import ScrollingBanner from "components/ScrollingBanner";
 
-const CategoryPage = ({ category, filteredProducts, site, otherCategories }) => {
+import { fetchData } from "../lib/supabase";
+
+const CategoryPage = ({data, shop, brand, categories, category, filteredProducts, otherCategories }) => {
   if (!category) {
     return <h1>Erreur 404 - Catégorie non trouvée</h1>;
   }
@@ -34,19 +35,25 @@ const CategoryPage = ({ category, filteredProducts, site, otherCategories }) => 
     return icons[Math.floor(Math.random() * icons.length)];
   };
 
+  console.log('Faviconn:', brand.favicon);
+
   return (
-    <div key={site.id} className="container">
-      <Head>
-        <title>{`${category.seoTitle} - ${site.shopName}`}</title>
-      </Head>
+    <div className="container">
+
+
+      <Head name={shop.name} domain={shop.domain}
+            favicon={brand.favicon} graph={brand.graph}
+            colorMain={brand.colorMain} colorSecondary={brand.colorSecondary} colorBlack={brand.colorBlack} colorGrey={brand.colorGrey} bgMain={brand.bgMain} bgLight={brand.bgLight} bgDark={brand.bgDark} radiusBig={brand.radiusBig} radiusMedium={brand.radiusMedium} font={brand.font} 
+            title={`${category.title} - ${category.desc}`}
+      />
 
       <main>
-        <Header shopName={site.shopName} cartCount={0} keywordPlurial={site.keywordPlurial} />
+        <Header title={shop.name} name={shop.name} domain={shop.domain} logo={brand.logo} />
         <section className="category-banner">
           <div className="wrapper" style={{ backgroundImage: `url(/${category.slug}.jpg)` }}>
             <div className="content">
-              <h1>{category.name}</h1>
-              <p>{category.seoDescription}</p>
+              <h1>{category.title}</h1>
+              <p>{category.desc}</p>
             </div>
           </div>
         </section>
@@ -61,24 +68,24 @@ const CategoryPage = ({ category, filteredProducts, site, otherCategories }) => 
 
         <section className="guide">
           <div className="wrapper">
-            <h2>{category.guide.title}</h2>
+            <h2>{category.guideTitle}</h2>
             <div className="content">
               <ul>
-                {category.guide.points.map((point, index) => (
+                {category.guideContent.map((point, index) => (
                   <li key={index}>{point}</li>
                 ))}
               </ul>
-              <img src={`/guide-${category.slug}.jpg`} alt={category.guide.title} />
+              <img src={`/guide-${category.slug}.jpg`} alt={category.guideTitle} />
             </div>
           </div>
         </section>
 
         <section className="why">
           <div className="wrapper">
-            <h2>{category.why.title}</h2>
+            <h2>{category.whyTitle}</h2>
             <div className="content">
               <ul>
-                {category.why.points.map((point, index) => (
+                {category.whyContent.map((point, index) => (
                   <li key={index}><i className={getRandomIcon()}></i>{point}</li>
                 ))}
               </ul>
@@ -88,29 +95,31 @@ const CategoryPage = ({ category, filteredProducts, site, otherCategories }) => 
 
         <section className="maintenance">
           <div className="wrapper">
-            <h2>{category.maintenance.title}</h2>
+            <h2>{category.maintenanceTitle}</h2>
             <div className="content">
               <ul>
-                {category.maintenance.points.map((point, index) => (
+                {category.maintenanceContent.map((point, index) => (
                   <li key={index}>{point}</li>
                 ))}
               </ul>
-              <img src={`/maintenance-${category.slug}.jpg`} alt={category.maintenance.title} />
+              <img src={`/maintenance-${category.slug}.jpg`} alt={category.maintenanceTitle} />
             </div>
           </div>
         </section>
         
-        <Testimonials site={site} />
-        <Categories categories={otherCategories} title='catégories similaires'/>
+        <Testimonials shop={shop} data={data.reviewContent} />
+        <Categories categories={categories} title='catégories similaires'/>
       </main>
-      <Footer shopName={site.shopName} footerText={site.footerText} />
+      <Footer shop={shop} />
     </div>
   );
 };
 
 // 🔹 Génération des pages dynamiques
 export async function getStaticPaths() {
-  const paths = categoriesData.categories.map((category) => ({
+  const categories = await fetchData('categories', { match: { shop_id: process.env.SHOP_ID } });
+  
+  const paths = categories.map((category) => ({
     params: { category: category.slug },
   }));
 
@@ -119,28 +128,49 @@ export async function getStaticPaths() {
 
 // 🔹 Préchargement des données côté serveur
 export async function getStaticProps({ params }) {
-  const category = categoriesData.categories.find((cat) => cat.slug === params.category);
+  const categories = await fetchData('categories', { match: { shop_id: process.env.SHOP_ID } });
+  const products = await fetchData('products', { match: { shop_id: process.env.SHOP_ID } });
+  const shop = await fetchData('shops', { match: { id: process.env.SHOP_ID } });
+  const data = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
+  const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
+
+  console.log('Shop data:', shop);
+
+  const category = categories.find((cat) => cat.slug === params.category);
 
   // Si la catégorie est "tous-les-equipements" ou "bestsellers", on filtre
   const filteredProducts = params.category === "tous-les-equipements"
-    ? productsData.products
+    ? products
     : params.category === "bestsellers"
-    ? productsData.products.filter(
-        (product) => product.productBestseller === true
+    ? products.filter(
+        (product) => product.bestseller === true
       )
-    : productsData.products.filter(
-        (product) => product.productCategorySlug === params.category
-      );
+    : products.filter((product) => {
+        const productCategory = categories.find((cat) => cat.id === product.category_id);
+        return productCategory && productCategory.slug === params.category;
+      });
 
   if (!category) {
     return { notFound: true };
   }
 
-  const otherCategories = categoriesData.categories.filter((cat) => cat.slug !== params.category); // Exclure la catégorie actuelle
-  const content = await import('../content.json');
+  const otherCategories = categories.filter((cat) => cat.slug !== params.category); // Exclure la catégorie actuelle
+  const site = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
+
+  console.log('Shop data:', shop);
+  console.log('Brand data:', brand);
 
   return {
-    props: { category, filteredProducts, site: content.sites[0], otherCategories },
+    props: {
+      category,
+      filteredProducts,
+      site: site[0],
+      data: data[0],
+      brand: brand[0],
+      shop: shop[0],
+      products: products[0],
+      otherCategories,
+      categories },
   };
 }
 

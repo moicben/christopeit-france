@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import reviews from '../reviews.json'; // Import des avis
 
 
-const ReviewsBadge = () => {
+const ReviewsBadge = ({domain, logo}) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // État pour le chargement
   const [currentPage, setCurrentPage] = useState(1);
@@ -94,7 +94,7 @@ const ReviewsBadge = () => {
   return (
     <>
       <img
-        src="https://christopeit-france.shop/avis-verifies.png"
+        src="https://bpybtzxqypswjiizkzja.supabase.co/storage/v1/object/public/ecom/christopeit-france/avis-verifies.png"
         alt="Avis vérifiés"
         onClick={togglePopup}
         style={{ cursor: 'pointer' }}
@@ -109,14 +109,14 @@ const ReviewsBadge = () => {
           <button className="close-popup" onClick={togglePopup}>
             <i className="fas fa-times"></i>
           </button>
-          <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+          <div className="popup-content reviews" onClick={(e) => e.stopPropagation()}>
             <a
               className="popup-header"
               target="_blank"
               href="https://fr.avis-verifies.com/blog/"
               rel="noreferrer"
             >
-              <img className="logo" src="avis-verifies.svg" alt="Avis vérifiés" />
+              <img className="logo" src="https://bpybtzxqypswjiizkzja.supabase.co/storage/v1/object/public/ecom/christopeit-france/avis-verifies.svg" alt="Avis vérifiés" />
               <a href="">Blog</a>
               <button>Pour les entreprises</button>
             </a>
@@ -130,16 +130,16 @@ const ReviewsBadge = () => {
                 <a href="#">Sport</a>
               </li>
               <li className="breadcrumb-item active">
-                <a href="#">christopeit-france.shop</a>
+                <a href="#">{domain}</a>
               </li>
             </ol>
             <div className="popup-intro">
               <article>
-                <img className="logo" src="/logo.png" alt="Logo" />
+                <img className="logo" src={logo} alt="Logo" />
               </article>
               <article>
                 <h5 className="title-rate">
-                  Avis clients de : <br></br><span className="bolder">christopeit-france.shop</span>
+                  Avis clients de : <br></br><span className="bolder">{domain}</span>
                 </h5>
                 <img className="rate" src="/review-rate.png" alt="Note moyenne" />
                 <span className="info-rate">

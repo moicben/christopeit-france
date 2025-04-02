@@ -1,4 +1,4 @@
-import Head from 'next/head';
+import Head from '../components/Head';
 import React, { useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
@@ -116,30 +116,30 @@ const successStyle = {
 };
 
 const StripeTest = ({ site }) => (
-  <div key={site.id} className="container">
+  <div className="container">
     <Head>
-      <title>Stripe Test - {site.shopName}</title>
+      <title>Stripe Test - {shop.name}</title>
       <link rel="icon" href="/favicon.ico" />
     </Head>
     
     <main>
-      <Header shopName={site.shopName} cartCount={0} keywordPlurial={site.keywordPlurial} />
+      <Header shopName={shop.name} cartCount={0} keywordPlurial={site.keywordPlurial} />
       <Elements stripe={stripePromise}>
         <CheckoutForm />
       </Elements>
     </main>
-    <Footer shopName={site.shopName} footerText={site.footerText} />
+    <Footer shop={shop} />
   </div>
 );
 
-export async function getStaticProps() {
-  const content = await import('../content.json');
+// export async function getStaticProps() {
+//   const data = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
 
-  return {
-    props: {
-      site: content.sites[0],
-    },
-  };
-}
+//   return {
+//     props: {
+//       data: data[0],
+//     },
+//   };
+// }
 
-export default StripeTest;
+// export default StripeTest;

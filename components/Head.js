@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-const MyHead = ({ title, description, image, favicon }) => {
+const MyHead = ({ title, description, name, domain, favicon, graph, font }) => {
   const router = useRouter();
   const pageSlug = router.asPath === '/' ? '' : router.asPath.replace(/\/$/, ''); // Supprime le slash final si présent
 
@@ -10,22 +10,37 @@ const MyHead = ({ title, description, image, favicon }) => {
     <Head>
       <title>{title}</title>
       <meta name="description" content={description} />
+
       <link rel="icon" href={favicon} />
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-      
-      <link rel="canonical" href={`https://www.christopeit-france.shop${pageSlug}`} />
+      <link rel="canonical" href={`https://www.${domain}${pageSlug}`} />
+
       <meta property="og:locale" content="fr_FR" />
       <meta property="og:type" content="website" />
-      <meta property="og:title" content={title} />
+      <meta property="og:title" content={name} />
       <meta property="og:description" content={description} />
-      <meta property="og:url" content={`https://www.christopeit-france.shop${pageSlug}`} />
-      <meta property="og:site_name" content="Christopeit France" />
-      <meta property="og:image" content={image} />
-      <meta property="og:image:secure_url" content={image} />
-      <meta property="og:image:width" content="900" />
-      <meta property="og:image:height" content="900" />
-      
+      <meta property="og:url" content={`https://www.${domain}${pageSlug}`} />
+      <meta property="og:site_name" content={name} />
+      <meta property="og:image" content={graph} />
+      <meta property="og:image:secure_url" content={graph} />
 
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+      {/* Inline styles to prevent FOUT */}
+      <style>
+        {`
+          * {
+            font-family: ${font}, -apple-system, sans-serif;
+          }
+
+          a {
+            /* Add your styles here */
+          }
+
+          button {
+            /* Add your styles here */
+          }
+        `}
+      </style>
 
       {/* Google tag 1 (Initial) */}
       <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16883090550"></script>

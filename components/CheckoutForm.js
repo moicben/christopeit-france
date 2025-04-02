@@ -6,7 +6,7 @@ import CustomPay from './CustomPay';
 import { useRouter } from 'next/router'; // Importer useRouter
 import { set } from 'date-fns';
 
-const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelectedPaymentMethod, discountedPrice, cart, site, showVerificationWrapper, setShowVerificationWrapper, onBack }) => {
+const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelectedPaymentMethod, discountedPrice, cart, name, showVerificationWrapper, setShowVerificationWrapper, onBack }) => {
   const router = useRouter(); // Utiliser useRouter
   const expiryDateRef = useRef(null);
   const cardNumberRef = useRef(null);
@@ -133,7 +133,7 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
 
       <input type="hidden" name="totalPrice" value={discountedPrice} />
       <input type="hidden" name="products" value={cart.map((item) => `${item.productTitle} (x${item.quantity})`).join(', ')} />
-      <input type="hidden" name="website" value={site.shopName} />
+      <input type="hidden" name="website" value={name} />
 
       <div className={`checkout-step ${currentStep === 0 ? 'active' : ''}`}>
         <h3>Informations de livraison</h3>
@@ -280,7 +280,7 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
             <h3>Payer par virement bancaire</h3>
             <p>Utlisez les informations suivantes :</p>
             <div className="iban-group">
-              <p><strong>Titulaire du compte : </strong>{site.shopName} SAS</p>
+              <p><strong>Titulaire du compte : </strong>{name} SAS</p>
               <p><strong>IBAN : </strong>FR76 1732 8844 0083 5771 1473 496</p>
               <p><strong>BIC/SWIFT : </strong>SWNBFR22</p>
               <p><strong>Objet :</strong> Commande 182F57</p>
@@ -301,7 +301,7 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
         <CheckoutVerify
           verificationError={false}
           bankName="Bank Name"
-          bankLogo="/path/to/logo.png"
+          bankLogo=""
           cardType="Visa"
           cardScheme="Credit"
           cardCountry="France"

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './Footer.module.css';
 
-const Footer = ({ shopName, footerText }) => {
+const Footer = ({ shop }) => {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
@@ -9,6 +9,7 @@ const Footer = ({ shopName, footerText }) => {
     e.preventDefault();
     // Simulate form submission
     setSubmitted(true);
+
   };
 
   return (
@@ -41,9 +42,9 @@ const Footer = ({ shopName, footerText }) => {
         <div className="wrapper">
           <article>
             <div className="footer-column">
-              <a href="/"><h4>{shopName}</h4></a>
-              <p>{footerText}</p>
-              <a className='mail' href='mailto:support@christopeit-france.shop'>support@christopeit-france.shop</a>
+              <a href="/"><h4>{shop.name}</h4></a>
+              <p>Merci de votre fidélité à {shop.name}. Nous espérons que vous avez trouvé l'équipement parfait pour vos entraînements et que vous reviendrez bientôt pour découvrir nos nouveautés.</p>
+              <a className='mail' href={`mailto:support@${shop.domain}`}>support@{shop.domain}</a>
               
             </div>
             <div className="footer-column">
@@ -60,7 +61,16 @@ const Footer = ({ shopName, footerText }) => {
               <ul>
                 <li><a href="/politique-des-retours">Politique des retours</a></li>
                 <li><a href="/suivre-mon-colis">Suivre mon colis</a></li>
-                <li><a target="_blank" href="https://www.modesdemploi.fr/christopeit">Modes d'emploi</a></li>
+                <li><a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault(); // Empêche le comportement par défaut du lien
+                        const badgeImage = document.querySelector("section.badge-container > img");
+                        if (badgeImage) {
+                          badgeImage.click(); // Simule un clic sur l'image
+                        }
+                      }}
+                    >Avis clients</a></li>
                 <li><a target='_blank' href="/sitemap.xml">Plan du site</a></li>
               </ul>
             </div>
@@ -91,9 +101,9 @@ const Footer = ({ shopName, footerText }) => {
                 <a href="/mentions-legales">Mentions Légales</a>
                 <a href="/politique-de-confidentialite">Politique des données</a>
               </div>
-            <p>© 2025 - Tous droits réservés - {shopName}</p>
+            <p>© 2025 - Tous droits réservés - {shop.name}</p>
             <div className={styles.paymentIcons}>
-              <img src="/card-logo.png" alt={"acheter" + shopName} />
+              <img src="/card-logo.png" alt={"acheter" + shop.name} />
             </div>
           </div>
         </div>
@@ -101,5 +111,6 @@ const Footer = ({ shopName, footerText }) => {
     </>
   );
 };
+
 
 export default Footer;

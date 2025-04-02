@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import Head from 'next/head';
+import Head from '../components/Head';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-const TrackOrder = ({ site }) => {
+import { fetchData } from '../lib/supabase';
+
+const TrackOrder = ({ shop,brand,data }) => {
     const [trackingNumber, setTrackingNumber] = useState('');
     const [trackingInfo, setTrackingInfo] = useState(null);
     const [error, setError] = useState('');
@@ -26,14 +28,14 @@ const TrackOrder = ({ site }) => {
     };
 
     return (
-        <div key={site.id} className="container">
+        <div className="container">
             <Head>
-                <title>{`Suivre mon colis - ${site.shopName}`}</title>
+                <title>{`Suivre mon colis - ${shop.name}`}</title>
                 <meta name="description" content="Suivez votre commande en temps réel" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             
-            <Header shopName={site.shopName} keywordPlurial={site.keywordPlurial} />
+            <Header title={shop.name} name={shop.name} domain={shop.domain} logo={brand.logo} />
             
             <main>
                 <div className="track-order-container">
@@ -60,23 +62,23 @@ const TrackOrder = ({ site }) => {
                 </div>
             </main>
             
-            <Footer shopName={site.shopName} footerText={site.footerText} />
+            <Footer shop={shop} />
         </div>
     );
 };
 
 export async function getStaticProps() {
-    const content = await import('../content.json');
-    if (!content.sites || content.sites.length === 0) {
-        return {
-            notFound: true,
-        };
-    }
+    const shop = await fetchData('shops', { match: { id: process.env.SHOP_ID } });
+    const data = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
+    const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
+
+
     return {
         props: {
-            site: content.sites[0],
+            site: data[0],
+            shop: shop[0],
+            brand: brand[0],
         },
     };
 }
-
 export default TrackOrder;

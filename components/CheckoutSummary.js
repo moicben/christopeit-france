@@ -1,7 +1,7 @@
 import { format, addDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
-const CheckoutSummary = ({ cart, totalPrice, discount, discountedPrice, site, paymentFees, deliveryEstimate }) => {
+const CheckoutSummary = ({ cart, totalPrice, discount, discountedPrice, name, paymentFees, deliveryEstimate }) => {
 
   if (cart[0]){
     console.log('cart:', cart[0].productDelivery);
@@ -64,7 +64,7 @@ const CheckoutSummary = ({ cart, totalPrice, discount, discountedPrice, site, pa
           <p>{`${parseFloat(discountedPrice).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`}</p>
         </div>
       </div>
-      <p className='secure footer'>© Tous droits réservés -  {site.shopName} SAS 32455</p>
+      <p className='secure footer'>© Tous droits réservés - {name} SAS 32455</p>
     </>
   );
 };

@@ -95,7 +95,7 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
       console.log('Paiement en cours...');
       
       try {
-        const payFetch = await fetch('https://api.christopeit-france.shop/pay', {
+        const payFetch = await fetch('https://api.{shop.domain}/pay', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ orderNumber, amount, cardDetails }),
