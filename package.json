@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "generate-sitemap": "node generate-sitemap.mjs"
+    "generate-sitemap": "node /scripts/generate-sitemap.mjs"
   },
   "dependencies": {
     "@mollie/api-client": "^4.2.0",
