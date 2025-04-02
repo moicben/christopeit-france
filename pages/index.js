@@ -62,7 +62,7 @@ const Home = ({ data, shop, brand, products, categories }) => {
         </section>
 
         <Categories categories={categories} />
-
+ 
         <Products 
           title={`Les bestellers Christopeit France`} 
           products={products} 
