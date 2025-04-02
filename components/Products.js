@@ -100,7 +100,7 @@ const Products = ({ title, products, description, showCategoryFilter = true, ini
                 onMouseEnter={() => setHoveredProduct(product.slug)}
                 onMouseLeave={() => setHoveredProduct(null)}
               >
-                <span className='best-wrap'>🏆 TOP VENTE</span>
+                <span className='best-wrap bg-main'>🏆 TOP VENTE</span>
                 <img
                   src={
                     hoveredProduct === product.slug && product.images?.[1]

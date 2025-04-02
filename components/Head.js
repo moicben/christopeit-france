@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-const MyHead = ({ title, description, name, domain, favicon, graph, font }) => {
+const MyHead = ({ title, description, name, domain, favicon, graph, font, colorMain, colorSecondary, colorBlack, colorGrey, bgMain, bgLight, bgDark, radiusBig, radiusMedium }) => {
   const router = useRouter();
   const pageSlug = router.asPath === '/' ? '' : router.asPath.replace(/\/$/, ''); // Supprime le slash final si présent
 
@@ -32,12 +32,42 @@ const MyHead = ({ title, description, name, domain, favicon, graph, font }) => {
             font-family: ${font}, -apple-system, sans-serif;
           }
 
-          a {
-            /* Add your styles here */
+          .radius-medium,
+          button {
+            border-radius: ${radiusMedium};
           }
 
-          button {
-            /* Add your styles here */
+          .radius-big,
+          .card {
+            border-radius: ${radiusBig};
+          }
+
+          .color-main {
+            color: ${colorMain};
+          }
+
+          .color-black{
+            color: ${colorBlack};
+          }
+
+          .color-grey {
+            color: ${colorGrey};
+          }
+
+          .color-secondary{
+            color: ${colorSecondary};
+          }
+
+          .bg-main {
+            background-color: ${bgMain};
+          }
+
+          .bg-light {
+            background-color: ${bgLight};
+          }
+
+          .bg-dark {
+            background-color: ${bgDark};
           }
         `}
       </style>

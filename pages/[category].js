@@ -64,6 +64,7 @@ const CategoryPage = ({data, shop, brand, categories, category, filteredProducts
           description={category.seoDescription}
           showCategoryFilter={false}
           disablePagination={true}
+          categories={categories}
         />
 
         <section className="guide">

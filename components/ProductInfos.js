@@ -29,7 +29,7 @@ export default function ProductInfos({ product, handleAddToCart, buttonText, sho
 
   return (
     <div className={`product-info ${product.bestseller ? 'best-seller' : ''}`}>
-      <span className='best-wrap'>🏆 TOP VENTE</span>
+      <span className='best-wrap bg-main'>🏆 TOP VENTE</span>
       <h1>{product.title}</h1>
       {product.discounted ? (
         <>

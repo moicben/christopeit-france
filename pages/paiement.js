@@ -88,7 +88,7 @@ const Checkout = ({data, shop, brand}) => {
             title={`Paiement - ${shop.name}`}
       />
 
-      <div className="left-column">
+      <div className="left-column bg-main">
         <a className="back" href="/"><img src={brand.logo}/></a>
         <CheckoutSummary cart={cart} totalPrice={totalPrice} discount={discount} discountedPrice={discountedPrice} name={shop.name} paymentFees={paymentFees} />
       </div>
