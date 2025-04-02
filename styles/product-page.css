@@ -300,9 +300,10 @@ section.product-hero {
   position: absolute;
   margin: 0;
   top: -2rem;
-  left: 3.25rem;
+  left: 2.7rem;
   color: #999;
   font-weight: 500;
+  text-transform: uppercase;
 }
 
 .product-info button {
