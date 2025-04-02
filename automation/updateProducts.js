@@ -15,11 +15,8 @@ async function updateProducts() {
 
       // Préparez les données à mettre à jour
       const updateData = {
-        details: product.productDetails || null,
-        advantages: product.productAdvantages || null,
-        more1: product.productHighlight1 || null,
-        more2: product.productHighlight2 || null,
-        more3: product.productHighlight3 || null,
+        desc: product.productDescription?.trim() || null, // Conserver les balises HTML
+        details: product.productDetails?.join('').trim() || null, // Concaténer les détails en une seule chaîne
       };
 
       // Effectuez la mise à jour dans la table "products" en utilisant le slug comme identifiant
