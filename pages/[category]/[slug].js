@@ -319,7 +319,7 @@ export async function getStaticPaths() {
         slug: product.slug,
       },
     };
-  }).filter(Boolean); // Supprimer les chemins null ou indéfinis
+  }).filter(Boolean); // Supprimer les chemins null ou indéfinis 
 
   return { paths, fallback: false };
 }
