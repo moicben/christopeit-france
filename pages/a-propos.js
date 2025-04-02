@@ -4,6 +4,8 @@ import Head from '../components/Head';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 
+import Testimonials from 'components/Testimonials';
+
 import { fetchData } from '../lib/supabase'; // Assurez-vous que le chemin est correct
 
 const APropos = ({ data, shop, brand }) => {
@@ -50,6 +52,7 @@ const APropos = ({ data, shop, brand }) => {
           <div className="wrapper">
           </div> */}
         </section>
+        <Testimonials shop={shop} data={data.reviewContent} />
       </main>
       <Footer shop={shop} />
     </div>

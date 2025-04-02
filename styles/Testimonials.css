@@ -13,7 +13,7 @@
 .testimonials .wrapper {
   display: flex;
   justify-content: space-between;
-  padding: 2rem 4rem 4rem 4rem;
+  padding: 3rem 4rem 4rem 4rem;
   flex-direction: column;
   border-radius: 16px;
 }

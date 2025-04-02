@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Head from '../components/Head';
+import Testimonials from '../components/Testimonials';
 
 import {fetchData} from '../lib/supabase'; // Assurez-vous que le chemin est correct
 
@@ -37,6 +38,7 @@ const Faq = ({ data,brand,shop }) => {
                         </div>
                     ))}
                 </div>
+                <Testimonials shop={shop} data={data.reviewContent} />
             </main>
             
             <Footer shop={shop} />

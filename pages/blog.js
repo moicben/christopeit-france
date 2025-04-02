@@ -4,6 +4,7 @@ import Head from '../components/Head';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Pagination from '../components/Pagination'; // Import du composant Pagination
+import Testimonials from '../components/Testimonials';
 
 import { fetchData } from 'lib/supabase';
 
@@ -61,6 +62,7 @@ const Blog = ({ shop, data, brand }) => {
             />
           </div>
         </section>
+        <Testimonials shop={shop} data={data.reviewContent} />
       </main>
       <Footer shop={shop}/>
     </div>

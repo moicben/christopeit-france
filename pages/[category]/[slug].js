@@ -6,6 +6,7 @@ import Footer from '../../components/Footer';
 import Products from '../../components/Products';
 import Reviews from '../../components/Reviews';
 import Categories from '../../components/Categories'; 
+import Testimonials from 'components/Testimonials';
 
 import ProductInfos from '../../components/ProductInfos';
 
@@ -266,8 +267,10 @@ export default function ProductDetail({ product, category, shop, brand, data, pr
           <div className="wrapper" dangerouslySetInnerHTML={{ __html: product.more3 }}/>
         </section>
   
+        <Testimonials shop={shop} data={data.reviewContent} />
         <Products categories={categories} products={relatedProducts} title={`Nos autres ${category.title}`} showCategoryFilter={false} />
-        <Categories categories={otherCategories} />
+        <Categories title='Catégories similaires' categories={otherCategories} />
+        
       </main>
       {showBanner && (
         <div className="cta-banner">

@@ -6,6 +6,7 @@ import Head from '../components/Head';
 import Footer from '../components/Footer';
 import About from '../components/About';
 import Reviews from '../components/Reviews';
+import Testimonials from '../components/Testimonials';
 
 import { fetchData } from '../lib/supabase';
 
@@ -114,6 +115,7 @@ const Contact = ({ shop,brand, data }) => {
         </div>
       </section>
         
+      <Testimonials shop={shop} data={data.reviewContent} />
       <About data={data}/>
       </main>
       <Footer shop={shop} />

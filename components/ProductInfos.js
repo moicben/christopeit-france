@@ -39,7 +39,7 @@ export default function ProductInfos({ product, handleAddToCart, buttonText, sho
           </p>
         </>
       ) : (
-        <p className="product-price">{product.price}</p>
+        <p className="product-price">{product.price},00€</p>
       )}
       <p className={`stock ${product.stock.startsWith('Plus que') ? 'low' : ''}`}>
         <span>⋅</span>{product.stock} {product.stock.startsWith('Plus que') ? 'en stock' : ''}

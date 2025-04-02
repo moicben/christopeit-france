@@ -70,9 +70,11 @@ const Home = ({ data, shop, brand, products, categories }) => {
           initialCategoryFilter="bestsellers" 
         />
         
+        <Testimonials shop={shop} data={data.reviewContent} />
+        
         <About data={data} />
         
-        <Reviews data={data} />
+        
       </main>
 
       <Footer shop={shop} />
