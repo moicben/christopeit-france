@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "export": "next build && next export",
-    "generate-sitemap": "node -r esm next-sitemap"
+    "start": "next start",
+    "generate-sitemap": "node generate-sitemap.mjs"
   },
   "dependencies": {
     "@mollie/api-client": "^4.2.0",
