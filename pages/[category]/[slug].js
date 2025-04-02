@@ -181,12 +181,12 @@ export default function ProductDetail({ product, category, shop, brand, data, pr
   return (
     <div className="container">
 
-      <Head name={shop.name} domain={shop.domain} favicon={brand.favicon}
-        graph={product.images[0]}
-        title={`${product.title} - ${shop.name}`}
-        description={product.description} />
-
-
+      <Head name={shop.name} domain={shop.domain}
+            favicon={brand.favicon} graph={brand.graph}
+            colorMain={brand.colorMain} colorSecondary={brand.colorSecondary} colorBlack={brand.colorBlack} colorGrey={brand.colorGrey} bgMain={brand.bgMain} bgLight={brand.bgLight} bgDark={brand.bgDark} radiusBig={brand.radiusBig} radiusMedium={brand.radiusMedium} font={brand.font} 
+            title={`${product.title} - ${shop.name}`}
+            description={product.description}
+      />
       
       <main className='product-page'>
         <Header title={shop.name} name={shop.name} domain={shop.domain} logo={brand.logo} />

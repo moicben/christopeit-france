@@ -19,8 +19,13 @@ const Article = ({ shop, data, brand, article, categories }) => {
 
   return (
     <div className="container">
-      <Head name={shop.name} domain={shop.domain} favicon={brand.favicon} graph={brand.graph}
-        title={`Blog & Guides - ${shop.name}`}/>
+
+
+      <Head name={shop.name} domain={shop.domain}
+          favicon={brand.favicon} graph={brand.graph}
+          colorMain={brand.colorMain} colorSecondary={brand.colorSecondary} colorBlack={brand.colorBlack} colorGrey={brand.colorGrey} bgMain={brand.bgMain} bgLight={brand.bgLight} bgDark={brand.bgDark} radiusBig={brand.radiusBig} radiusMedium={brand.radiusMedium} font={brand.font} 
+          title={`Blog & Guides - ${shop.name}`}
+      />
 
       <main>
         <Header title={shop.name} name={shop.name} domain={shop.domain} logo={brand.logo} />
