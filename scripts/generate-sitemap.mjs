@@ -4,14 +4,27 @@ import { fetchData } from '../lib/supabase.js';
 
 const BASE_URL = 'https://www.christopeit-france.com'; // Remplacez par l'URL de votre site
 
-// Fonction pour générer le contenu du sitemap
+// Liste des pages statiques
+const staticPages = [
+  '/',
+  '/a-propos',
+  '/contact',
+  '/conditions-generales',
+  '/mentions-legales',
+  '/politique-de-confidentialite',
+  '/politique-des-retours',
+  '/suivre-mon-colis',
+  '/faq',
+  '/paiement',
+  '/verification',
+];
+
 const generateSitemap = async () => {
-  // Récupération des données depuis Supabase
+  // Récupération des données dynamiques depuis Supabase
   const categories = await fetchData('categories', { match: { shop_id: process.env.SHOP_ID } });
   const products = await fetchData('products', { match: { shop_id: process.env.SHOP_ID } });
   const contents = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
 
-  // Vérification des données récupérées
   if (!categories || !products || !contents) {
     throw new Error('Erreur lors de la récupération des données depuis Supabase.');
   }
@@ -20,6 +33,16 @@ const generateSitemap = async () => {
   const blogContentArray = Array.isArray(contents[0]?.blogContent)
     ? contents[0].blogContent
     : Object.values(contents[0]?.blogContent || {});
+
+  // Génération des URLs pour les pages statiques
+  const staticUrls = staticPages.map((page) => `
+    <url>
+      <loc>${BASE_URL}${page}</loc>
+      <lastmod>${new Date().toISOString()}</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.5</priority>
+    </url>
+  `);
 
   // Génération des URLs pour les catégories
   const categoryUrls = categories.map((category) => `
@@ -56,7 +79,7 @@ const generateSitemap = async () => {
   `);
 
   // Combiner toutes les URLs
-  const urls = [...categoryUrls, ...productUrls, ...blogUrls];
+  const urls = [...staticUrls, ...categoryUrls, ...productUrls, ...blogUrls];
 
   // Retourner le contenu complet du sitemap
   return `<?xml version="1.0" encoding="UTF-8"?>
