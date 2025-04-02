@@ -78,6 +78,7 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SHOP_ID: ${{ secrets.SHOP_ID }}
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
       - name: Generate Sitemap
         run: ${{ steps.detect-package-manager.outputs.runner }} npm run generate-sitemap
