@@ -90,7 +90,16 @@ const Checkout = ({data, shop, brand}) => {
 
       <div className="left-column bg-main">
         <a className="back" href="/"><img src={brand.logo}/></a>
-        <CheckoutSummary cart={cart} totalPrice={totalPrice} discount={discount} discountedPrice={discountedPrice} name={shop.name} paymentFees={paymentFees} data={data} shop={shop}/>
+        <CheckoutSummary 
+          art={cart}
+          totalPrice={totalPrice}
+          discount={discount}
+          discountedPrice={discountedPrice}
+          name={shop.name}
+          paymentFees={paymentFees}
+          data={data}
+          shop={shop}
+        />
       </div>
       <div className="right-column">
         <CheckoutForm
