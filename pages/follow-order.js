@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 
 import { fetchData } from '../lib/supabase';
 
-const TrackOrder = ({ shop,brand,data }) => {
+const TrackOrder = ({ shop, brand, data }) => {
     const [trackingNumber, setTrackingNumber] = useState('');
     const [trackingInfo, setTrackingInfo] = useState(null);
     const [error, setError] = useState('');
@@ -29,11 +29,11 @@ const TrackOrder = ({ shop,brand,data }) => {
 
     return (
         <div className="container">
-            <Head>
-                <title>{`${data.followPageLabel} - ${shop.name}`}</title>
-                <meta name="description" content={data.followPageDesc} />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+            <Head name={shop.name} domain={shop.domain}
+                favicon={brand.favicon} graph={brand.graph}
+                colorPrimary={brand.colorPrimary} colorSecondary={brand.colorSecondary} colorBlack={brand.colorBlack} colorGrey={brand.colorGrey} bgMain={brand.bgMain} bgLight={brand.bgLight} bgDark={brand.bgDark} radiusBig={brand.radiusBig} radiusMedium={brand.radiusMedium} font={brand.font} 
+                title={`${data.followPageLabel} - ${shop.name}`}
+            />
             
             <Header logo={brand.logo} categories={categories} data={data} shop={shop} />
             
@@ -75,8 +75,8 @@ export async function getStaticProps() {
 
     return {
         props: {
-            site: data[0],
             shop: shop[0],
+            data: data[0],
             brand: brand[0],
         },
     };
