@@ -7,7 +7,7 @@ export default function ProductInfos({ product, handleAddToCart, buttonText, sho
     //vider le panier actuel :
     localStorage.setItem('cart', JSON.stringify([]));
     handleAddToCart();
-    window.location.href = '/paiement';
+    window.location.href = '/checkout';
   };
   
 
@@ -34,12 +34,12 @@ export default function ProductInfos({ product, handleAddToCart, buttonText, sho
       {product.discounted ? (
         <>
           <p className="product-price new color-primary">
-            {product.price},00 €
-            <span className="initial-price">{product.discounted},00 €</span>
+            {product.price.toFixed(2).replace('.', ',')} {shop.currency}
+            <span className="initial-price">{product.discounted.toFixed(2).replace('.', ',')} {shop.currency}</span>
           </p>
         </>
       ) : (
-        <p className="product-price">{product.price},00€</p>
+        <p className="product-price">{product.price.toFixed(2).replace('.', ',')} {shop.currency}</p>
       )}
       <p className={`stock ${product.stock.startsWith('Plus que') ? 'low' : ''}`}>
         <span>⋅</span>{product.stock} {product.stock.startsWith('Plus que') ? 'en stock' : ''}
@@ -53,7 +53,7 @@ export default function ProductInfos({ product, handleAddToCart, buttonText, sho
       <article className="purchase-row">
         <p className="comptor">PROMO début avril 15%</p>
         <button className="buy-now bg-primary border-primary" onClick={handleBuyNow}>
-          Acheter pour {product.discounted},00€
+          Acheter pour {(product.price * 0.85).toFixed(2).replace('.', ',')}{shop.currency}
         </button>
         <button className='bg-white' onClick={handleAddToCart}>{buttonText}</button>
       </article>

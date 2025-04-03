@@ -362,6 +362,7 @@ margin-bottom: 1rem;
   height: 48px;
   position: relative;
   text-align: center;
+  letter-spacing: .25px;
 }
 
 .checkout-form button:hover {

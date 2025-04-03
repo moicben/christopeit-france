@@ -10,7 +10,7 @@ import Testimonials from '../components/Testimonials';
 
 import { fetchData } from '../lib/supabase';
 
-const Contact = ({ shop,brand, data }) => {
+const Contact = ({ shop,brand, data, categories }) => {
   const [cartCount, setCartCount] = useState(0);
   const [formSubmitted, setFormSubmitted] = useState(false);
   
@@ -46,31 +46,31 @@ const Contact = ({ shop,brand, data }) => {
       <Head name={shop.name} domain={shop.domain}
             favicon={brand.favicon} graph={brand.graph}
             colorPrimary={brand.colorPrimary} colorSecondary={brand.colorSecondary} colorBlack={brand.colorBlack} colorGrey={brand.colorGrey} bgMain={brand.bgMain} bgLight={brand.bgLight} bgDark={brand.bgDark} radiusBig={brand.radiusBig} radiusMedium={brand.radiusMedium} font={brand.font} 
-            title={`Contact - ${shop.name}`}
+            title={`${data.contactPageLabel} - ${shop.name}`}
       />
       
       <main>
-      <Header title={shop.name} name={shop.name} domain={shop.domain} logo={brand.logo} />
+      <Header logo={brand.logo} categories={categories} data={data} shop={shop} />
       <section className="contact" id="contact">
         <div className="wrapper">
           <div className="contact-content">
-            <h2>À Votre disposition 7j/7</h2>
-            <p>Pour toute question ou suggestion, n'hésitez pas à nous contacter. Notre équipe est à votre écoute et se fera un plaisir de vous répondre rapidement.</p>
+            <h2>{data.contactPageTitle}</h2>
+            <p>{data.contactPageDesc}</p>
             <br></br>
-            <p><i className="fas fa-map-marker-alt"></i> 125 rue de L'Artisanat 42110 Civens, France</p>
-            <p><i className="fas fa-envelope"></i> suppor@{shop.domain}</p>
-            <p><i className="fas fa-phone"></i> +44 7446 162 797</p>
+            <p><i className="fas fa-map-marker-alt"></i> {shop.address}</p>
+            <p><i className="fas fa-envelope"></i> support@{shop.domain}</p>
+            <p><i className="fas fa-phone"></i> {shop.phone}</p>
           </div>
           <div className="contact-form">
             {formSubmitted ? (
               <p className="confirmation">
-                Merci pour votre message ! Nous vous répondrons dans les plus brefs délais.
+                {data.contactSuccessMessage}
               </p>
             ) : (
               <form onSubmit={handleSubmit}>
-                <label htmlFor="name">Nom complet</label>
+                <label htmlFor="name">{data.inputFullNameLabel}</label>
                 <input
-                  placeholder="Paul Dupont"
+                  placeholder={data.inputFullNameHolder}
                   type="text"
                   id="name"
                   name="name"
@@ -79,9 +79,9 @@ const Contact = ({ shop,brand, data }) => {
 
                 <div className="row-form">
                   <label htmlFor="email">
-                    <span>Email</span>
+                    <span>{data.inputEmailLabel}</span>
                     <input
-                      placeholder="exemple@gmail.com"
+                      placeholder={data.inputEmailHolder}
                       type="email"
                       id="email"
                       name="email"
@@ -89,9 +89,9 @@ const Contact = ({ shop,brand, data }) => {
                     />
                   </label>
                   <label htmlFor="phone">
-                    <span>Téléphone</span>
+                    <span>{data.inputPhoneLabel}</span>
                     <input
-                      placeholder="07 12 34 56 78"
+                      placeholder={data.inputPhoneHolder}
                       type="text"
                       id="phone"
                       name="phone"
@@ -100,25 +100,25 @@ const Contact = ({ shop,brand, data }) => {
                   </label>
                 </div>
 
-                <label htmlFor="message">Votre demande</label>
+                <label htmlFor="message">{data.inputMsgLabel}</label>
                 <textarea
-                  placeholder="Écrivez votre demande ici..."
+                  placeholder={data.inputMsgHolder}
                   id="message"
                   name="message"
                   required
                 ></textarea>
 
-                <button type="submit">Envoyer</button>
+                <button type="submit">{data.contactPageCta}</button>
               </form>
             )}
           </div>
         </div>
       </section>
         
-      <Testimonials shop={shop} data={data.reviewContent} />
-      <About data={data}/>
+      <Testimonials data={data} shop={shop} />
+      <About data={data} shop={shop} />
       </main>
-      <Footer shop={shop} />
+      <Footer shop={shop} data={data} />
     </div>
 
   );
@@ -128,12 +128,14 @@ export async function getStaticProps() {
   const shop = await fetchData('shops', { match: { id: process.env.SHOP_ID } });
   const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
   const data = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
+  const categories = await fetchData('categories', { match: { shop_id: process.env.SHOP_ID } });
 
   return {
     props: {
       shop: shop[0],
       brand: brand[0],
       data: data[0],
+      categories: categories,
     },
   };
 }

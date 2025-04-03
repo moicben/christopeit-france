@@ -30,25 +30,25 @@ const TrackOrder = ({ shop,brand,data }) => {
     return (
         <div className="container">
             <Head>
-                <title>{`Suivre mon colis - ${shop.name}`}</title>
-                <meta name="description" content="Suivez votre commande en temps réel" />
+                <title>{`${data.followPageLabel} - ${shop.name}`}</title>
+                <meta name="description" content={data.followPageDesc} />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             
-            <Header title={shop.name} name={shop.name} domain={shop.domain} logo={brand.logo} />
+            <Header logo={brand.logo} categories={categories} data={data} shop={shop} />
             
             <main>
                 <div className="track-order-container">
-                    <h1>Suivre mon colis</h1>
-                    <p>Entrez votre numéro de suivi ci-dessous pour obtenir les informations les plus récentes sur votre commande. Nous nous engageons à vous fournir des mises à jour en temps réel pour que vous puissiez suivre votre colis en toute tranquillité.</p>
+                    <h1>{data.followPageLabel}</h1>
+                    <p>{data.followPageDesc}</p>
                     <div className="track-order-form">
                         <input
                             type="text"
-                            placeholder="Entrez votre numéro de suivi"
+                            placeholder={data.followPageInput}
                             value={trackingNumber}
                             onChange={(e) => setTrackingNumber(e.target.value)}
                         />
-                        <button onClick={handleTrackOrder}>Suivre</button>
+                        <button onClick={handleTrackOrder}>{data.followPageCta}</button>
                     </div>
                     {error && <div className="error-message">{error}</div>}
                     {trackingInfo && (
@@ -62,7 +62,7 @@ const TrackOrder = ({ shop,brand,data }) => {
                 </div>
             </main>
             
-            <Footer shop={shop} />
+            <Footer shop={shop} data={data} />
         </div>
     );
 };

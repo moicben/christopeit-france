@@ -1,6 +1,6 @@
 import React from 'react';
 
-const About = ({ data }) => {
+const About = ({ data,shop }) => {
   const handleNavigation = (path) => {
     window.location.href = path;
   };
@@ -13,11 +13,11 @@ const About = ({ data }) => {
               <h2>{data.aboutTitle}</h2>
               <p>{data.aboutDesc}</p>
               <div className='row'></div>
-              <button className='bg-primary' onClick={() => handleNavigation('/a-propos')}>En savoir plus</button>
+              <button className='bg-primary' onClick={() => handleNavigation('/about')}>{data.aboutCta}</button>
               {/* <button className='phantom' onClick={() => handleNavigation('/contact')}>Nous contacter</button> */}
             </div>
             <div className="about-image">
-              <img src={data.aboutImg} alt="Chirstopeit Sport fitness" />
+              <img src={data.aboutImg} alt={shop.name} />
             </div>
           </div>
         </section>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import reviews from '../reviews.json';
 
-const Testimonials = ({shop}) => {
+const Testimonials = ({shop, data}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [reviewsPerPage, setReviewsPerPage] = useState(4); // Par défaut, 4 avis par page
 
@@ -41,8 +41,8 @@ const Testimonials = ({shop}) => {
     <section className="testimonials">
       <div className="wrapper">
         <img onClick={(e) => { document.querySelector("section.badge-container > img").click() }} src="https://bpybtzxqypswjiizkzja.supabase.co/storage/v1/object/public/ecom/christopeit-france/avis-verifies.svg" alt="Avis vérifiés" />
-        <h2>Avis clients de : <span>{shop.domain}</span></h2>
-        <span className="info-rate">Basé sur <span className="bolder">378 avis</span> collectés au cours des 12 derniers mois<br/><span className="bolder">1464 avis depuis le 20/01/2019</span></span>
+        <h2>{data.reviewLabel} <span>{shop.domain}</span></h2>
+        <span className="info-rate">{data.reviewDesc}</span>
         <div className="testimonials-slider">
           <button className="slider-arrow left" onClick={handlePrev}>
             &#8249;
@@ -65,8 +65,8 @@ const Testimonials = ({shop}) => {
                 </article>
                 <p className='review-content'>{review.content}</p>
                 <span className="review-info">
-                  Avis du <b>{review.date}</b>, suite à une expérience du{' '}
-                  {review.experienceDate} par <b>{review.author}</b>
+                  {data.reviewInfo1} <b>{review.date}</b>{data.reviewInfo2}{' '}
+                  {review.experienceDate} {data.reviewInfo3} <b>{review.author}</b>
                 </span>
               </div>
             ))}
@@ -75,7 +75,7 @@ const Testimonials = ({shop}) => {
             &#8250;
           </button>
         </div>
-        <button onClick={(e) => { document.querySelector("section.badge-container > img").click() }} className='view-more'>Voir tous les avis</button>
+        <button onClick={(e) => { document.querySelector("section.badge-container > img").click() }} className='view-more'>{data.reviewCta}</button>
       </div>
     </section>
   );

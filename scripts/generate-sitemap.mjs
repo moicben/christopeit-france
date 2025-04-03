@@ -7,15 +7,15 @@ const BASE_URL = 'https://www.christopeit-france.com'; // Remplacez par l'URL de
 // Liste des pages statiques
 const staticPages = [
   '/',
-  '/a-propos',
+  '/about',
   '/contact',
   '/conditions-generales',
   '/mentions-legales',
   '/politique-de-confidentialite',
   '/politique-des-retours',
-  '/suivre-mon-colis',
-  '/faq',
-  '/paiement',
+  '/follow-order',
+  '/help',
+  '/checkout',
   '/verification',
 ];
 

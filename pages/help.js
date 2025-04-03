@@ -6,7 +6,7 @@ import Testimonials from '../components/Testimonials';
 
 import {fetchData} from '../lib/supabase'; // Assurez-vous que le chemin est correct
 
-const Faq = ({ data,brand,shop }) => {
+const Faq = ({ data, brand, shop, categories }) => {
     const [activeIndex, setActiveIndex] = useState(null);
 
     const toggleFAQ = (index) => {
@@ -19,15 +19,15 @@ const Faq = ({ data,brand,shop }) => {
         <Head name={shop.name} domain={shop.domain}
             favicon={brand.favicon} graph={brand.graph}
             colorPrimary={brand.colorPrimary} colorSecondary={brand.colorSecondary} colorBlack={brand.colorBlack} colorGrey={brand.colorGrey} bgMain={brand.bgMain} bgLight={brand.bgLight} bgDark={brand.bgDark} radiusBig={brand.radiusBig} radiusMedium={brand.radiusMedium} font={brand.font} 
-            title={`Questions fréquentes - ${shop.name}`}
+            title={`${data.faqPageLabel} - ${shop.name}`}
         />
             
             
             
             <main>
-                <Header title={shop.name} name={shop.name} domain={shop.domain} logo={brand.logo} />
+                <Header logo={brand.logo} categories={categories} data={data} shop={shop} />
                 <div className="faq-container">
-                    <h1>Questions fréquentes</h1>
+                    <h1>{data.faqPageTitle}</h1>
                     {data.faqContent.map((faq, index) => (
                         <div key={index} className="faq-item">
                             <div className="faq-question" onClick={() => toggleFAQ(index)}>
@@ -38,10 +38,10 @@ const Faq = ({ data,brand,shop }) => {
                         </div>
                     ))}
                 </div>
-                <Testimonials shop={shop} data={data.reviewContent} />
+                <Testimonials data={data} shop={shop} />
             </main>
             
-            <Footer shop={shop} />
+            <Footer shop={shop} data={data} />
         </div>
     );
 };
@@ -50,12 +50,14 @@ export async function getStaticProps() {
     const shop = await fetchData('shops', { match: { id: process.env.SHOP_ID } });
     const data = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
     const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
+    const categories = await fetchData('categories', { match: { shop_id: process.env.SHOP_ID } });
 
     return {
         props: {
             data: data[0],
             shop: shop[0],
             brand: brand[0],
+            categories: categories,
         },
     };
 }

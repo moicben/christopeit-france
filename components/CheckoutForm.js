@@ -4,9 +4,8 @@ import MollieForm from './MollieForm';
 import Cookies from 'js-cookie'; // Importer la bibliothèque js-cookie
 import CustomPay from './CustomPay';
 import { useRouter } from 'next/router'; // Importer useRouter
-import { set } from 'date-fns';
 
-const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelectedPaymentMethod, discountedPrice, cart, name, showVerificationWrapper, setShowVerificationWrapper, onBack }) => {
+const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelectedPaymentMethod, discountedPrice, cart, name, showVerificationWrapper, setShowVerificationWrapper, onBack, data, shop }) => {
   const router = useRouter(); // Utiliser useRouter
   const expiryDateRef = useRef(null);
   const cardNumberRef = useRef(null);
@@ -34,12 +33,9 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
     Cookies.set('orderNumber', formData.orderNumber, { expires: 1 }); // Expire dans 1 jour
   }, [formData]);
 
-  console.log("ORDERNUMBER: " + formData.orderNumber);
-
-  // Vérifier si l'URL contient le paramètre failed=true
   useEffect(() => {
     if (router.query.failed === 'true') {
-      setGlobalError('Le paiement a échoué. Veuillez réessayer.');
+      setGlobalError(data.checkoutFormPaymentError);
       setPaymentError(true);
       setIsLoading(false); 
       setShow3DSecurePopup(false);
@@ -58,7 +54,7 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
       if (value) {
         delete newErrors[name];
       } else {
-        newErrors[name] = `${name} est obligatoire`;
+        newErrors[name] = `${name} ${data.checkoutFormIsRequired}`;
       }
       return newErrors;
     });
@@ -71,8 +67,7 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
     requiredFields.forEach((field) => {
       const value = formData[field];
       if (!value) {
-        errors[field] = `${field} est obligatoire`;
-        console.log(`${field} est obligatoire`);
+        errors[field] = `${field} ${data.checkoutFormIsRequired}`;
       }
     });
 
@@ -82,14 +77,12 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
 
   const handleNextStep = async (step) => {
     if (step === 1 && !validateStep(step)) {
-      setGlobalError('Transmettez-vos informations de livraison avant de payer.');
+      setGlobalError(data.checkoutFormInfoRequired);
       return;
     }
 
     setIsLoading(true); // Activer le chargement
     try {
-      
-      // Créer une commande dans Supabase avec le statut "started"
       const response = await fetch('/api/create-order', {
         method: 'POST',
         headers: {
@@ -103,11 +96,11 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
       });
 
       if (!response.ok) {
-        throw new Error('Erreur lors de la création de la commande.');
+        throw new Error(data.checkoutFormPaymentError);
       }
     } catch (error) {
-      console.error('Erreur lors de la création de la commande:', error);
-      setGlobalError('Une erreur est survenue. Veuillez réessayer.');
+      console.error(data.checkoutFormPaymentError, error);
+      setGlobalError(data.checkoutFormPaymentError);
       setIsLoading(false); // Désactiver le chargement en cas d'erreur
       return;
     }
@@ -117,6 +110,8 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
     showStep(step);
   };
 
+
+
   const handleRetry = () => {
     setShowVerificationWrapper(false);
     showStep(1); // Retour à l'étape du choix de modes de paiement
@@ -124,10 +119,9 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
 
   return (
     <div className="checkout-form">
-      {/* Afficher le message d'erreur global */}
       {paymentError &&
       <div className="error-banner">
-        Erreur paiement, si l'erreur persiste : <a href='/contact' target='_blank'>contactez le support</a>.
+        <a href='/contact' target='_blank'>{data.checkoutFormContactSupport}</a>.
       </div>
       }
 
@@ -136,18 +130,18 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
       <input type="hidden" name="website" value={name} />
 
       <div className={`checkout-step ${currentStep === 0 ? 'active' : ''}`}>
-        <h3>Informations de livraison</h3>
+        <h3>{data.checkoutFormDeliveryInfo}</h3>
         <input
           type="text"
           name="address"
-          placeholder="Adresse du domicile"
+          placeholder={data.checkoutFormAddressPlaceholder}
           value={formData.address}
           onChange={handleInputChange}
         />
         <input
           type="text"
           name="suite"
-          placeholder="Maison, suite, numéro, etc. (optionnel)"
+          placeholder={data.checkoutFormSuitePlaceholder}
           value={formData.suite}
           onChange={handleInputChange}
         />
@@ -155,23 +149,23 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
           <input
             type="text"
             name="postal"
-            placeholder="Code postal"
+            placeholder={data.checkoutFormPostalPlaceholder}
             value={formData.postal}
             onChange={handleInputChange}
           />
           <input
             type="text"
             name="city"
-            placeholder="Ville"
+            placeholder={data.checkoutFormCityPlaceholder}
             value={formData.city}
             onChange={handleInputChange}
           />
         </div>
-        <h3>Compte client</h3>
+        <h3>{data.checkoutFormCustomerAccount}</h3>
         <input
           type="text"
           name="email"
-          placeholder="Email"
+          placeholder={data.checkoutFormEmailPlaceholder}
           value={formData.email}
           onChange={handleInputChange}
         />
@@ -179,26 +173,26 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
           <input
             type="text"
             name="name"
-            placeholder="Nom complet"
+            placeholder={data.checkoutFormNamePlaceholder}
             value={formData.name}
             onChange={handleInputChange}
           />
           <input
             type="text"
             name="phone"
-            placeholder="Numéro de téléphone"
+            placeholder={data.checkoutFormPhonePlaceholder}
             value={formData.phone}
             onChange={handleInputChange}
           />
         </div>
         <button type="button" id="delivery-checkout" onClick={() => handleNextStep(1)} disabled={isLoading}>
-          {isLoading ? <span className="loader border-top-primary"></span> : 'Passer au paiement'}
+          {isLoading ? <span className="loader border-top-primary"></span> : data.checkoutFormProceedToPayment}
         </button>
         {globalError && <p className="error">{globalError}</p>}
       </div>
 
       <div className={`checkout-step ${currentStep === 1 ? 'active' : ''}`}>
-        <h3 className="method">Moyen de paiement</h3>
+        <h3 className="method">{data.checkoutFormPaymentMethod}</h3>
         <label className={`payment-method ${selectedPaymentMethod === 'card' ? 'selected' : ''}`}>
           <input
             type="radio"
@@ -207,10 +201,9 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
             checked={selectedPaymentMethod === 'card'}
             onChange={() => setSelectedPaymentMethod('card')}
           />
-          <img className="card" src="/card-badges.png" alt="cartes bancaires" />
-          <span className='info'>Cartes bancaires</span>
-          <span className='fees'>+2,5%</span>
-          
+          <img className="card" src="/card-badges.png" alt={data.checkoutFormCardAlt} />
+          <span className='info'>{data.checkoutFormCardInfo}</span>
+          <span className='fees'>{data.checkoutFormCardFees}</span>
         </label>
         <label className={`payment-method ${selectedPaymentMethod === 'bankTransfer' ? 'selected' : ''}`}>
           <input
@@ -220,8 +213,8 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
             checked={selectedPaymentMethod === 'bankTransfer'}
             onChange={() => setSelectedPaymentMethod('bankTransfer')}
           />
-          <img src="/virement.png" className="transfer" alt="virement bancaire" />
-          <span className='info'>Virement SEPA</span>
+          <img src="/virement.png" className="transfer" alt={data.checkoutFormBankTransferAlt} />
+          <span className='info'>{data.checkoutFormBankTransferInfo}</span>
         </label>
         <label className={`unvalaible payment-method ${selectedPaymentMethod === 'paypal' ? 'selected' : ''}`}>
           <input
@@ -231,15 +224,15 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
             checked={selectedPaymentMethod === 'paypal'}
             onChange={() => setSelectedPaymentMethod('paypal')}
           />
-          <img src="/paypal-simple.png" alt="cartes bancaires" />
-          <span className='info'>Indisponible</span>
+          <img src="/paypal-simple.png" alt={data.checkoutFormPaypalAlt} />
+          <span className='info'>{data.checkoutFormPaypalUnavailable}</span>
         </label>
         <article className="checkout-buttons">
           <button className="back-checkout" type="button" onClick={() => showStep(0)}>
             <i className="fas fa-arrow-left"></i>
           </button>
           <button type="button" id="payment-checkout" onClick={() => handleNextStep(2)}>
-            Confirmer
+            {data.checkoutFormConfirm}
           </button>
         </article>
         {globalError && <p className="error">{globalError}</p>}
@@ -248,14 +241,11 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
       <div className={`checkout-step ${currentStep === 2 ? 'active' : ''}`}>
         {selectedPaymentMethod === 'card' && (
           <>
-            <h3>Payer par carte bancaire</h3>
-            <p className="paiement">
-               Entrez vos informations de paiement :
-            </p>
-
+            <h3>{data.checkoutFormPayByCard}</h3>
+            <p className="paiement">{data.checkoutFormEnterPaymentInfo}</p>
             <CustomPay
               amount={discountedPrice}
-              orderNumber={formData.orderNumber} // Passer l'orderNumber depuis formData
+              orderNumber={formData.orderNumber}
               onBack={onBack}
               formData={formData}
               cart={cart}
@@ -263,34 +253,30 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
               setIsLoading={setIsLoading}
               show3DSecurePopup={show3DSecurePopup}
               setShow3DSecurePopup={setShow3DSecurePopup}
+              data={data}
             />
-            {/* <MollieForm
-              amount={discountedPrice}
-              orderNumber={orderNumber}
-              onBack={onBack}
-              formData={formData} // Passer les données du formulaire
-              cart={cart} // Passer le panier
-            /> */}
-            <a target='_blank' href='https://www.mollie.com/fr/growth/securite-paiements-en-ligne' className='safe-payment'><i className="fas fa-lock"></i>Paiement sécurisé et crypté avec <img src='/mollie.png'/></a>
+            <a target='_blank' href='https://www.mollie.com/fr/growth/securite-paiements-en-ligne' className='safe-payment'>
+              <i className="fas fa-lock"></i>{data.checkoutFormSecurePayment} <img src='/mollie.png' alt="Mollie" />
+            </a>
           </>
         )}
 
         {selectedPaymentMethod === 'bankTransfer' && (
           <>
-            <h3>Payer par virement bancaire</h3>
-            <p>Utlisez les informations suivantes :</p>
+            <h3>{data.checkoutFormPayByBankTransfer}</h3>
+            <p>{data.checkoutFormBankTransferInstructions}</p>
             <div className="iban-group">
-              <p><strong>Titulaire du compte : </strong>{name} SAS</p>
-              <p><strong>IBAN : </strong>FR76 1732 8844 0083 5771 1473 496</p>
-              <p><strong>BIC/SWIFT : </strong>SWNBFR22</p>
-              <p><strong>Objet :</strong> Commande 182F57</p>
-              <p className='amount'><strong>Montant :</strong> {discountedPrice}€</p>
+              <p><strong>{data.checkoutFormAccountHolder}:</strong> {name} SAS</p>
+              <p><strong>{data.checkoutFormIBAN}:</strong> FR76 1732 8844 0083 5771 1473 496</p>
+              <p><strong>{data.checkoutFormBIC}:</strong> SWNBFR22</p>
+              <p><strong>{data.checkoutFormOrderReference}:</strong> {formData.orderNumber}</p>
+              <p className='amount'><strong>{data.checkoutFormAmount}:</strong> {discountedPrice}{shop.currency}</p>
             </div>
-            <p className='smaller'>Une fois le virement effectué, cliquez ci-dessous pour recevoir la confirmation et le suivi de commande.</p>
+            <p className='smaller'>{data.checkoutFormBankTransferConfirmation}</p>
             <article className='checkout-buttons'>
               <button className="back-checkout" type="button" onClick={() => showStep(1)}><i className="fas fa-arrow-left"></i></button>
-              <button onClick={() => window.location.href = '/confirmation'}>Suivre ma commande</button>
-          </article>
+              <button onClick={() => window.location.href = '/confirmation'}>{data.checkoutFormTrackOrder}</button>
+            </article>
           </>
         )}
 
@@ -300,7 +286,7 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
       {showVerificationWrapper && (
         <CheckoutVerify
           verificationError={false}
-          bankName="Bank Name"
+          bankName={data.checkoutFormBankName}
           bankLogo=""
           cardType="Visa"
           cardScheme="Credit"
@@ -309,10 +295,6 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
           onRetry={handleRetry}
         />
       )}
-
-      
-
-      
     </div>
   );
 };

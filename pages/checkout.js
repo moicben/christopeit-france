@@ -31,7 +31,7 @@ const Checkout = ({data, shop, brand}) => {
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
     const groupedCart = storedCart.reduce((acc, item) => {
-      const existingItem = acc.find(i => i.productTitle === item.productTitle);
+      const existingItem = acc.find(i => i.title === item.title);
       if (existingItem) {
         existingItem.quantity += 1;
       } else {
@@ -47,7 +47,7 @@ const Checkout = ({data, shop, brand}) => {
   }, []);
 
   const totalPrice = cart.reduce((total, item) => {
-    const price = parseFloat(item.productPrice.replace('€', '').replace(',', '.')) || 0;
+    const price = item.price;
     return total + (price * item.quantity);
   }, 0).toFixed(2);
 
@@ -85,12 +85,12 @@ const Checkout = ({data, shop, brand}) => {
       <Head name={shop.name} domain={shop.domain}
             favicon={brand.favicon} graph={brand.graph}
             colorPrimary={brand.colorPrimary} colorSecondary={brand.colorSecondary} colorBlack={brand.colorBlack} colorGrey={brand.colorGrey} bgMain={brand.bgMain} bgLight={brand.bgLight} bgDark={brand.bgDark} radiusBig={brand.radiusBig} radiusMedium={brand.radiusMedium} font={brand.font} 
-            title={`Paiement - ${shop.name}`}
+            title={`${data.checkoutPageLabel} - ${shop.name}`}
       />
 
       <div className="left-column bg-main">
         <a className="back" href="/"><img src={brand.logo}/></a>
-        <CheckoutSummary cart={cart} totalPrice={totalPrice} discount={discount} discountedPrice={discountedPrice} name={shop.name} paymentFees={paymentFees} />
+        <CheckoutSummary cart={cart} totalPrice={totalPrice} discount={discount} discountedPrice={discountedPrice} name={shop.name} paymentFees={paymentFees} data={data} shop={shop}/>
       </div>
       <div className="right-column">
         <CheckoutForm
@@ -104,14 +104,15 @@ const Checkout = ({data, shop, brand}) => {
           shop={shop}
           orderNumber={orderNumber}
           onBack={handleBack} // Transmettre la fonction handleBack
+          data={data}
         />
         <div className='legals-link'>
-          <a onClick={() => openPopup('/mentions-legales')}>Mentions légales</a>
-          <a onClick={() => openPopup('/conditions-generales')}>Conditions générales</a>
-          <a onClick={() => openPopup('/politique-de-confidentialite')}>Politique de confidentialité</a>
+          <a onClick={() => openPopup('/mentions-legales')}>{data.legalsPageLabel}</a>
+          <a onClick={() => openPopup('/conditions-generales')}>{data.cgvPageLabel}</a>
+          <a onClick={() => openPopup('/politique-de-confidentialite')}>{data.confidentialityPageLabel}</a>
           <br />
-          <a onClick={() => openPopup('/politique-des-retours')}>Politique des retours</a>
-          <a onClick={() => openPopup('/suivre-mon-colis')}>Suivre mon colis</a>
+          <a onClick={() => openPopup('/politique-des-retours')}>{data.returnsPageLabel}</a>
+          <a onClick={() => openPopup('/follow-order')}>{data.followPageLabel}</a>
         </div>
 
         {showPopup && (

@@ -5,7 +5,7 @@ const nextConfig = {
     return [
       {
         source: '/boutique', 
-        destination: '/tous-les-equipements', 
+        destination: '/all', 
         permanent: true, 
       },
       {

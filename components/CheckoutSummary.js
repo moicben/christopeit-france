@@ -1,7 +1,7 @@
 import { format, addDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
-const CheckoutSummary = ({ cart, totalPrice, discount, discountedPrice, name, paymentFees, deliveryEstimate }) => {
+const CheckoutSummary = ({ cart, totalPrice, discount, discountedPrice, name, paymentFees, deliveryEstimate, data, shop }) => {
 
   if (cart[0]){
     console.log('cart:', cart[0].productDelivery);
@@ -29,42 +29,42 @@ const CheckoutSummary = ({ cart, totalPrice, discount, discountedPrice, name, pa
   return (
     <>
       <div className="shop-info">
-        <h2>{`Montant à régler`}</h2>
-        <h1 className='color-primary'>{`${parseFloat(discountedPrice).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`}</h1>
+        <h2>{data.checkoutPayLabel}</h2>
+        <h1 className='color-primary'>{`${(cart.reduce((total, item) => total + item.price * item.quantity, 0) * (1 - `.${data.checkoutPromoRate}`)).toLocaleString(shop.language, { minimumFractionDigits: 2 })} ${shop.currency}`}</h1>
       </div>
       <div className="cart-summary">
         <ul>
           {cart.map((item, index) => (
             <li key={index}>
               <div className="cart-item">
-                <h4>{item.productTitle}</h4>
+                <h4>{item.title}</h4>
                 <p className='quantity'>(x{item.quantity})</p>
-                <p>{`${parseFloat(item.productPrice.replace('€', '').replace(',', '.')).toFixed(2).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`}</p>
+                <p>{item.price.toLocaleString(shop.language, { minimumFractionDigits: 2 })} {shop.currency}</p>
               </div>
             </li>
           ))}
         </ul>
         <div className="cart-item discount">
-          <h4>CODE PROMO : <input value=' AVRIL15'/></h4>
-          <p className='quantity'>15%</p>
-          <p>{`-${parseFloat(discount).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`}</p>
+          <h4>{data.checkoutPromoLabel} <input value={data.checkoutPromoCode}/></h4>
+          <p className='quantity'>{data.checkoutPromoRate}%</p>
+          <p>{`-${(cart.reduce((total, item) => total + item.price * item.quantity, 0) * `.${data.checkoutPromoRate}`).toLocaleString(shop.language, { minimumFractionDigits: 2 })} ${shop.currency}`}</p>
         </div>
         <div className="cart-item discount">
-          <h4>Livraison estimiée :</h4>
+          <h4>{data.productDeliveryLabel}</h4>
           <p className='quantity delivery'>{cart[0] && getDeliveryDate(cart[0].productDelivery)}</p>
-          <p>OFFERT</p>
+          <p>{data.checkoutFreeLabel}</p>
         </div>
         <div className="cart-item subtotal">
-          <h4>Avant-réduction</h4>
-          <p>{`${parseFloat(totalPrice).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`}</p>
+          <h4>{data.checkoutBeforePromo}</h4>
+          <p>{`${cart.reduce((total, item) => total + item.price * item.quantity, 0).toLocaleString(shop.language, { minimumFractionDigits: 2 })} ${shop.currency}`}</p>
         </div>
 
         <div className="total-price">
           <h4>Total dû :</h4>
-          <p>{`${parseFloat(discountedPrice).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`}</p>
+          <p>{`${(cart.reduce((total, item) => total + item.price * item.quantity, 0) * (1 - `.${data.checkoutPromoRate}`)).toLocaleString(shop.language, { minimumFractionDigits: 2 })} ${shop.currency}`}</p>
         </div>
       </div>
-      <p className='secure footer'>© Tous droits réservés - {name} SAS 32455</p>
+      <p className='secure footer'>2025 © {data.footerCopyright} - {name} INC. 32455</p>
     </>
   );
 };

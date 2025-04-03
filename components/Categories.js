@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-const Categories = ({ categories, title }) => {
-  // Filter out "tous-les-equipements"
-  const filteredCategories = categories.filter(category => category.slug !== "tous-les-equipements");
+const Categories = ({ categories, title, data }) => {
+  // Filter out "all"
+  const filteredCategories = categories.filter(category => category.slug !== "all");
 
   // Fonction pour gérer l'ajout et la suppression de classes
   const handleMouseEnter = (e) => {
@@ -27,7 +27,7 @@ const Categories = ({ categories, title }) => {
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                 >
-                  Découvrir
+                  {data.categoryCta}
                 </p>
               </div>
             </a>

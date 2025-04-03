@@ -3,7 +3,7 @@ import { FaShoppingCart, FaBars, FaTimes, FaRegTrashAlt } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import ReviewsBadge from './ReviewsBadge';
 
-const Header = ({ name, domain, logo }) => {
+const Header = ({ name, domain, logo,categories, data, shop }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cart, setCart] = useState([]);
@@ -99,7 +99,7 @@ const Header = ({ name, domain, logo }) => {
 
   const handleCheckout = async () => {
     
-    router.push('/paiement');
+    router.push('/checkout');
   };
 
   
@@ -111,24 +111,27 @@ const Header = ({ name, domain, logo }) => {
       <div class="elfsight-app-ff817ebe-8d94-42a7-a8d9-ace1c29d4f7a" data-elfsight-app-lazy></div>
       
       {/* <section className="sub">
-        -15% sur nos équipements code : <span style={{ fontWeight: 500 }}>AVRIL15</span> &nbsp;|&nbsp; Livraison sous 2 à 5 jours ouvrés &nbsp;|&nbsp; support disponible 7j/7
+        -15% sur nos équipements code : <span style={{ fontWeight: 500 }}>{data.checkoutPromoCode}</span> &nbsp;|&nbsp; Livraison sous 2 à 5 jours ouvrés &nbsp;|&nbsp; support disponible 7j/7
       </section> */}
       <header className="header">
         <div className='wrapper'>
           <a className="logo-header" href="/"><img src={logo} alt="Logo"/></a>
           <nav className="nav">
             <ul>
-              <li><a href="/tous-les-equipements">équipements</a></li>
-              <li><a href="/bestsellers">Bestsellers</a></li>
-              <li><a href="/tapis-roulants">tapis</a></li>
-              <li><a href="/velos-appartement">Vélos</a></li>
-              <li><a href="/rameurs">Rameurs</a></li>
+              {categories
+                .sort((a, b) => a.id - b.id) // Tri des catégories par id
+                .map((category) => (
+                <li key={category.id}>
+                  <a href={`/${category.slug}`}>{category.name}</a>
+                </li>
+              ))}
+                    
               <li className="dropdown">
-                <a className='color-primary' href="#"><i className='fas fa-info border-primary'></i>{name}</a>
+                <a className='color-primary' href="#"><i className='fas fa-info border-primary'></i>{shop.name}</a>
                 <ul className="dropdown-menu">
-                  <li><a href="/a-propos">Notre histoire</a></li>
+                  <li><a href="/about">{data.headerLink1}</a></li>
                   
-                  <li><a href="/blog">Blog & Guides</a></li>
+                  <li><a href="/blog">{data.headerLink2}</a></li>
                   <li>
                     <a
                       href="#"
@@ -140,11 +143,11 @@ const Header = ({ name, domain, logo }) => {
                         }
                       }}
                     >
-                      Avis clients
+                      {data.headerLink3}
                     </a>
                   </li>
-                  <li><a href="/contact">contact</a></li>
-                  <li><a href="/faq">FAQ</a></li>
+                  <li><a href="/contact">{data.headerLink4}</a></li>
+                  <li><a href="/help">{data.headerLink5}</a></li>
                 </ul>
               </li>
             </ul>
@@ -158,17 +161,17 @@ const Header = ({ name, domain, logo }) => {
       </header>
       {isCartOpen && (
         <div className="cart-drawer" ref={cartDrawerRef}>
-          <h2>Panier</h2>
+          <h2>{data.cartLabel}</h2>
           {cart.length === 0 ? (
-            <p>Votre panier est vide</p>
+            <p>{data.cartEmpty}</p>
           ) : (
           <ul>
             {cart.map((item, index) => (
               <li key={index}>
-                <img src={item.productImages[0]} alt={item.productTitle} />
+                <img src={item.images[0]} alt={item.title} />
                 <div>
-                  <h3>{item.productTitle}</h3>
-                  <p>{item.productPrice}</p>
+                  <h3>{item.title}</h3>
+                  <p>{item.price.toLocaleString(shop.language, { minimumFractionDigits: 2 })} {shop.currency}</p>
                   <div className="quantity-selector">
                     <button onClick={() => handleQuantityChange(index, item.quantity > 1 ? item.quantity - 1 : 1)}>-</button>
                     <span>{item.quantity}</span>
@@ -183,16 +186,16 @@ const Header = ({ name, domain, logo }) => {
           </ul>
         )}
         <div className="total">
-            <h4>Total dû :</h4>
-            <p>{cart.reduce((total, item) => total + parseFloat(item.productPrice.replace('€', '').replace(',', '.')) * item.quantity, 0).toFixed(2)} €</p>
+            <h4>{data.cartTotal}</h4>
+            <p>{`${cart.reduce((total, item) => total + item.price * item.quantity, 0).toLocaleString(shop.language, { minimumFractionDigits: 2 })} ${shop.currency}`}</p>
         </div>
         <button className="close" onClick={toggleCart}>+</button>
-        <button className="checkout" onClick={handleCheckout}>Passer commande</button>
+        <button className="checkout" onClick={handleCheckout}>{data.cartCta}</button>
       </div>
         )}
 
       <section className="badge-container">
-          <ReviewsBadge domain={domain} logo={logo}/>
+          <ReviewsBadge domain={shop.domain} logo={logo}/>
       </section>
     </>
   );

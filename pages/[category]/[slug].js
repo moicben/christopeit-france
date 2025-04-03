@@ -190,7 +190,7 @@ export default function ProductDetail({ product, category, shop, brand, data, pr
       />
       
       <main className='product-page'>
-        <Header title={shop.name} name={shop.name} domain={shop.domain} logo={brand.logo} />
+        <Header logo={brand.logo} categories={categories} data={data} shop={shop} />
 
         {isPopupVisible && (
           <div className="popup-overlay" onClick={closePopup}>
@@ -267,8 +267,16 @@ export default function ProductDetail({ product, category, shop, brand, data, pr
           <div className="wrapper" dangerouslySetInnerHTML={{ __html: product.more3 }}/>
         </section>
   
-        <Testimonials shop={shop} data={data.reviewContent} />
-        <Products categories={categories} products={relatedProducts} title={`Nos autres ${category.title}`} showCategoryFilter={false} />
+        <Testimonials data={data} shop={shop} />
+
+        <Products
+          categories={categories}
+          products={relatedProducts}
+          title={`Nos autres ${category.title}`}
+          showCategoryFilter={false}
+          data={data}
+        />
+
         <Categories title='Catégories similaires' categories={otherCategories} />
         
       </main>
@@ -276,19 +284,19 @@ export default function ProductDetail({ product, category, shop, brand, data, pr
         <div className="cta-banner">
           <div className="banner-content">
               <h3>{product.title}</h3>
-              <p className='price'>{product.price},00€</p>
+              <p className='price'>{product.price}</p>
 
           </div>
-          <button onClick={handleBuyNow}>Acheter pour {product.discounted},00€ </button>
+          <button onClick={handleBuyNow}>Acheter pour {(product.price * 0.85).toFixed(2).replace('.', ',')}{shop.currency}</button>
        </div>
       )}
-      <Footer shop={shop}/>
+      <Footer shop={shop} data={data} />
     </div>
   );
 
   function handleBuyNow() {
     handleAddToCart();
-    window.location.href = '/paiement';
+    window.location.href = '/checkout';
   }
 }
 

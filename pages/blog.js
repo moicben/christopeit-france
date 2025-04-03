@@ -8,7 +8,7 @@ import Testimonials from '../components/Testimonials';
 
 import { fetchData } from 'lib/supabase';
 
-const Blog = ({ shop, data, brand }) => {
+const Blog = ({ shop, data, brand, categories }) => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const articlesPerPage = 9;
@@ -32,17 +32,17 @@ const Blog = ({ shop, data, brand }) => {
         <Head name={shop.name} domain={shop.domain}
             favicon={brand.favicon} graph={brand.graph}
             colorPrimary={brand.colorPrimary} colorSecondary={brand.colorSecondary} colorBlack={brand.colorBlack} colorGrey={brand.colorGrey} bgMain={brand.bgMain} bgLight={brand.bgLight} bgDark={brand.bgDark} radiusBig={brand.radiusBig} radiusMedium={brand.radiusMedium} font={brand.font} 
-            title={`Blog & Guides - ${shop.name}`}
+            title={`${data.blogPageLabel} - ${shop.name}`}
       />
 
       <main>
-        <Header title={shop.name} name={shop.name} domain={shop.domain} logo={brand.logo} />
+        <Header logo={brand.logo} categories={categories} data={data} shop={shop} />
         
         <section className="blog" id='about'>
           
             <div className='about-banner'>
               <div className='filter'>
-                <h1>Guides : Achat - Fitness - Alimentation </h1>
+                <h1>{data.blogPageTitle}</h1>
               </div>
             </div>
             <div className="wrapper">
@@ -51,7 +51,7 @@ const Blog = ({ shop, data, brand }) => {
                 <a href={`/blog/${article.slug}`} key={article.slug} className="article-item">
                   <img src={article.thumbnail} alt={article.title} />
                   <h3>{article.title}</h3>
-                  <span className=' bg-primary'>Lire l'article</span>
+                  <span className=' bg-primary'>{data.blogArticleCta}</span>
                 </a>
               ))}
             </div>
@@ -62,9 +62,9 @@ const Blog = ({ shop, data, brand }) => {
             />
           </div>
         </section>
-        <Testimonials shop={shop} data={data.reviewContent} />
+        <Testimonials data={data} shop={shop} />
       </main>
-      <Footer shop={shop}/>
+      <Footer shop={shop} data={data} />
     </div>
   );
 };
@@ -73,13 +73,14 @@ export async function getStaticProps() {
   const data = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
   const shop = await fetchData('shops', { match: { id: process.env.SHOP_ID } });
   const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
-  
+  const categories = await fetchData('categories', { match: { shop_id: process.env.SHOP_ID } });
 
   return {
     props: {
       data:data[0],
       shop: shop[0],
       brand: brand[0],
+      categories: categories,
     },
   };
 }

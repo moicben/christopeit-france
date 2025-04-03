@@ -128,7 +128,7 @@ const StripeTest = ({ site }) => (
         <CheckoutForm />
       </Elements>
     </main>
-    <Footer shop={shop} />
+    <Footer shop={shop} data={data} />
   </div>
 );
 

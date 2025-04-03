@@ -23,7 +23,7 @@ export default function Verification({brand,shop}) {
         if (data.status === 'paid') {
           router.push(`/confirmation?commande=${orderNumber}`);
         } else if (data.status === 'failed') {
-          router.push(`/paiement?failed=true`);
+          router.push(`/checkout?failed=true`);
         } else {
           console.log(`Statut actuel: ${data.status}`);
           setStatus(data.status); // Met à jour le statut affiché

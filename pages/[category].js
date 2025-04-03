@@ -13,7 +13,7 @@ import { fetchData } from "../lib/supabase";
 
 const CategoryPage = ({data, shop, brand, categories, category, filteredProducts, otherCategories }) => {
   if (!category) {
-    return <h1>Erreur 404 - Catégorie non trouvée</h1>;
+    return <h1>404 error</h1>;
   }
 
   const getRandomIcon = () => {
@@ -48,16 +48,16 @@ const CategoryPage = ({data, shop, brand, categories, category, filteredProducts
       />
 
       <main>
-        <Header title={shop.name} name={shop.name} domain={shop.domain} logo={brand.logo} />
+        <Header logo={brand.logo} categories={categories} data={data} shop={shop} />
         <section className="category-banner">
-          <div className="wrapper" style={{ backgroundImage: `url(/${category.slug}.jpg)` }}>
+          <div className="wrapper" style={{ backgroundImage: `url(${category.image})` }}>
             <div className="content">
               <h1>{category.title}</h1>
               <p>{category.desc}</p>
             </div>
           </div>
         </section>
-        <ScrollingBanner items={['Frais de ports offerts', 'Leader Allemand du fitness à domicile', 'Équipements de dernière génération', '60 jours satisfait ou remboursé', 'Frais de ports offerts', 'Boutique officielle depuis 2019', 'Support client disponible 7j/7', 'Livraison sous 2 à 5 jours ouvrés', "Guide et conseils d'installation", "+1000 avis clients positifs"]} />
+        <ScrollingBanner items={data.saleBanner} />
        
         <Products
           products={filteredProducts}
@@ -65,6 +65,8 @@ const CategoryPage = ({data, shop, brand, categories, category, filteredProducts
           showCategoryFilter={false}
           disablePagination={true}
           categories={categories}
+          data={data}
+          shop={shop}
         />
 
         <section className="guide">
@@ -76,7 +78,7 @@ const CategoryPage = ({data, shop, brand, categories, category, filteredProducts
                   <li className='' key={index}>{point}</li>
                 ))}
               </ul>
-              <img src={`/guide-${category.slug}.jpg`} alt={category.guideTitle} />
+              <img src={category.guideImg} alt={category.guideTitle} />
             </div>
           </div>
         </section>
@@ -103,15 +105,15 @@ const CategoryPage = ({data, shop, brand, categories, category, filteredProducts
                   <li key={index}>{point}</li>
                 ))}
               </ul>
-              <img src={`/maintenance-${category.slug}.jpg`} alt={category.maintenanceTitle} />
+              <img src={category.maintenanceImg} alt={category.maintenanceTitle} />
             </div>
           </div>
         </section>
         
-        <Testimonials shop={shop} data={data.reviewContent} />
-        <Categories categories={categories} title='catégories similaires'/>
+        <Testimonials data={data} shop={shop} />
+        <Categories categories={categories} title={data.categorySimilar} data={data}/>
       </main>
-      <Footer shop={shop} />
+      <Footer shop={shop} data={data} />
     </div>
   );
 };
@@ -139,8 +141,8 @@ export async function getStaticProps({ params }) {
 
   const category = categories.find((cat) => cat.slug === params.category);
 
-  // Si la catégorie est "tous-les-equipements" ou "bestsellers", on filtre
-  const filteredProducts = params.category === "tous-les-equipements"
+  // Si la catégorie est "all" ou "bestsellers", on filtre
+  const filteredProducts = params.category === "all"
     ? products
     : params.category === "bestsellers"
     ? products.filter(

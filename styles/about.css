@@ -26,10 +26,10 @@
 }
 
 .a-propos{
-  height: 600vh;
   width: 100%;
   background-size: contain;
   background-repeat: no-repeat;
+  padding-bottom: 2rem;
 }
 
 #about .about-banner .filter{
@@ -54,6 +54,10 @@
   margin: 1rem 0 1.5rem 0;
 }
 
+#about .articles-list img{
+  height: 251px;
+}
+
 #about .article-item p {
   margin-top: .5rem;
   height: 93px;
@@ -71,9 +75,7 @@
 
 #about img {
   width: 100%;
-  height: 233px;
   object-fit: cover;
-  border-radius: .5rem;
 }
 
 
@@ -181,18 +183,14 @@
     grid-gap: 3rem
   }
 
-  #about img{
-    height: 24vh;
+  #about .articles-list img {
+    height: 196px;
   }
 
   #about .articles-list h3{
     margin-bottom: 1rem;
   }
 
-  .a-propos {
-    height: 700vh;
-    width: 100%;
-  }
 
 
   #article .wrapper {

@@ -40,12 +40,12 @@ const Home = ({ data, shop, brand, products, categories }) => {
       />
       
       <main>
-        <Header title={shop.name} name={shop.name} domain={shop.domain} logo={brand.logo} />
+        <Header logo={brand.logo} categories={categories} data={data} shop={shop} />
         
         <section className="hero">
           <h1>{data.heroTitle}</h1>
           <p>{data.heroDesc}</p>
-          <a href="/boutique"><button>Découvrir les équipements</button></a>
+          <a href="/boutique"><button>{data.heroCta}</button></a>
           <div className='filter'></div>
           <video ref={videoRef} autoPlay muted loop playsInline>
             <source src={data.heroMedia} type='video/mp4' />
@@ -61,23 +61,25 @@ const Home = ({ data, shop, brand, products, categories }) => {
           </div>
         </section>
 
-        <Categories categories={categories} />
+        <Categories categories={categories} data={data}/>
  
         <Products 
           title={`Les bestellers Christopeit France`} 
           products={products} 
           categories={categories}
           initialCategoryFilter="bestsellers" 
+          data={data}
+          shop={shop}
         />
         
-        <Testimonials shop={shop} data={data.reviewContent} />
+        <Testimonials data={data} shop={shop} />
         
-        <About data={data} />
+        <About data={data} shop={shop} />
         
         
       </main>
 
-      <Footer shop={shop} />
+      <Footer shop={shop} data={data} />
     </div>
   );
 };
@@ -89,7 +91,7 @@ export async function getStaticProps() {
   const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
 
   const products = await fetchData('products', { match: { shop_id: process.env.SHOP_ID } });
-  const categories = await fetchData('categories', { match: { shop_id: process.env.SHOP_ID } });
+  const categories = await fetchData('categories', { match: { shop_id: process.env.SHOP_ID }, order: { id: 'desc' } });
   
 
   return {

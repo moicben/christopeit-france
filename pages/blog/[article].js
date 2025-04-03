@@ -28,7 +28,7 @@ const Article = ({ shop, data, brand, article, categories }) => {
       />
 
       <main>
-        <Header title={shop.name} name={shop.name} domain={shop.domain} logo={brand.logo} />
+        <Header logo={brand.logo} categories={categories} data={data} shop={shop} />
         
         <section className="article" id='article'>
           <div className='wrapper'>
@@ -41,8 +41,8 @@ const Article = ({ shop, data, brand, article, categories }) => {
           </div>
         </section>
       </main>
-      <Categories categories={categories} title='Découvrez nos équipements'/>
-      <Footer shop={shop} />
+      <Categories categories={categories} title='Découvrez nos équipements' data={data}/>
+      <Footer shop={shop} data={data} />
     </div>
   );
 };

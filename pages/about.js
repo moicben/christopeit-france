@@ -8,7 +8,7 @@ import Testimonials from 'components/Testimonials';
 
 import { fetchData } from '../lib/supabase'; // Assurez-vous que le chemin est correct
 
-const APropos = ({ data, shop, brand }) => {
+const APropos = ({ data, shop, brand, categories }) => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -32,18 +32,13 @@ const APropos = ({ data, shop, brand }) => {
       <Head name={shop.name} domain={shop.domain}
             favicon={brand.favicon} graph={brand.graph}
             colorPrimary={brand.colorPrimary} colorSecondary={brand.colorSecondary} colorBlack={brand.colorBlack} colorGrey={brand.colorGrey} bgMain={brand.bgMain} bgLight={brand.bgLight} bgDark={brand.bgDark} radiusBig={brand.radiusBig} radiusMedium={brand.radiusMedium} font={brand.font} 
-            title={`Notre histoire - ${shop.name}`}
+            title={`${data.aboutPageLabel} - ${shop.name}`}
       />
       <main>
-        <Header title={shop.name} name={shop.name} domain={shop.domain} logo={brand.logo} />
+        <Header logo={brand.logo} categories={categories} data={data} shop={shop} />
 
-        <section
-          className="a-propos"
-          id="about"
-          style={{
-            backgroundImage: `url(${isMobile ? data.aboutPageImgMobile : data.aboutPageImg})`,
-          }}
-        >
+        <section className="a-propos" id="about">
+          <img src={`${isMobile ? data.aboutPageImgMobile : data.aboutPageImg}`} alt={shop.name} className="about-image" />
           {/* <div className='about-banner'>
             <div className='filter'>
               <h1>Il était une fois...</h1>
@@ -52,9 +47,9 @@ const APropos = ({ data, shop, brand }) => {
           <div className="wrapper">
           </div> */}
         </section>
-        <Testimonials shop={shop} data={data.reviewContent} />
+        <Testimonials data={data} shop={shop} />
       </main>
-      <Footer shop={shop} />
+      <Footer shop={shop} data={data} />
     </div>
   );
 };
@@ -63,12 +58,14 @@ export async function getStaticProps() {
   const data = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
   const shop = await fetchData('shops', { match: { id: process.env.SHOP_ID } });
   const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
+  const categories = await fetchData('categories', { match: { shop_id: process.env.SHOP_ID } });
 
   return {
     props: {
       data: data[0],
       shop: shop[0],
       brand: brand[0],
+      categories: categories,
     },
   };
 }
