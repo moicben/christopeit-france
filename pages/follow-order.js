@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 
 import { fetchData } from '../lib/supabase';
 
-const TrackOrder = ({ shop, brand, data }) => {
+const TrackOrder = ({ shop, brand, data, categories }) => {
     const [trackingNumber, setTrackingNumber] = useState('');
     const [trackingInfo, setTrackingInfo] = useState(null);
     const [error, setError] = useState('');
