@@ -29,11 +29,6 @@ const generateSitemap = async () => {
     throw new Error('Erreur lors de la récupération des données depuis Supabase.');
   }
 
-  // Récupération des articles de blog
-  const blogContentArray = Array.isArray(contents[0]?.blogContent)
-    ? contents[0].blogContent
-    : Object.values(contents[0]?.blogContent || {});
-
   // Génération des URLs pour les pages statiques
   const staticUrls = staticPages.map((page) => `
     <url>
@@ -69,7 +64,7 @@ const generateSitemap = async () => {
   }).filter(Boolean); // Supprimer les entrées vides
 
   // Génération des URLs pour les articles de blog
-  const blogUrls = blogContentArray.map((article) => `
+  const blogUrls = contents[0].blogContent.articles.map((article) => `
     <url>
       <loc>${BASE_URL}/blog/${article.slug}</loc>
       <lastmod>${new Date().toISOString()}</lastmod>

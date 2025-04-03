@@ -190,7 +190,13 @@ const Header = ({ name, domain, logo,categories, data, shop }) => {
             <p>{`${cart.reduce((total, item) => total + item.price * item.quantity, 0).toLocaleString(shop.language, { minimumFractionDigits: 2 })} ${shop.currency}`}</p>
         </div>
         <button className="close" onClick={toggleCart}>+</button>
-        <button className="checkout" onClick={handleCheckout}>{data.cartCta}</button>
+        <button 
+          className="checkout" 
+          onClick={handleCheckout} 
+          disabled={cart.length === 0} // Désactive le bouton si le panier est vide
+        >
+          {data.cartCta}
+        </button>
       </div>
         )}
 

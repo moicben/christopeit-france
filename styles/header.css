@@ -333,7 +333,7 @@
     font-weight: 600;
   }
 
-  .checkout{
+  button.checkout{
     margin-top: 2rem;
     text-align: center;
     font-weight: 500;
@@ -346,6 +346,10 @@
     border-radius: 8px;
   }
 
+  button.checkout:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
 
 
 

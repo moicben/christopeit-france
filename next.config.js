@@ -28,7 +28,21 @@ const nextConfig = {
         destination: '/rameurs/rameur-$1', // Réutilisation de la partie capturée avec $1
         permanent: true,
       },
-      
+      {
+        source: '/a-propos',
+        destination: '/about',
+        permanent: true,
+      },
+      {
+        source: '/faq',
+        destination: '/help',
+        permanent: true,
+      },
+      {
+        source: '/suivre-mon-colis',
+        destination: '/follow-order',
+        permanent: true,
+      }
     ];
   },
 };

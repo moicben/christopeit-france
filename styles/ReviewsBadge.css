@@ -89,7 +89,6 @@
   display: flex;
   justify-content: center;
   z-index: 1000;
-  overflow-y: scroll;
 }
 
 .popup-content {
