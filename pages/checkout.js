@@ -91,7 +91,7 @@ const Checkout = ({data, shop, brand}) => {
       <div className="left-column bg-main">
         <a className="back" href="/"><img src={brand.logo}/></a>
         <CheckoutSummary 
-          art={cart}
+          cart={cart}
           totalPrice={totalPrice}
           discount={discount}
           discountedPrice={discountedPrice}

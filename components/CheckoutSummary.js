@@ -3,8 +3,8 @@ import { fr } from 'date-fns/locale';
 
 const CheckoutSummary = ({ cart, totalPrice, discount, discountedPrice, name, paymentFees, deliveryEstimate, data, shop }) => {
 
-  if (cart[0]){
-    console.log('cart:', cart[0].productDelivery);
+  if (cart){
+    console.log('cart:', cart.delivery);
   }
   
   
@@ -51,7 +51,7 @@ const CheckoutSummary = ({ cart, totalPrice, discount, discountedPrice, name, pa
         </div>
         <div className="cart-item discount">
           <h4>{data.productDeliveryLabel}</h4>
-          <p className='quantity delivery'>{cart[0] && getDeliveryDate(cart[0].productDelivery)}</p>
+          <p className='quantity delivery'>{cart[0] && getDeliveryDate(cart[0].delivery)}</p>
           <p>{data.checkoutFreeLabel}</p>
         </div>
         <div className="cart-item subtotal">
@@ -60,7 +60,7 @@ const CheckoutSummary = ({ cart, totalPrice, discount, discountedPrice, name, pa
         </div>
 
         <div className="total-price">
-          <h4>Total dû :</h4>
+          <h4>{data.cartTotal}</h4>
           <p>{`${(cart.reduce((total, item) => total + item.price * item.quantity, 0) * (1 - `.${data.checkoutPromoRate}`)).toLocaleString(shop.language, { minimumFractionDigits: 2 })} ${shop.currency}`}</p>
         </div>
       </div>
