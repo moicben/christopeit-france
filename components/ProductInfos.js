@@ -2,7 +2,7 @@ import React from 'react';
 import { format, addDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
-export default function ProductInfos({ product, handleAddToCart, buttonText, shop }) {
+export default function ProductInfos({ product, handleAddToCart, buttonText, shop, data }) {
   const handleBuyNow = () => {
     //vider le panier actuel :
     localStorage.setItem('cart', JSON.stringify([]));
@@ -51,7 +51,7 @@ export default function ProductInfos({ product, handleAddToCart, buttonText, sho
       />
 
       <article className="purchase-row">
-        <p className="comptor">PROMO début avril 15%</p>
+        <p className="comptor">{data.productCtaPromo}</p>
         <button className="buy-now bg-primary border-primary" onClick={handleBuyNow}>
           Acheter pour {(product.price * 0.85).toFixed(2).replace('.', ',')}{shop.currency}
         </button>

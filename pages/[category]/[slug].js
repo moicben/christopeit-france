@@ -254,7 +254,7 @@ export default function ProductDetail({ product, category, shop, brand, data, pr
               )}
             </div>
           </div>
-          <ProductInfos product={product} handleAddToCart={handleAddToCart} buttonText={buttonText} shop={shop}/>
+          <ProductInfos data={data} product={product} handleAddToCart={handleAddToCart} buttonText={buttonText} shop={shop}/>
         </div>
       </section>
 
@@ -275,16 +275,17 @@ export default function ProductDetail({ product, category, shop, brand, data, pr
           title={`Nos autres ${category.title}`}
           showCategoryFilter={false}
           data={data}
+          shop={shop}
         />
 
-        <Categories title='Catégories similaires' categories={otherCategories} />
+        <Categories title='Catégories similaires' categories={otherCategories} data={data}/>
         
       </main>
       {showBanner && (
         <div className="cta-banner">
           <div className="banner-content">
               <h3>{product.title}</h3>
-              <p className='price'>{product.price}</p>
+              <p className='price'>{(product.price).toFixed(2).replace('.', ',')}{shop.currency}</p>
 
           </div>
           <button onClick={handleBuyNow}>Acheter pour {(product.price * 0.85).toFixed(2).replace('.', ',')}{shop.currency}</button>

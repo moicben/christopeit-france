@@ -99,9 +99,10 @@ const Products = ({ title, products, description, showCategoryFilter = true, ini
       RO: require('date-fns/locale/ro')
     };
 
-    //const language = languageMap[shop.language] || undefined; // Utilisation de la locale correspondante ou undefined par défaut
+    // console.log("LANGUEEE" + shop.language)
+    const language = languageMap[shop.language]; // Utilisation de la locale correspondante ou undefined par défaut
     const deliveryDate = addDays(today, deliveryDays);
-    return format(deliveryDate, 'EEE dd MMM', { locale: languageMap[shop.language] });
+    return format(deliveryDate, 'EEE dd MMM', { locale: language});
   };
 
   return (
