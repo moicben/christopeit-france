@@ -285,10 +285,22 @@ export default function ProductDetail({ product, category, shop, brand, data, pr
         <div className="cta-banner">
           <div className="banner-content">
               <h3>{product.title}</h3>
-              <p className='price'>{(product.price).toFixed(2).replace('.', ',')}{shop.currency}</p>
-
+              <p className="description">{product.desc.replace(/<li>/g, '').replace(/<\/li>/g, ' ⋅').replace(/<\/il>/g, '').replace(/<ul>/g, '').replace(/<\/ul>/g, '')}</p>
+              {product.discounted ? (
+                <>
+                  <p className="price new color-primary">
+                    {product.price.toFixed(2).replace('.', ',')} {shop.currency}
+                    <span className="initial-price">{product.discounted.toFixed(2).replace('.', ',')} {shop.currency}</span>
+                  </p>
+                </>
+              ) : (
+                <p className="price">{product.price.toFixed(2).replace('.', ',')} {shop.currency}</p>
+              )}
           </div>
-          <button onClick={handleBuyNow}>Acheter pour {(product.price * 0.85).toFixed(2).replace('.', ',')}{shop.currency}</button>
+          <article>
+            <span>{data.productCtaPromo}</span>
+            <button onClick={handleBuyNow}>{data.productBuyFor} {(product.price * 0.85).toFixed(2).replace('.', ',')}{shop.currency}</button>
+          </article>
        </div>
       )}
       <Footer shop={shop} data={data} />

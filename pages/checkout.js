@@ -79,6 +79,7 @@ const Checkout = ({data, shop, brand}) => {
     setIframeUrl('');
   };
 
+  //console.log('CART', cart);
 
   return (
     <div className="paiement-container">

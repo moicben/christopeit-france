@@ -261,8 +261,7 @@ margin-bottom: 1rem;
 .error-banner a{
   text-transform: none;
   font-weight: 300;
-  color: #c90101;
-  text-decoration: underline;
+  color: #111;
 }
 
 .checkout-step {
@@ -664,8 +663,9 @@ margin-bottom: 1rem;
 }
 
 .verification-popup.d-secure .loader{
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-width: 5px;
 }
 
 

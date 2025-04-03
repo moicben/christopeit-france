@@ -3,9 +3,9 @@ import { fr } from 'date-fns/locale';
 
 const CheckoutSummary = ({ cart, totalPrice, discount, discountedPrice, name, paymentFees, deliveryEstimate, data, shop }) => {
 
-  if (cart){
-    console.log('cart:', cart.delivery);
-  }
+  // if (cart){
+  //   console.log('cart:', cart.delivery);
+  // }
   
   
 

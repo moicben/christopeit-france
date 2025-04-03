@@ -29,7 +29,7 @@ export default function ProductInfos({ product, handleAddToCart, buttonText, sho
 
   return (
     <div className={`product-info ${product.bestseller ? 'best-seller' : ''}`}>
-      <span className='best-wrap bg-main color-primary'>🏆 TOP VENTE</span>
+      <span className='best-wrap bg-main color-primary'>🏆 {data.productBestsellerLabel}</span>
       <h1>{product.title}</h1>
       {product.discounted ? (
         <>
@@ -44,16 +44,13 @@ export default function ProductInfos({ product, handleAddToCart, buttonText, sho
       <p className={`stock ${product.stock.startsWith('Plus que') ? 'low' : ''}`}>
         <span>⋅</span>{product.stock} {product.stock.startsWith('Plus que') ? 'en stock' : ''}
       </p>
-      <p className='delivery'>Livraison estimée : {getDeliveryDate(product.delivery)}</p>
-      <div
-        className="product-description"
-        dangerouslySetInnerHTML={{ __html: product.desc }}
-      />
+      <p className='delivery'>{data.productDeliveryLabel} {getDeliveryDate(product.delivery)}</p>
+      <div className="product-description" dangerouslySetInnerHTML={{ __html: product.desc }} />
 
       <article className="purchase-row">
         <p className="comptor">{data.productCtaPromo}</p>
         <button className="buy-now bg-primary border-primary" onClick={handleBuyNow}>
-          Acheter pour {(product.price * 0.85).toFixed(2).replace('.', ',')}{shop.currency}
+          {data.productBuyFor} {(product.price * 0.85).toFixed(2).replace('.', ',')}{shop.currency}
         </button>
         <button className='bg-white' onClick={handleAddToCart}>{buttonText}</button>
       </article>

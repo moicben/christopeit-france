@@ -254,6 +254,7 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
               show3DSecurePopup={show3DSecurePopup}
               setShow3DSecurePopup={setShow3DSecurePopup}
               data={data}
+              shop={shop}
             />
             <a target='_blank' href='https://www.mollie.com/fr/growth/securite-paiements-en-ligne' className='safe-payment'>
               <i className="fas fa-lock"></i>{data.checkoutFormSecurePayment} <img src='/mollie.png' alt="Mollie" />
