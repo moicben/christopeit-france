@@ -68,7 +68,7 @@ const generateSitemap = async () => {
     <url>
       <loc>${BASE_URL}/blog/${article.slug}</loc>
       <lastmod>${new Date().toISOString()}</lastmod>
-      <changefreq>monthly</changefreq>
+      <changefreq>monthly</changefreq> 
       <priority>0.6</priority>
     </url>
   `);
