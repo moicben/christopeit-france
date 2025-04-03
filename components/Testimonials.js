@@ -38,7 +38,7 @@ const Testimonials = ({shop, data}) => {
   const currentReviews = reviews.slice(currentIndex, currentIndex + reviewsPerPage);
 
   return (
-    <section className="testimonials">
+    <section className="testimonials" id='reviews'>
       <div className="wrapper">
         <img onClick={(e) => { document.querySelector("section.badge-container > img").click() }} src="https://bpybtzxqypswjiizkzja.supabase.co/storage/v1/object/public/ecom/christopeit-france/avis-verifies.svg" alt="Avis vérifiés" />
         <h2>{data.reviewLabel} <span>{shop.domain}</span></h2>
