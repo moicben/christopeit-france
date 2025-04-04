@@ -2,7 +2,15 @@ import fs from 'fs';
 import path from 'path';
 import { fetchData } from '../lib/supabase.js';
 
-const BASE_URL = 'https://www.christopeit-france.com'; // Remplacez par l'URL de votre site
+// Récupération de l'URL du site depuis la table shops
+const shops = await fetchData('shops', { match: { id: process.env.SHOP_ID } });
+
+if (!shops || shops.length === 0) {
+  throw new Error('Aucun shop trouvé pour soumettre le sitemap.');
+}
+
+const siteUrl = `https://${shops[0].domain}`; // Utilisation du domaine du premier shop
+
 
 // Liste des pages statiques
 const staticPages = [
@@ -32,7 +40,7 @@ const generateSitemap = async () => {
   // Génération des URLs pour les pages statiques
   const staticUrls = staticPages.map((page) => `
     <url>
-      <loc>${BASE_URL}${page}</loc>
+      <loc>${siteUrl}${page}</loc>
       <lastmod>${new Date().toISOString()}</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
@@ -42,7 +50,7 @@ const generateSitemap = async () => {
   // Génération des URLs pour les catégories
   const categoryUrls = categories.map((category) => `
     <url>
-      <loc>${BASE_URL}/${category.slug}</loc>
+      <loc>${siteUrl}/${category.slug}</loc>
       <lastmod>${new Date().toISOString()}</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
@@ -55,7 +63,7 @@ const generateSitemap = async () => {
     if (!category) return ''; // Ignorer les produits sans catégorie correspondante
     return `
       <url>
-        <loc>${BASE_URL}/${category.slug}/${product.slug}</loc>
+        <loc>${siteUrl}/${category.slug}/${product.slug}</loc>
         <lastmod>${new Date().toISOString()}</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
@@ -66,7 +74,7 @@ const generateSitemap = async () => {
   // Génération des URLs pour les articles de blog
   const blogUrls = contents[0].blogContent.articles.map((article) => `
     <url>
-      <loc>${BASE_URL}/blog/${article.slug}</loc>
+      <loc>${siteUrl}/blog/${article.slug}</loc>
       <lastmod>${new Date().toISOString()}</lastmod>
       <changefreq>monthly</changefreq> 
       <priority>0.6</priority>
