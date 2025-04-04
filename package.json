@@ -9,7 +9,7 @@
     "start": "next start",
     "generate-sitemap": "node ./scripts/generate-sitemap.mjs",
     "submit-sitemap": "node ./scripts/google-submit-sitemap.mjs",
-    "postbuild": "npm run generate-sitemap"
+    "postbuild": "npm run generate-sitemap && npm run submit-sitemap"
   },
   "dependencies": {
     "@mollie/api-client": "^4.2.0",
