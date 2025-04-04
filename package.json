@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "generate-sitemap": "node ./scripts/generate-sitemap.mjs",
+    "submit-sitemap": "node ./scripts/submit-sitemap.mjs",
     "postbuild": "npm run generate-sitemap"
   },
   "dependencies": {
