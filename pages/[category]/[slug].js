@@ -285,7 +285,7 @@ export default function ProductDetail({ product, category, shop, brand, data, pr
         <div className="cta-banner">
           <div className="banner-content">
               <h3>{product.title}</h3>
-              <p className="description">{product.desc.replace(/<li>/g, '').replace(/<\/li>/g, ' ⋅').replace(/<\/il>/g, '').replace(/<ul>/g, '').replace(/<\/ul>/g, '')}</p>
+              <p className="description">{product.desc.replace(/<li>/g, '').replace(/<\/li>/g, ' ⋅').replace(/<\/il>/g, '').replace(/<ul>/g, '').replace(/<\/ul>/g, '').replace(/<strong>/g, '').replace(/</strong>/g, '')}</p>
               {product.discounted ? (
                 <>
                   <p className="price new color-primary">
