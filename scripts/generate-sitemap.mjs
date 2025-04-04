@@ -17,7 +17,6 @@ const staticPages = [
   '/',
   '/about',
   '/contact',
-  '/follow-order',
   '/help',
   '/checkout',
   '/verification',
