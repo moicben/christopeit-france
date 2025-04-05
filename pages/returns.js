@@ -7,7 +7,7 @@ import Footer from '../components/Footer';
 import { fetchData } from 'lib/supabase';
 
 
-const PolitiqueDesRetours = ({shop, brand, categories, data}) => {
+const PolitiqueDesRetours = ({shop, brand, categories, data, reviews}) => {
   return (
 
     <div className="container">
@@ -39,6 +39,7 @@ export async function getStaticProps() {
   const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
   const categories = await fetchData('categories', { match: { shop_id: process.env.SHOP_ID } });
   const data = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
+  const reviews = await fetchData('reviews', { match: { shop_id: process.env.SHOP_ID } });
 
   return {
     props: {
@@ -46,6 +47,7 @@ export async function getStaticProps() {
       brand: brand[0],
       categories: categories,
       data: data[0],
+      reviews: reviews,
     },
   };
 }

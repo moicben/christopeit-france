@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 
 import { fetchData } from '../lib/supabase';
 
-const TrackOrder = ({ shop, brand, data, categories }) => {
+const TrackOrder = ({ shop, brand, data, categories, reviews }) => {
     const [trackingNumber, setTrackingNumber] = useState('');
     const [trackingInfo, setTrackingInfo] = useState(null);
     const [error, setError] = useState('');
@@ -72,7 +72,7 @@ export async function getStaticProps() {
     const data = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
     const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
     const categories = await fetchData('categories', { match: { shop_id: process.env.SHOP_ID } });
-
+    const reviews = await fetchData('reviews', { match: { shop_id: process.env.SHOP_ID } });
 
     return {
         props: {
@@ -80,6 +80,7 @@ export async function getStaticProps() {
             data: data[0],
             brand: brand[0],
             categories: categories,
+            reviews: reviews,   
         },
     };
 }

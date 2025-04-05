@@ -9,7 +9,7 @@ import Categories from '../../components/Categories';
 import { fetchData } from 'lib/supabase';
 
 
-const Article = ({ shop, data, brand, article, categories }) => {
+const Article = ({ shop, data, brand, article, categories, reviews }) => {
   const router = useRouter();
   const { article: articleId } = router.query;
 
@@ -70,8 +70,21 @@ export async function getStaticProps({ params }) {
   const shop = await fetchData('shops', { match: { id: process.env.SHOP_ID } });
   const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
   const categories = await fetchData('categories', { match: { shop_id: process.env.SHOP_ID } });
+  const reviews = await fetchData('reviews', { match: { shop_id: process.env.SHOP_ID } });
+
+  // Check if blogContent and articles exist
+  if (!data || !data[0]?.blogContent?.articles) {
+    console.error("Erreur : blogContent ou articles manquants dans les données récupérées.");
+    return { notFound: true };
+  }
 
   const article = data[0].blogContent.articles.find(article => article.slug === params.article);
+
+  // If no article is found, return a 404 page
+  if (!article) {
+    console.error(`Article avec le slug "${params.article}" non trouvé.`);
+    return { notFound: true };
+  }
 
   return {
     props: {
@@ -80,6 +93,7 @@ export async function getStaticProps({ params }) {
       brand: brand[0],
       article,
       categories,
+      reviews,
     },
   };
 }

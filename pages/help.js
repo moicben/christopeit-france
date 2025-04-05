@@ -6,7 +6,7 @@ import Testimonials from '../components/Testimonials';
 
 import {fetchData} from '../lib/supabase'; // Assurez-vous que le chemin est correct
 
-const Faq = ({ data, brand, shop, categories }) => {
+const Faq = ({ data, brand, shop, categories, reviews }) => {
     const [activeIndex, setActiveIndex] = useState(null);
 
     const toggleFAQ = (index) => {
@@ -51,6 +51,7 @@ export async function getStaticProps() {
     const data = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
     const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
     const categories = await fetchData('categories', { match: { shop_id: process.env.SHOP_ID } });
+    const reviews = await fetchData('reviews', { match: { shop_id: process.env.SHOP_ID } });
 
     return {
         props: {
@@ -58,6 +59,7 @@ export async function getStaticProps() {
             shop: shop[0],
             brand: brand[0],
             categories: categories,
+            reviews: reviews,
         },
     };
 }
