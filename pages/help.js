@@ -25,7 +25,7 @@ const Faq = ({ data, brand, shop, categories }) => {
             
             
             <main>
-                <Header logo={brand.logo} categories={categories} data={data} shop={shop} />
+                <Header logo={brand.logo} categories={categories} data={data} shop={shop} reviews={reviews} />
                 <div className="faq-container">
                     <h1>{data.faqPageTitle}</h1>
                     {data.faqContent.map((faq, index) => (
@@ -38,7 +38,7 @@ const Faq = ({ data, brand, shop, categories }) => {
                         </div>
                     ))}
                 </div>
-                <Testimonials data={data} shop={shop} />
+                <Testimonials data={data} shop={shop} reviews={reviews} />
             </main>
             
             <Footer shop={shop} data={data} />

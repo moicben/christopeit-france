@@ -14,7 +14,7 @@ import Categories from '../components/Categories';
 import { fetchData }  from '../lib/supabase'; // Assurez-vous que le chemin est correct
 import { da } from 'date-fns/locale';
 
-const Home = ({ data, shop, brand, products, categories }) => {
+const Home = ({ data, shop, brand, products, categories, reviews }) => {
   const [cartCount, setCartCount] = useState(0);
   const videoRef = useRef(null);
 
@@ -40,7 +40,7 @@ const Home = ({ data, shop, brand, products, categories }) => {
       />
       
       <main>
-        <Header logo={brand.logo} categories={categories} data={data} shop={shop} />
+        <Header logo={brand.logo} categories={categories} data={data} shop={shop} reviews={reviews} />
         
         <section className="hero">
           <h1>{data.heroTitle}</h1>
@@ -72,7 +72,7 @@ const Home = ({ data, shop, brand, products, categories }) => {
           shop={shop}
         />
         
-        <Testimonials data={data} shop={shop} />
+        <Testimonials data={data} shop={shop} reviews={reviews}/>
         
         <About data={data} shop={shop} />
         
@@ -92,7 +92,8 @@ export async function getStaticProps() {
 
   const products = await fetchData('products', { match: { shop_id: process.env.SHOP_ID } });
   const categories = await fetchData('categories', { match: { shop_id: process.env.SHOP_ID }, order: { id: 'desc' } });
-  
+  const reviews = await fetchData('reviews', { match: { shop_id: process.env.SHOP_ID } });
+  const posts = await fetchData('posts', { match: { shop_id: process.env.SHOP_ID } });
 
   return {
     props: {
@@ -101,6 +102,8 @@ export async function getStaticProps() {
       brand: brand[0],
       products: products,
       categories: categories,
+      reviews: reviews,
+      posts: posts,
     },
   };
 }

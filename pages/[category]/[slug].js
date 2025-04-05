@@ -36,7 +36,7 @@ function gtag_report_conversion(url) {
   return false;
 }
 
-export default function ProductDetail({ product, category, shop, brand, data, products, categories, relatedProducts, otherCategories }) {
+export default function ProductDetail({ product, category, shop, brand, data, products, categories, relatedProducts, otherCategories, reviews}) {
   const [cartCount, setCartCount] = useState(0);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -190,7 +190,7 @@ export default function ProductDetail({ product, category, shop, brand, data, pr
       />
       
       <main className='product-page'>
-        <Header logo={brand.logo} categories={categories} data={data} shop={shop} />
+        <Header logo={brand.logo} categories={categories} data={data} shop={shop} reviews={reviews} />
 
         {isPopupVisible && (
           <div className="popup-overlay" onClick={closePopup}>
@@ -267,7 +267,7 @@ export default function ProductDetail({ product, category, shop, brand, data, pr
           <div className="wrapper" dangerouslySetInnerHTML={{ __html: product.more3 }}/>
         </section>
   
-        <Testimonials data={data} shop={shop} />
+        <Testimonials data={data} shop={shop} reviews={reviews} />
 
         <Products
           categories={categories}
@@ -351,13 +351,15 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const { category: categorySlug, slug } = params;
 
-  // Récupération des catégories et produits depuis Supabase
-  const categories = await fetchData('categories', { match: { shop_id: process.env.SHOP_ID } });
-  const products = await fetchData('products', { match: { shop_id: process.env.SHOP_ID } });
-
   const shop = await fetchData('shops', { match: { id: process.env.SHOP_ID } });
   const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
   const data = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
+
+  // Récupération des catégories et produits depuis Supabase
+  const categories = await fetchData('categories', { match: { shop_id: process.env.SHOP_ID } });
+  const products = await fetchData('products', { match: { shop_id: process.env.SHOP_ID } });
+  const reviews = await fetchData('reviews', { match: { shop_id: process.env.SHOP_ID } });
+
 
   // Trouver la catégorie correspondant au slug
   const category = categories.find(cat => cat.slug === categorySlug);
@@ -398,6 +400,7 @@ export async function getStaticProps({ params }) {
       shop: shop[0],
       brand: brand[0],
       data: data[0],
+      reviews: reviews,
     },
   };
 }

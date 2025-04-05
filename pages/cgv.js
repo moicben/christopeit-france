@@ -18,7 +18,7 @@ export default function ConditionsGenerales({shop, brand, categories, data}) {
       />
 
       <main>
-        <Header logo={brand.logo} categories={categories} data={data} shop={shop} />
+        <Header logo={brand.logo} categories={categories} data={data} shop={shop} reviews={reviews} />
         
         <section className='legal'>
           <h1>{data.cgvPageLabel}</h1>

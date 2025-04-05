@@ -213,7 +213,7 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
             checked={selectedPaymentMethod === 'bankTransfer'}
             onChange={() => setSelectedPaymentMethod('bankTransfer')}
           />
-          <img src="/virement.png" className="transfer" alt={data.checkoutFormBankTransferAlt} />
+          <img src={shop.language !== "FR" ? "bank-transfer.png" : "/virement.png"} className={shop.language !== "FR" ? "transfer en" : "transfer"} alt={data.checkoutFormBankTransferAlt} />
           <span className='info'>{data.checkoutFormBankTransferInfo}</span>
         </label>
         <label className={`unvalaible payment-method ${selectedPaymentMethod === 'paypal' ? 'selected' : ''}`}>

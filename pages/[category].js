@@ -11,7 +11,7 @@ import ScrollingBanner from "components/ScrollingBanner";
 
 import { fetchData } from "../lib/supabase";
 
-const CategoryPage = ({data, shop, brand, categories, category, filteredProducts, otherCategories }) => {
+const CategoryPage = ({data, shop, brand, categories, category, filteredProducts, otherCategories, reviews }) => {
   if (!category) {
     return <h1>404 error</h1>;
   }
@@ -48,7 +48,7 @@ const CategoryPage = ({data, shop, brand, categories, category, filteredProducts
       />
 
       <main>
-        <Header logo={brand.logo} categories={categories} data={data} shop={shop} />
+        <Header logo={brand.logo} categories={categories} data={data} shop={shop} reviews={reviews} />
         <section className="category-banner">
           <div className="wrapper" style={{ backgroundImage: `url(${category.image})` }}>
             <div className="content">
@@ -110,7 +110,7 @@ const CategoryPage = ({data, shop, brand, categories, category, filteredProducts
           </div>
         </section>
         
-        <Testimonials data={data} shop={shop} />
+        <Testimonials data={data} shop={shop} reviews={reviews} />
         <Categories categories={categories} title={data.categorySimilar} data={data}/>
       </main>
       <Footer shop={shop} data={data} />
@@ -136,6 +136,7 @@ export async function getStaticProps({ params }) {
   const shop = await fetchData('shops', { match: { id: process.env.SHOP_ID } });
   const data = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
   const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
+  const reviews = await fetchData('reviews', { match: { shop_id: process.env.SHOP_ID } });
 
   console.log('Shop data:', shop);
 
@@ -173,7 +174,9 @@ export async function getStaticProps({ params }) {
       shop: shop[0],
       products: products[0],
       otherCategories,
-      categories },
+      categories,
+      reviews,
+    },
   };
 }
 

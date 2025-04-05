@@ -486,6 +486,10 @@ margin-bottom: 1rem;
   height: 1.8rem;
 }
 
+.payment-method img.transfer.en{
+  height: 2.4rem;
+}
+
 .payment-method .info {
   font-weight: 300;
   font-size: .8rem;

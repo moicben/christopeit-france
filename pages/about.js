@@ -8,7 +8,7 @@ import Testimonials from 'components/Testimonials';
 
 import { fetchData } from '../lib/supabase'; // Assurez-vous que le chemin est correct
 
-const APropos = ({ data, shop, brand, categories }) => {
+const APropos = ({ data, shop, brand, categories, reviews }) => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const APropos = ({ data, shop, brand, categories }) => {
             title={`${data.aboutPageLabel} - ${shop.name}`}
       />
       <main>
-        <Header logo={brand.logo} categories={categories} data={data} shop={shop} />
+        <Header logo={brand.logo} categories={categories} data={data} shop={shop} reviews={reviews} />
 
         <section className="a-propos" id="about">
           <img src={`${isMobile ? data.aboutPageImgMobile : data.aboutPageImg}`} alt={shop.name} className="about-image" />
@@ -47,7 +47,7 @@ const APropos = ({ data, shop, brand, categories }) => {
           <div className="wrapper">
           </div> */}
         </section>
-        <Testimonials data={data} shop={shop} />
+        <Testimonials data={data} shop={shop} reviews={reviews} />
       </main>
       <Footer shop={shop} data={data} />
     </div>
@@ -58,7 +58,9 @@ export async function getStaticProps() {
   const data = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
   const shop = await fetchData('shops', { match: { id: process.env.SHOP_ID } });
   const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
+
   const categories = await fetchData('categories', { match: { shop_id: process.env.SHOP_ID } });
+  const reviews = await fetchData('reviews', { match: { shop_id: process.env.SHOP_ID } });
 
   return {
     props: {
@@ -66,6 +68,7 @@ export async function getStaticProps() {
       shop: shop[0],
       brand: brand[0],
       categories: categories,
+      reviews: reviews,
     },
   };
 }

@@ -10,7 +10,7 @@ import Testimonials from '../components/Testimonials';
 
 import { fetchData } from '../lib/supabase';
 
-const Contact = ({ shop,brand, data, categories }) => {
+const Contact = ({ shop,brand, data, categories, reviews }) => {
   const [cartCount, setCartCount] = useState(0);
   const [formSubmitted, setFormSubmitted] = useState(false);
   
@@ -50,7 +50,7 @@ const Contact = ({ shop,brand, data, categories }) => {
       />
       
       <main>
-      <Header logo={brand.logo} categories={categories} data={data} shop={shop} />
+      <Header logo={brand.logo} categories={categories} data={data} shop={shop} reviews={reviews} />
       <section className="contact" id="contact">
         <div className="wrapper">
           <div className="contact-content">
@@ -115,7 +115,7 @@ const Contact = ({ shop,brand, data, categories }) => {
         </div>
       </section>
         
-      <Testimonials data={data} shop={shop} />
+      <Testimonials data={data} shop={shop} reviews={reviews} />
       <About data={data} shop={shop} />
       </main>
       <Footer shop={shop} data={data} />
@@ -128,7 +128,9 @@ export async function getStaticProps() {
   const shop = await fetchData('shops', { match: { id: process.env.SHOP_ID } });
   const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
   const data = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
+
   const categories = await fetchData('categories', { match: { shop_id: process.env.SHOP_ID } });
+  const reviews = await fetchData('reviews', { match: { shop_id: process.env.SHOP_ID } });
 
   return {
     props: {
@@ -136,6 +138,7 @@ export async function getStaticProps() {
       brand: brand[0],
       data: data[0],
       categories: categories,
+      reviews: reviews,
     },
   };
 }

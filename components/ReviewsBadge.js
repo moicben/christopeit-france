@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import reviews from '../reviews.json'; // Import des avis
+ // Import des avis
 
 
-const ReviewsBadge = ({domain, logo}) => {
+const ReviewsBadge = ({domain, logo, reviewCtaHead, reviews}) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // État pour le chargement
   const [currentPage, setCurrentPage] = useState(1);
@@ -65,13 +65,13 @@ const ReviewsBadge = ({domain, logo}) => {
   };
 
   // Filtrer les avis par étoiles si un filtre est sélectionné
-  const filteredReviews = reviews
+    const filteredReviews = reviews
     .filter((review) => {
       const reviewStars = Number(review.stars);
       return (
         (selectedStars.length > 0 ? selectedStars.includes(reviewStars) : true) &&
         review.content &&
-        review.date &&
+        review.reviewDate && // Correction ici
         review.experienceDate &&
         review.author
       );
@@ -84,12 +84,18 @@ const ReviewsBadge = ({domain, logo}) => {
       return (
         (selectedStars.length > 0 ? selectedStars.includes(reviewStars) : true) &&
         review.content &&
-        review.date &&
+        review.reviewDate &&
         review.experienceDate &&
         review.author
       );
     }).length / reviewsPerPage
   );
+
+  // console.log('Total Pages:', totalPages); // Debugging
+  // console.log('All Reviews:', reviews); // Debugging
+  // console.log('Filtered Reviews:', filteredReviews); // Debugging
+  // console.log('Selected Stars:', selectedStars); // Debugging
+
 
   return (
     <>
@@ -117,8 +123,8 @@ const ReviewsBadge = ({domain, logo}) => {
               rel="noreferrer"
             >
               <img className="logo" src="https://bpybtzxqypswjiizkzja.supabase.co/storage/v1/object/public/ecom/christopeit-france/avis-verifies.svg" alt="Avis vérifiés" />
-              <a href="">Blog</a>
-              <button>Pour les entreprises</button>
+              <span href="">Blog</span>
+              <button>{reviewCtaHead}</button>
             </a>
             <ol className="popup-breadcrumb">
               <li className="breadcrumb-item">

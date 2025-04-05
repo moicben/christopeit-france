@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import reviews from '../reviews.json';
 
-const Testimonials = ({shop, data}) => {
+
+const Testimonials = ({shop, data, reviews}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [reviewsPerPage, setReviewsPerPage] = useState(4); // Par défaut, 4 avis par page
 
@@ -65,7 +65,7 @@ const Testimonials = ({shop, data}) => {
                 </article>
                 <p className='review-content'>{review.content}</p>
                 <span className="review-info">
-                  {data.reviewInfo1} <b>{review.date}</b>{data.reviewInfo2}{' '}
+                  {data.reviewInfo1} <b>{review.reviewDate}</b>{data.reviewInfo2}{' '}
                   {review.experienceDate} {data.reviewInfo3} <b>{review.author}</b>
                 </span>
               </div>

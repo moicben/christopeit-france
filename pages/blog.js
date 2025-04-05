@@ -8,23 +8,32 @@ import Testimonials from '../components/Testimonials';
 
 import { fetchData } from 'lib/supabase';
 
-const Blog = ({ shop, data, brand, categories }) => {
+const Blog = ({ shop, data, brand, categories, reviews, posts }) => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const articlesPerPage = 9;
 
-  // Assurez-vous que data.blogContent est un tableau
-  const blogContentArray = Array.isArray(data.blogContent) ? data.blogContent : Object.values(data.blogContent);
+  // Ensure posts is an array
+  const blogContentArray = Array.isArray(posts) ? posts : Object.values(posts);
 
   const indexOfLastArticle = currentPage * articlesPerPage;
   const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
 
-  const currentArticles = blogContentArray[0].slice(indexOfFirstArticle, indexOfLastArticle);
-  const totalPages = Math.ceil(blogContentArray[0].length / articlesPerPage);
+  // Slice the blogContentArray directly
+  const currentArticles = blogContentArray.slice(indexOfFirstArticle, indexOfLastArticle);
+
+  // Calculate total pages based on the length of blogContentArray
+  const totalPages = Math.ceil(blogContentArray.length / articlesPerPage);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
+  // Console log for debugging
+  console.log('Current Articles:', currentArticles);
+  console.log('Total Pages:', totalPages);
+  console.log('Current Page:', currentPage);
+  console.log('Blog Content Array:', blogContentArray);
 
   return (
     <div className="container">
@@ -36,7 +45,7 @@ const Blog = ({ shop, data, brand, categories }) => {
       />
 
       <main>
-        <Header logo={brand.logo} categories={categories} data={data} shop={shop} />
+        <Header logo={brand.logo} categories={categories} data={data} shop={shop} reviews={reviews} />
         
         <section className="blog" id='about'>
           
@@ -62,7 +71,7 @@ const Blog = ({ shop, data, brand, categories }) => {
             />
           </div>
         </section>
-        <Testimonials data={data} shop={shop} />
+        <Testimonials data={data} shop={shop} reviews={reviews} />
       </main>
       <Footer shop={shop} data={data} />
     </div>
@@ -73,7 +82,10 @@ export async function getStaticProps() {
   const data = await fetchData('contents', { match: { shop_id: process.env.SHOP_ID } });
   const shop = await fetchData('shops', { match: { id: process.env.SHOP_ID } });
   const brand = await fetchData('brands', { match: { shop_id: process.env.SHOP_ID } });
+
   const categories = await fetchData('categories', { match: { shop_id: process.env.SHOP_ID } });
+  const reviews = await fetchData('reviews', { match: { shop_id: process.env.SHOP_ID } });
+  const posts = await fetchData('posts', { match: { shop_id: process.env.SHOP_ID } });
 
   return {
     props: {
@@ -81,6 +93,8 @@ export async function getStaticProps() {
       shop: shop[0],
       brand: brand[0],
       categories: categories,
+      reviews: reviews,
+      posts: posts,
     },
   };
 }

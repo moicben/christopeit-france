@@ -3,7 +3,7 @@ import { FaShoppingCart, FaBars, FaTimes, FaRegTrashAlt } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import ReviewsBadge from './ReviewsBadge';
 
-const Header = ({ name, domain, logo,categories, data, shop }) => {
+const Header = ({ name, domain, logo,categories, data, shop, reviews }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cart, setCart] = useState([]);
@@ -201,7 +201,7 @@ const Header = ({ name, domain, logo,categories, data, shop }) => {
         )}
 
       <section className="badge-container">
-          <ReviewsBadge domain={shop.domain} logo={logo}/>
+          <ReviewsBadge domain={shop.domain} logo={logo} reviews={reviews} reviewCtaHead={data.reviewCtaHead}/>
       </section>
     </>
   );

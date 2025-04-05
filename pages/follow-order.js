@@ -35,7 +35,7 @@ const TrackOrder = ({ shop, brand, data, categories }) => {
                 title={`${data.followPageLabel} - ${shop.name}`}
             />
             
-            <Header logo={brand.logo} categories={categories} data={data} shop={shop} />
+            <Header logo={brand.logo} categories={categories} data={data} shop={shop} reviews={reviews} />
             
             <main>
                 <div className="track-order-container">

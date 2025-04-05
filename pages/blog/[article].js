@@ -28,7 +28,7 @@ const Article = ({ shop, data, brand, article, categories }) => {
       />
 
       <main>
-        <Header logo={brand.logo} categories={categories} data={data} shop={shop} />
+        <Header logo={brand.logo} categories={categories} data={data} shop={shop} reviews={reviews} />
         
         <section className="article" id='article'>
           <div className='wrapper'>

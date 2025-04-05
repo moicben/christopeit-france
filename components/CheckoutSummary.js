@@ -30,7 +30,7 @@ const CheckoutSummary = ({ cart, totalPrice, discount, discountedPrice, name, pa
     <>
       <div className="shop-info">
         <h2>{data.checkoutPayLabel}</h2>
-        <h1 className='color-primary'>{`${(cart.reduce((total, item) => total + item.price * item.quantity, 0) * (1 - `.${data.checkoutPromoRate}`)).toLocaleString(shop.language, { minimumFractionDigits: 2 })} ${shop.currency}`}</h1>
+        <h1 className='color-primary'>{`${(cart.reduce((total, item) => total + item.price * item.quantity, 0) * (1 - `.15`)).toLocaleString(shop.language, { minimumFractionDigits: 2 })} ${shop.currency}`}</h1>
       </div>
       <div className="cart-summary">
         <ul>
@@ -47,7 +47,7 @@ const CheckoutSummary = ({ cart, totalPrice, discount, discountedPrice, name, pa
         <div className="cart-item discount">
           <h4>{data.checkoutPromoLabel} <input value={data.checkoutPromoCode}/></h4>
           <p className='quantity'>{data.checkoutPromoRate}%</p>
-          <p>{`-${(cart.reduce((total, item) => total + item.price * item.quantity, 0) * `.${data.checkoutPromoRate}`).toLocaleString(shop.language, { minimumFractionDigits: 2 })} ${shop.currency}`}</p>
+          <p>{`-${(cart.reduce((total, item) => total + item.price * item.quantity, 0) * `.15`).toLocaleString(shop.language, { minimumFractionDigits: 2 })} ${shop.currency}`}</p>
         </div>
         <div className="cart-item discount">
           <h4>{data.productDeliveryLabel}</h4>
@@ -61,7 +61,7 @@ const CheckoutSummary = ({ cart, totalPrice, discount, discountedPrice, name, pa
 
         <div className="total-price">
           <h4>{data.cartTotal}</h4>
-          <p>{`${(cart.reduce((total, item) => total + item.price * item.quantity, 0) * (1 - `.${data.checkoutPromoRate}`)).toLocaleString(shop.language, { minimumFractionDigits: 2 })} ${shop.currency}`}</p>
+          <p>{`${(cart.reduce((total, item) => total + item.price * item.quantity, 0) * (1 - `.15`)).toLocaleString(shop.language, { minimumFractionDigits: 2 })} ${shop.currency}`}</p>
         </div>
       </div>
       <p className='secure footer'>2025 © {data.footerCopyright} - {name} INC. 32455</p>
