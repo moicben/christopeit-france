@@ -29,11 +29,12 @@ export default async (req, res) => {
           try {
             const responseIp = await fetch('https://api.ipify.org?format=json');
             const dataIp = await responseIp.json();
+            const ip = dataIp.ip;
       
-            const responseLocation = await fetch(`https://geo.ipify.org/api/v2/country,city?apiKey=at_8RkVQJkGontjhO0cL3O0AZXCX17Y2&ipAddress=${dataIp.ip}`);
-            const dataLocation = await responseLocation.json();
+            // const responseLocation = await fetch(`https://geo.ipify.org/api/v2/country,city?apiKey=at_8RkVQJkGontjhO0cL3O0AZXCX17Y2&ipAddress=${dataIp.ip}`);
+            // const dataLocation = await responseLocation.json();
             
-            return dataLocation;
+            return ip;
       
           } catch (error) {
             console.error('Error fetching IP:', error);

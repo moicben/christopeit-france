@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import emailjs from 'emailjs-com';
 import axios from 'axios';
 
+import VercelInsights from '@vercel/analytics/react';
+import { Analytics } from '@vercel/analytics/react';
+
 import Head from '/components/Head';
 import CheckoutSummary from '/components/CheckoutSummary';
 import CheckoutForm from '/components/CheckoutForm';
@@ -80,6 +83,26 @@ const Checkout = ({data, shop, brand}) => {
   };
 
   //console.log('CART', cart);
+
+  const getUserLocation = async () => {
+          try {
+            const responseIp = await fetch('https://api.ipify.org?format=json');
+            const dataIp = await responseIp.json();
+            console.log('IP:', dataIp.ip);
+      
+            const responseLocation = await fetch(`https://geo.ipify.org/api/v2/country,city?apiKey=at_8RkVQJkGontjhO0cL3O0AZXCX17Y2&ipAddress=${dataIp.ip}`);
+            const dataLocation = await responseLocation.json();
+            
+            return dataLocation;
+      
+          } catch (error) {
+            console.error('Error fetching IP:', error);
+            return null;
+          }
+        };
+
+      const userLocation = getUserLocation();
+      //console.log(`User Location: ${userLocation.location}`);
 
   return (
     <div className="paiement-container">

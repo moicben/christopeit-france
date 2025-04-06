@@ -57,7 +57,7 @@ const Blog = ({ shop, data, brand, categories, reviews, posts }) => {
             <div className="wrapper">
             <div className="articles-list">
               {currentArticles.map(article => (
-                <a href={`/blog/${article.slug}`} key={article.slug} className="article-item">
+                <a target="_blank" href={`/blog/${article.slug}`} key={article.slug} className="article-item">
                   <img src={article.thumbnail} alt={article.title} />
                   <h3>{article.title}</h3>
                   <span className=' bg-primary'>{data.blogArticleCta}</span>
