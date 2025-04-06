@@ -81,7 +81,7 @@ export default async (req, res) => {
           name,
           phone,
           address: `${address}, ${postal}, ${city}`,
-          user_ip: `${userLocation.ip}`,
+          user_ip: `${userLocation}`,
           cart: JSON.stringify(simplifiedCart),
           created_at: new Date().toISOString(),
         }]);
