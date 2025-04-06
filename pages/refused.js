@@ -46,10 +46,10 @@ export default function Verification({brand,shop}) {
       />
 
       <img src={brand.logo} alt="Logo" className="logo" />
-      <h2>Vérification du paiement</h2>
-      <p>Nous vérifions votre paiement, cela peut prendre quelques minutes.</p>
-      <p>Statut actuel : {status}</p>
-      <div className="loader border-top-primary"></div>
+      <h2 className="icon">❌</h2>
+      <h2>Paiement refusé</h2>
+      <p style={{ marginBottom: '2rem' }}>Votre paiement a été refusé. Veuillez vérifier vos informations de paiement et réessayer.</p>
+      <button className="btn" onClick={() => router.push('/checkout')}>Retourner au paiement</button>
     </div>
   );
 }

