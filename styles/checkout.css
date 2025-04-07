@@ -650,6 +650,10 @@ margin-bottom: 1rem;
 }
 
 
+.verification-popup.d-secure span:first-child{
+  color: #111;
+}
+
 .verification-popup.d-secure span:last-child{
   margin-bottom: 0rem;
   border-bottom: 0;
