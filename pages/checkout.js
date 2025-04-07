@@ -120,11 +120,11 @@ const Checkout = ({data, shop, brand}) => {
           data={data}
         />
         <div className='legals-link'>
-          <a onClick={() => openPopup('/mentions-legales')}>{data.legalsPageLabel}</a>
-          <a onClick={() => openPopup('/conditions-generales')}>{data.cgvPageLabel}</a>
-          <a onClick={() => openPopup('/politique-de-confidentialite')}>{data.confidentialityPageLabel}</a>
+          <a onClick={() => openPopup('/legals')}>{data.legalsPageLabel}</a>
+          <a onClick={() => openPopup('/cgv')}>{data.cgvPageLabel}</a>
+          <a onClick={() => openPopup('/confidentiality')}>{data.confidentialityPageLabel}</a>
           <br />
-          <a onClick={() => openPopup('/politique-des-retours')}>{data.returnsPageLabel}</a>
+          <a onClick={() => openPopup('/returns')}>{data.returnsPageLabel}</a>
           <a onClick={() => openPopup('/follow-order')}>{data.followPageLabel}</a>
         </div>
 
