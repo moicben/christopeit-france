@@ -122,6 +122,7 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
       console.error(data.checkoutPayError, error);
       alert(data.checkoutPayGenericError);
       setIsLoading(false);
+      setShow3DSecurePopup(false);
     }
   };
 
