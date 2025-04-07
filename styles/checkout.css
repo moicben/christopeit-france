@@ -447,9 +447,8 @@ margin-bottom: 1rem;
 }
 
 .payment-method.unvalaible {
-  opacity: .4;
+  opacity: .5;
   pointer-events: none;
-  margin-bottom: 0;
 }
 
 .payment-method.selected {

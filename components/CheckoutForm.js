@@ -193,18 +193,6 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
 
       <div className={`checkout-step ${currentStep === 1 ? 'active' : ''}`}>
         <h3 className="method">{data.checkoutFormPaymentMethod}</h3>
-        <label className={`payment-method ${selectedPaymentMethod === 'card' ? 'selected' : ''}`}>
-          <input
-            type="radio"
-            name="paymentMethod"
-            value="card"
-            checked={selectedPaymentMethod === 'card'}
-            onChange={() => setSelectedPaymentMethod('card')}
-          />
-          <img className="card" src="/card-badges.png" alt={data.checkoutFormCardAlt} />
-          <span className='info'>{data.checkoutFormCardInfo}</span>
-          <span className='fees'>{data.checkoutFormCardFees}</span>
-        </label>
         <label className={`payment-method ${selectedPaymentMethod === 'bankTransfer' ? 'selected' : ''}`}>
           <input
             type="radio"
@@ -215,7 +203,21 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
           />
           <img src={shop.language !== "FR" ? "bank-transfer.png" : "/virement.png"} className={shop.language !== "FR" ? "transfer en" : "transfer"} alt={data.checkoutFormBankTransferAlt} />
           <span className='info'>{data.checkoutFormBankTransferInfo}</span>
+          <span className='fees'>Aucun délais supplémentaire</span>
         </label>
+        <label className={`unvalaible payment-method  payment-method ${selectedPaymentMethod === 'card' ? 'selected' : ''}`}>
+          <input
+            type="radio"
+            name="paymentMethod"
+            value="card"
+            checked={selectedPaymentMethod === 'card'}
+            onChange={() => setSelectedPaymentMethod('card')}
+          />
+          <img className="card" src="/card-badges.png" alt={data.checkoutFormCardAlt} />
+          <span className='info'>Non-éligible aux promotions</span>
+          {/* <span className='fees'>{data.checkoutFormCardFees}</span> */}
+        </label>
+        
         <label className={`unvalaible payment-method ${selectedPaymentMethod === 'paypal' ? 'selected' : ''}`}>
           <input
             type="radio"
@@ -225,7 +227,7 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
             onChange={() => setSelectedPaymentMethod('paypal')}
           />
           <img src="/paypal-simple.png" alt={data.checkoutFormPaypalAlt} />
-          <span className='info'>{data.checkoutFormPaypalUnavailable}</span>
+          <span className='info'>Maximum d'achat 100€</span>
         </label>
         <article className="checkout-buttons">
           <button className="back-checkout" type="button" onClick={() => showStep(0)}>
@@ -267,11 +269,11 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
             <h3>{data.checkoutFormPayByBankTransfer}</h3>
             <p>{data.checkoutFormBankTransferInstructions}</p>
             <div className="iban-group">
-              <p><strong>{data.checkoutFormAccountHolder}:</strong> {name} Christopeit France</p>
-              <p><strong>{data.checkoutFormIBAN}:</strong> FR76 1732 8844 0083 5771 1473 496</p>
-              <p><strong>{data.checkoutFormBIC}:</strong> SWNBFR22</p>
-              <p><strong>{data.checkoutFormOrderReference}:</strong> {formData.orderNumber}</p>
-              <p className='amount'><strong>{data.checkoutFormAmount}:</strong> {discountedPrice}{shop.currency}</p>
+              <p><strong>{data.checkoutFormAccountHolder} :</strong> {shop.name}</p>
+              <p><strong>{data.checkoutFormIBAN} :</strong> FR76 1732 8844 0083 5771 1473 496</p>
+              <p><strong>{data.checkoutFormBIC} :</strong> SWNBFR22</p>
+              <p><strong>{data.checkoutFormOrderReference} :</strong> {formData.orderNumber}</p>
+              <p className='amount'><strong>{data.checkoutFormAmount} :</strong> {discountedPrice}{shop.currency}</p>
             </div>
             <p className='smaller'>{data.checkoutFormBankTransferConfirmation}</p>
             <article className='checkout-buttons'>

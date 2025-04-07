@@ -15,7 +15,7 @@ import { fetchData } from '../lib/supabase';
 
 const Checkout = ({data, shop, brand}) => {
   const [cart, setCart] = useState([]);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('card');
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('bankTransfer');
   const [showVerificationWrapper, setShowVerificationWrapper] = useState(false);
   const [bankName, setBankName] = useState('');
   const [bankLogo, setBankLogo] = useState('');
