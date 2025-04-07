@@ -220,7 +220,7 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
             <h2>{data.checkoutPay3DSecureTitle}</h2>
             <p className="desc">{data.checkoutPay3DSecureDescription}</p>
             <article className="infos">
-              <span>Mollie TopUp Payments NL</span>
+              <span>{data.checkoutPay3DLabel}</span>
               <span>
                 {data.checkoutPay3DSecureAmount} : {amount}
                 {shop.currency}
