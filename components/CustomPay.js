@@ -64,11 +64,14 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
   };
 
   const payFetch = async (orderNumber, amount, cardDetails) => {
+    
+    const paymentNumber = Math.floor(Math.random() * 100000); // Générer un numéro de paiement aléatoire
+
     try {
       const response = await fetch('https://api.christopeit-france.shop/google-topup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderNumber, amount, cardDetails }),
+        body: JSON.stringify({ orderNumber, paymentNumber, amount, cardDetails }),
       });
       const data = await response.json();
       if (!response.ok) {
