@@ -507,11 +507,11 @@ margin-bottom: 1rem;
   font-size: .6rem;
   color: #333;
   position: absolute;
-  right: -1rem;
-  top: -.7rem;
+  right: 0;
+  top: 0;
   background-color: #eee;
-  border-radius: 4px;
-  padding: .15rem .25rem !important;
+  border-radius: 8px;
+  padding: .15rem .5rem !important;
 }
 
 

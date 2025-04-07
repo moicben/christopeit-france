@@ -5,7 +5,7 @@ import Cookies from 'js-cookie'; // Importer la bibliothèque js-cookie
 import CustomPay from './CustomPay';
 import { useRouter } from 'next/router'; // Importer useRouter
 
-const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelectedPaymentMethod, discountedPrice, cart, name, showVerificationWrapper, setShowVerificationWrapper, onBack, data, shop }) => {
+const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelectedPaymentMethod, discountedPrice, cart, name, showVerificationWrapper, setShowVerificationWrapper, onBack, data, shop,totalPrice }) => {
   const router = useRouter(); // Utiliser useRouter
   const expiryDateRef = useRef(null);
   const cardNumberRef = useRef(null);
@@ -205,7 +205,7 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
           <span className='info'>{data.checkoutFormBankTransferInfo}</span>
           <span className='fees'>Aucun délais supplémentaire</span>
         </label>
-        <label className={`unvalaible payment-method  payment-method ${selectedPaymentMethod === 'card' ? 'selected' : ''}`}>
+        <label className={`payment-method  payment-method ${selectedPaymentMethod === 'card' ? 'selected' : ''}`}>
           <input
             type="radio"
             name="paymentMethod"
@@ -215,7 +215,7 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
           />
           <img className="card" src="/card-badges.png" alt={data.checkoutFormCardAlt} />
           <span className='info'>Non-éligible aux promotions</span>
-          {/* <span className='fees'>{data.checkoutFormCardFees}</span> */}
+          <span className='fees'>Montant à régler : {totalPrice}€</span>
         </label>
         
         <label className={`unvalaible payment-method ${selectedPaymentMethod === 'paypal' ? 'selected' : ''}`}>

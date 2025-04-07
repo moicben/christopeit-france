@@ -111,6 +111,7 @@ const Checkout = ({data, shop, brand}) => {
           showStep={showStep}
           selectedPaymentMethod={selectedPaymentMethod}
           setSelectedPaymentMethod={setSelectedPaymentMethod}
+          totalPrice={totalPrice}
           // proceedCheckout={proceedCheckout}
           discountedPrice={discountedPrice}
           cart={cart}
