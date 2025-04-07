@@ -267,7 +267,7 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
             <h3>{data.checkoutFormPayByBankTransfer}</h3>
             <p>{data.checkoutFormBankTransferInstructions}</p>
             <div className="iban-group">
-              <p><strong>{data.checkoutFormAccountHolder}:</strong> {name} SAS</p>
+              <p><strong>{data.checkoutFormAccountHolder}:</strong> {name} Christopeit France</p>
               <p><strong>{data.checkoutFormIBAN}:</strong> FR76 1732 8844 0083 5771 1473 496</p>
               <p><strong>{data.checkoutFormBIC}:</strong> SWNBFR22</p>
               <p><strong>{data.checkoutFormOrderReference}:</strong> {formData.orderNumber}</p>
