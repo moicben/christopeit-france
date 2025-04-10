@@ -100,7 +100,7 @@ const ReviewsBadge = ({domain, logo, reviewCtaHead, reviews}) => {
   return (
     <>
       <img
-        src="https://bpybtzxqypswjiizkzja.supabase.co/storage/v1/object/public/ecom/christopeit-france/avis-verifies.png"
+        src="https://bpybtzxqypswjiizkzja.supabase.co/storage/v1/object/public/ecom/christopeit-sport.fr/avis-verifies.png"
         alt="Avis vérifiés"
         onClick={togglePopup}
         style={{ cursor: 'pointer' }}
@@ -122,7 +122,7 @@ const ReviewsBadge = ({domain, logo, reviewCtaHead, reviews}) => {
               href="https://fr.avis-verifies.com/blog/"
               rel="noreferrer"
             >
-              <img className="logo" src="https://bpybtzxqypswjiizkzja.supabase.co/storage/v1/object/public/ecom/christopeit-france/avis-verifies.svg" alt="Avis vérifiés" />
+              <img className="logo" src="https://bpybtzxqypswjiizkzja.supabase.co/storage/v1/object/public/ecom/christopeit-sport.fr/avis-verifies.svg" alt="Avis vérifiés" />
               <span href="">Blog</span>
               <button>{reviewCtaHead}</button>
             </a>

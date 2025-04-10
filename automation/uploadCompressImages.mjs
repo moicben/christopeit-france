@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // BunnyCDN configuration
-const BUNNY_CDN_STORAGE_ZONE = 'christopeitfrance'; //christopeit-france
+const BUNNY_CDN_STORAGE_ZONE = 'christopeitfrance'; //christopeit-sport.fr
 const BUNNY_CDN_API_KEY = '6c30f648-712d-4b3d-a6b6-3d881299f764cde34b02-68b8-44f4-bb0d-74ffb9ce0e26';
 const BUNNY_CDN_BASE_URL = `https://storage.bunnycdn.com/${BUNNY_CDN_STORAGE_ZONE}`;
 

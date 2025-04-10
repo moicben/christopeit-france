@@ -89,7 +89,7 @@ async function addSiteAndSubmitSitemap(siteUrl, sitemapUrl) {
   }
 }
 
-const siteUrl = 'https://christopeit-france.shop';
+const siteUrl = 'https://christopeit-sport.fr.shop';
 const sitemapUrl = `${siteUrl}/sitemap.xml`;
 
 addSiteAndSubmitSitemap(siteUrl, sitemapUrl).catch(error => {
