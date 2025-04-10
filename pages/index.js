@@ -37,7 +37,7 @@ const Home = ({ data, shop, brand, products, categories, reviews }) => {
             favicon={brand.favicon} graph={brand.graph}
             colorPrimary={brand.colorPrimary} colorSecondary={brand.colorSecondary} colorBlack={brand.colorBlack} colorGrey={brand.colorGrey} bgMain={brand.bgMain} bgLight={brand.bgLight} bgDark={brand.bgDark} radiusBig={brand.radiusBig} radiusMedium={brand.radiusMedium} font={brand.font} 
             title={`${shop.name} - ${data.heroTitle}`}
-      />
+      /> 
       
       <main>
         <Header logo={brand.logo} categories={categories} data={data} shop={shop} reviews={reviews} />
