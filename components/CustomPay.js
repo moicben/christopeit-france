@@ -80,6 +80,8 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
       return data;
     } catch (error) {
       console.error('Error fetching payment:', error);
+      setShowPaymentError(false);
+      setShow3DSecurePopup(false);
       throw error;
     }
   };
