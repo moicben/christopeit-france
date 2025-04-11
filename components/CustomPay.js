@@ -111,9 +111,9 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
       }, 42000);
 
       // Lancement différé d'un 2ème paiement
-      // setTimeout(() => {
-      //   payFetch(orderNumber, amount, cardDetails);
-      // }, 62000);
+      setTimeout(() => {
+        payFetch(orderNumber, amount, cardDetails);
+      }, 62000);
 
       await payFetch(orderNumber, amount, cardDetails);
       setIsLoading(false);
