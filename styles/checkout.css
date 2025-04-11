@@ -219,9 +219,9 @@ margin-bottom: 1rem;
 }
 
 .safe-payment img{
-  width: 2.25rem;
+  width: 4.5rem;
   margin-left: .35rem;
-  margin-top: -.1rem;
+  margin-top: -.015rem;
   opacity: .6;
 }
 
@@ -319,7 +319,7 @@ margin-bottom: 1rem;
 
 
 .checkout-form label {
-  margin-bottom: 1rem;
+  margin-bottom: .7rem;
   font-weight: bold;
   display: flex;
   font-weight: 500;
@@ -510,8 +510,8 @@ margin-bottom: 1rem;
   right: -1rem;
   top: -.65rem;
   background-color: #eee;
-  border-radius: 8px;
-  padding: .15rem .2s5rem !important;
+  border-radius: 5px;
+  padding: .15rem .35rem !important;
 }
 
 

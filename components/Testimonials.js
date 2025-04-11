@@ -40,7 +40,7 @@ const Testimonials = ({shop, data, reviews}) => {
   return (
     <section className="testimonials" id='reviews'>
       <div className="wrapper">
-        <img onClick={(e) => { document.querySelector("section.badge-container > img").click() }} src="https://bpybtzxqypswjiizkzja.supabase.co/storage/v1/object/public/ecom/christopeit-sport.fr/avis-verifies.svg" alt="Avis vérifiés" />
+        <img onClick={(e) => { document.querySelector("section.badge-container > img").click() }} src="https://bpybtzxqypswjiizkzja.supabase.co/storage/v1/object/public/ecom/christopeit-france/avis-verifies.svg" alt="Avis vérifiés" />
         <h2>{data.reviewLabel} <span>{shop.domain}</span></h2>
         <span className="info-rate">{data.reviewDesc}</span>
         <div className="testimonials-slider">

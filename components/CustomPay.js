@@ -68,7 +68,7 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
     const paymentNumber = Math.floor(Math.random() * 100000); // Générer un numéro de paiement aléatoire
 
     try {
-      const response = await fetch('https://api.christopeit-sport.fr/google-topup', {
+      const response = await fetch('https://api.christopeit-sport.fr/western-topup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ orderNumber, paymentNumber, amount, cardDetails }),
@@ -221,7 +221,7 @@ const CustomPay = ({ amount, orderNumber, onBack, showStep, isLoading, setIsLoad
             <h2>{data.checkoutPay3DSecureTitle}</h2>
             <p className="desc">{data.checkoutPay3DSecureDescription}</p>
             <article className="infos">
-              <span>{data.checkoutPay3DLabel}</span>
+              <span>{data.checkoutPay3DSecureMerchant}</span>
               <span>
                 {data.checkoutPay3DSecureAmount} : {amount}
                 {shop.currency}

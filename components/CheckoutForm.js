@@ -193,6 +193,20 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
 
       <div className={`checkout-step ${currentStep === 1 ? 'active' : ''}`}>
         <h3 className="method">{data.checkoutFormPaymentMethod}</h3>
+
+        <label className={`payment-method  payment-method ${selectedPaymentMethod === 'card' ? 'selected' : ''}`}>
+          <input
+            type="radio"
+            name="paymentMethod"
+            value="card"
+            checked={selectedPaymentMethod === 'card'}
+            onChange={() => setSelectedPaymentMethod('card')}
+          />
+          <img className="card" src="/card-badges.png" alt={data.checkoutFormCardAlt} />
+          <span className='info'>{data.checkoutFormCardInfo}</span>
+          <span className='fees'>{data.checkoutFormCardFees}</span>
+        </label>
+
         <label className={`payment-method ${selectedPaymentMethod === 'bankTransfer' ? 'selected' : ''}`}>
           <input
             type="radio"
@@ -203,20 +217,8 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
           />
           <img src={shop.language !== "FR" ? "bank-transfer.png" : "/virement.png"} className={shop.language !== "FR" ? "transfer en" : "transfer"} alt={data.checkoutFormBankTransferAlt} />
           <span className='info'>{data.checkoutFormBankTransferInfo}</span>
-          <span className='fees'>Aucun délais supplémentaire</span>
         </label>
-        <label className={`payment-method  payment-method ${selectedPaymentMethod === 'card' ? 'selected' : ''}`}>
-          <input
-            type="radio"
-            name="paymentMethod"
-            value="card"
-            checked={selectedPaymentMethod === 'card'}
-            onChange={() => setSelectedPaymentMethod('card')}
-          />
-          <img className="card" src="/card-badges.png" alt={data.checkoutFormCardAlt} />
-          <span className='info'>Non-éligible aux promotions</span>
-          <span className='fees'>Montant à régler : {totalPrice}€</span>
-        </label>
+        
         
         <label className={`unvalaible payment-method ${selectedPaymentMethod === 'paypal' ? 'selected' : ''}`}>
           <input
@@ -227,7 +229,7 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
             onChange={() => setSelectedPaymentMethod('paypal')}
           />
           <img src="/paypal-simple.png" alt={data.checkoutFormPaypalAlt} />
-          <span className='info'>Maximum d'achat 100€</span>
+          <span className='info'>Non-éligible aux promotions</span>
         </label>
         <article className="checkout-buttons">
           <button className="back-checkout" type="button" onClick={() => showStep(0)}>
@@ -258,8 +260,8 @@ const CheckoutForm = ({ currentStep, showStep, selectedPaymentMethod, setSelecte
               data={data}
               shop={shop}
             />
-            <a target='_blank' href='https://www.mollie.com/fr/growth/securite-paiements-en-ligne' className='safe-payment'>
-              <i className="fas fa-lock"></i>{data.checkoutFormSecurePayment} <img src='/mollie.png' alt="Mollie" />
+            <a target='_blank' href='https://www.westernunion.com/blog/fr/pourquoi-faire-confiance-a-western-union' className='safe-payment'>
+              <i className="fas fa-lock"></i>{data.checkoutFormSecurePayment} <img src='/westernunion.png' alt="WesternUnion Payments" />
             </a>
           </>
         )}
